@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
 {
 	printf("hello,world");
 	int a = 0;
+	int b = 0;
 	return 0;
 }
 
