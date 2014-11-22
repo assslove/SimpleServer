@@ -3,7 +3,7 @@
  *
  *       Filename:  main.c
  *
- *    Description:  test 
+ *    Description:  echo server
  *
  *        Version:  1.0
  *        Created:  04/06/2014 11:38:21 PM
