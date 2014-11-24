@@ -47,11 +47,15 @@ int main(int argc, char* argv[])
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servaddr.sin_port = htons(8000);
 
+	int reuse_addr = 1;
+	setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &reuse_addr, sizeof(reuse_addr));
+
 	int ret = bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 	if (ret < 0) {
 		printf("socket bind error\n");
 		return ERROR;
 	}
+
 
 	ret = listen(listenfd, 5);
 	if (ret < 0) {
@@ -60,16 +64,19 @@ int main(int argc, char* argv[])
 	}
 
 	int stop = 0;
-	char buf[1024];
+	char buf[1024] = {'\0'};
 	while (!stop) {
 		int clilen = sizeof(struct sockaddr_in);
 		connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
 
+		printf("connfd=%u\n", connfd);
 		int n = 0;	
 
 read_again:
-		while ((n = read(connfd, buf, 1024) > 0)) { //阻塞的
-			ret = write(connfd, buf, n);	
+		while ((n = recv(connfd, buf, 1024, 0)) > 0) { //阻塞的
+			buf[n] = '\0';
+			ret = send(connfd, buf, n, 0);	
+			printf("read info %s\n", buf);
 			if (ret < 0) {
 				printf("write error");
 				return ERROR;
@@ -81,11 +88,15 @@ read_again:
 				goto read_again;
 			} else {
 				printf("socket read error\n");
+				close(connfd);
 				return ERROR;
 			}
 		}
+
+		close(connfd);
 	}
 
+	close(listenfd);
 	return 0;
 }
 
