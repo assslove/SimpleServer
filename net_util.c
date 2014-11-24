@@ -184,7 +184,6 @@ int safe_tcp_accept(int sockfd, struct sockaddr_in* peer, int nonblock)
 
 int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblock)
 {
-//	int err;
 	struct sockaddr_in peer;
 
 	memset(&peer, 0, sizeof(peer));
