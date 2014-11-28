@@ -97,6 +97,7 @@ read_again:
 	}
 
 	close(listenfd);
+
 	return 0;
 }
 
