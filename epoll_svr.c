@@ -27,6 +27,9 @@
 #include <errno.h>
 #include <strings.h>   /* bzero */
 
+#include "epoll_util.h"
+#include "net_util.h"
+
 enum RTYPE {
 	SUCCESS = 0,
 	ERROR = -1 
@@ -39,10 +42,60 @@ typedef struct {
 	char ip[32];
 	uint16_t port;
 	uint8_t proto_type; 
-}__attribute__((packed)) work_conf;
+}__attribute__((packed)) work_conf_t;
+
+typedef struct {
+	uint32_t id;
+	int fd;
+	uint8_t type;
+	void (*callback)(int fd, void* arg);
+	void *arg;
+} __attribute__((packed)) fd_wrap_t;
+
+typedef struct {
+	int epoll_fd;
+	struct epoll_event *evs;
+	fd_wrap_t *fds;
+	int max_fd;
+	int max_ev;
+}__attribute__((packed)) epoll_wrap_t;
+
+work_conf_t work_confs[] = {
+	{1, "127.0.0.1", 10001, 0},
+	{2, "127.0.0.1", 10002, 0},
+	{3, "127.0.0.1", 10003, 0},
+	{4, "127.0.0.1", 10004, 0}
+};
+
+int child_pids[1024] = [0];
+epoll_wrap_t g_epfd;
 
 int main(int argc, char* argv[]) 
 {	
+
+	int i = 0;
+	uint32_t nwork = sizeof(work_confs) / sizeof(work_confs[0]);
+	for (i = 0; i < nwork; i++) {
+		work_conf_t *item = work_confs[i];
+		ep_init();
+
+		int pid = fork();
+		if (pid > 0) { //parent
+			//开启epoll
+		} else if (pid == 0) { //work
+			//关闭资源
+			
+			//开启epoll
+		} else { //释放资源
+			goto end;		
+		}
+		
+	}
+
+	//父进程的状态
+	
+end:
+
 	int listenfd, connfd;
 
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
