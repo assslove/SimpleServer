@@ -42,17 +42,7 @@ typedef struct {
 	char ip[32];
 	uint16_t port;
 	uint8_t proto_type; 
-<<<<<<< HEAD
-}__attribute__((packed)) xn_wk_conf_t;
-
-
-/* @brief epoll 封装
- */
-typedef struct {
-	int epfd;
-	epoll_event *evs;
-	
-}__attribute__((packed)) xn_epinfo_t;
+}__attribute__((packed)) work_conf_t;
 
 typedef struct {
 	uint32_t id;
@@ -68,7 +58,7 @@ typedef struct {
 	fd_wrap_t *fds;
 	int max_fd;
 	int max_ev;
-}__attribute__((packed)) epoll_wrap_t;
+}__attribute__((packed)) epoll_info_t;
 
 work_conf_t work_confs[] = {
 	{1, "127.0.0.1", 10001, 0},
@@ -78,16 +68,16 @@ work_conf_t work_confs[] = {
 };
 
 int child_pids[1024] = [0];
-epoll_wrap_t g_epfd;
+epoll_info_t epinfo;
 
 int main(int argc, char* argv[]) 
 {	
-
+	ep_info = epoll_create(1024);
+		
 	int i = 0;
 	uint32_t nwork = sizeof(work_confs) / sizeof(work_confs[0]);
 	for (i = 0; i < nwork; i++) {
 		work_conf_t *item = work_confs[i];
-		ep_init();
 
 		int pid = fork();
 		if (pid > 0) { //parent
