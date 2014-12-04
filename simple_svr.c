@@ -27,8 +27,7 @@
 #include <errno.h>
 #include <strings.h>   /* bzero */
 
-#include "epoll_util.h"
-#include "net_util.h"
+#include "log.h"
 
 enum RTYPE {
 	SUCCESS = 0,
@@ -80,6 +79,13 @@ svr_setting_t setting = {1024};
 int main(int argc, char* argv[]) 
 {	
 	ep_info.epfd = epoll_create(setting.nr_max_event);
+
+	int listenfd;
+	listenfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (listenfd < 0) {
+		printf("socket error\n");
+		return ERROR;
+	}
 
 	if (ep_info.epfd == -1) {
 		strerror(errno);
