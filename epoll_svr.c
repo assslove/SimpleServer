@@ -39,10 +39,23 @@ typedef struct {
 	char ip[32];
 	uint16_t port;
 	uint8_t proto_type; 
-}__attribute__((packed)) work_conf;
+}__attribute__((packed)) xn_wk_conf_t;
+
+
+/* @brief epoll 封装
+ */
+typedef struct {
+	int epfd;
+	epoll_event *evs;
+	
+}__attribute__((packed)) xn_epinfo_t;
 
 int main(int argc, char* argv[]) 
 {	
+	//设置一些信号
+	
+	//设置后台启动
+	
 	int listenfd, connfd;
 
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
