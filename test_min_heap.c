@@ -20,12 +20,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 int main(int argc, char* argv[]) 
 {
 	min_heap_t base;
 	min_heap_ctor(&base);
 
 	int i = 0;
+	srand(time(NULL));
 	for (i = 0; i < 100; i++) {
 		my_struct_t *item = (my_struct_t *)malloc(sizeof(my_struct_t));
 		item->data = rand() % 10000;

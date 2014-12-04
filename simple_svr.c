@@ -53,7 +53,7 @@ typedef struct {
 } __attribute__((packed)) fd_wrap_t;
 
 typedef struct {
-	int epoll_fd;
+	int epfd;
 	struct epoll_event *evs;
 	fd_wrap_t *fds;
 	int max_fd;
@@ -68,11 +68,23 @@ work_conf_t work_confs[] = {
 };
 
 int child_pids[1024] = [0];
+
+typedef struct setting {
+	int nr_max_event; //
+} svr_setting_t;
+
+
 epoll_info_t epinfo;
+svr_setting_t setting = {1024};
 
 int main(int argc, char* argv[]) 
 {	
-	ep_info = epoll_create(1024);
+	ep_info.epfd = epoll_create(setting.nr_max_event);
+
+	if (ep_info.epfd == -1) {
+		strerror(errno);
+		return 0;
+	}
 		
 	int i = 0;
 	uint32_t nwork = sizeof(work_confs) / sizeof(work_confs[0]);
