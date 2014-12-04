@@ -79,19 +79,69 @@ svr_setting_t setting = {1024};
 int main(int argc, char* argv[]) 
 {	
 	ep_info.epfd = epoll_create(setting.nr_max_event);
+	if (ep_info.epfd == -1) {
+		ERROR(0, strerror(errno));
+		return ERROR;
+	}
 
 	int listenfd;
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (listenfd < 0) {
-		printf("socket error\n");
+		ERROR(0, "listen socket error\n");
 		return ERROR;
 	}
 
-	if (ep_info.epfd == -1) {
-		strerror(errno);
-		return 0;
+	struct sockaddr_in servaddr;	
+	memset(&servaddr, 0, sizeof(struct sockaddr_in));
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_addr.s_addr = INADDR_ANY;
+	servaddr.sin_port = htons(8000);
+
+	//设置socket
+	int flag = 1;
+	int err = setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
+	if (err == -1) {
+		ERROR(0, strerror(errno));
+		return ERROR;
 	}
-		
+	
+	int bufsize = 1024 * 1024;
+	err = setsockopt(listenfd, SOL_SOCKET, SO_RCVBUF, &bufsize, sizeof(int));
+	if (err == -1) {
+		ERROR(0, strerror(errno));
+		return ERROR;
+	}
+	err = setsockopt(listenfd, SOL_SOCKET, SO_SNDBUF, &bufsize, sizeof(int));
+	if (err == -1) {
+		ERROR(0, strerror(errno));
+		return ERROR;
+	}
+
+	err = bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
+	if (err == -1) {
+		ERROR(0, strerror(errno));
+		return ERROR;
+	}
+
+	epinfo.evs = (epoll_event *)calloc(sizeof(epoll_event) * setting.nr_max_event);		
+
+	epoll_event event;	
+	event.fd = listenfd;
+	event.events = EPOLL_IN | EPOLL_ET;
+	epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, listenfd, &event);
+
+	err = listen(listenfd, 1024);
+	if (ret == -1) {
+		ERROR(0, perror(errno));
+		return ERROR;
+	}
+
+	int nr = epoll_wait(epinfo.epfd, epinfo.nr_max_event, epinfo.evs, 100);
+	int i = 0;
+	for (i = 0; i < nr; i++) {
+
+	}
+
 	int i = 0;
 	uint32_t nwork = sizeof(work_confs) / sizeof(work_confs[0]);
 	for (i = 0; i < nwork; i++) {
@@ -102,16 +152,16 @@ int main(int argc, char* argv[])
 			//开启epoll
 		} else if (pid == 0) { //work
 			//关闭资源
-			
+
 			//开启epoll
 		} else { //释放资源
 			goto end;		
 		}
-		
+
 	}
 
 	//父进程的状态
-	
+
 end:
 
 	int listenfd, connfd;
