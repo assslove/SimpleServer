@@ -218,3 +218,14 @@ int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblo
 	return sockfd;
 }
 
+
+int add_fd_to_epinfo(int epfd, int fd)
+{
+	set_io_nonblock(fd, 1);
+
+	struct epoll_event event;
+	event.data.fd = fd;
+	event.events = EPOLLIN | EPOLLET;
+
+	return epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &event);	
+}

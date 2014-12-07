@@ -42,4 +42,8 @@ int safe_tcp_accept(int sockfd, struct sockaddr_in* peer, int nonblock);
  */
 int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblock);
 
+/* @brief 加入epoll
+ */
+int add_fd_to_epinfo(int epfd, int fd);
+
 #endif

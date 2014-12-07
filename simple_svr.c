@@ -28,6 +28,7 @@
 #include <strings.h>   
 #include <string.h>   
 #include <sys/epoll.h>
+#include <sys/mman.h>
 
 #include "net_util.h"
 #include "log.h"
@@ -37,6 +38,31 @@ enum RTYPE {
 	ERROR = -1 
 };
 
+typedef struct mem_head {
+	void *ptr;
+	int head;
+	int tail;
+	int blk_cnt; //总共块数
+} mem_head_t;
+
+/* @brief 内存队列
+ */
+typedef struct mem_queue {
+	mem_head_t *info;
+	int len;
+	int pipefd[2];
+} mem_queue_t;
+
+/* @brief 内存块
+ */
+typedef struct mem_block {
+	int fd;
+	uint8_t type;
+	int head;
+	int len;
+	uint8_t data[];
+} mem_block_t;
+
 /* @brief 工作进程配置项
  */
 typedef struct {
@@ -44,15 +70,20 @@ typedef struct {
 	char ip[32];
 	uint16_t port;
 	uint8_t proto_type; 
+	
+	mem_queue_t recv_q; //接收队列
+	mem_queue_t send_q;  //发送队列
 }__attribute__((packed)) work_conf_t;
 
 typedef struct {
 	uint32_t id;
 	int fd;
 	uint8_t type;
+	uint8_t buf[1024]; //接受缓冲区
 	void (*callback)(int fd, void* arg);
 	void *arg;
 } __attribute__((packed)) fd_wrap_t;
+
 
 typedef struct {
 	int epfd;
@@ -62,13 +93,7 @@ typedef struct {
 	int max_ev;
 }__attribute__((packed)) epoll_info_t;
 
-work_conf_t work_confs[] = {
-	{1, "127.0.0.1", 10001, 0},
-	{2, "127.0.0.1", 10002, 0},
-	{3, "127.0.0.1", 10003, 0},
-	{4, "127.0.0.1", 10004, 0}
-};
-
+work_conf_t work_confs[4];
 int chl_pids[1024] = {0};
 
 typedef struct svr_setting {
@@ -143,6 +168,65 @@ int main(int argc, char* argv[])
 	}
 
 	DEBUG(0, "listen on 8000\n");
+
+	int i = 0;
+	for (i = 0; i < 1; i++) {
+		int pid = fork();
+		if (pid == -1) {
+			ERROR(0, "%s", strerror(errno));
+			//关闭系统资源
+			return 0;
+		} else if (pid == 0) { //子进程
+			//释放主进程资源
+			close(epinfo.epfd); 
+			close(listenfd);
+			close(epinfo.epfd);
+
+			epinfo.epfd = epoll_create(1024);
+			close(work_confs[0].send_q.pipefd[1]);
+			close(work_confs[0].recv_q.pipefd[0]);
+
+			add_fd_to_epinfo(epinfo.epfd, work_confs[0].send_q.pipefd[0]);
+			add_fd_to_epinfo(epinfo.epfd, work_confs[0].recv_q.pipefd[1]);
+			
+			int stop = 0;
+			while (!stop) {
+				int nr = epoll_wait(epinfo.epfd, epinfo.evs, 1024, 100);
+				
+				int i = 0;
+				for (i = 0; i < nr; i++) {
+					
+				}
+			}
+
+			return 0;
+		} 
+
+		chl_pids[i]	= pid; //赋值pid
+
+		int queue_len = 1024 * 1024;
+		work_confs[i].send_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
+				MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+		work_confs[i].send_q.len = queue_len;
+		work_confs[i].send_q.info->head = sizeof(mem_head_t);
+		work_confs[i].send_q.info->tail = sizeof(mem_head_t);
+		work_confs[i].send_q.info->blk_cnt = 0;
+		pipe(work_confs[i].send_q.pipefd);
+		close(work_confs[i].send_q.pipefd[0]);
+
+		work_confs[i].recv_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
+				MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+		work_confs[i].recv_q.len = queue_len;
+		work_confs[i].recv_q.info->head = sizeof(mem_head_t);
+		work_confs[i].recv_q.info->tail = sizeof(mem_head_t);
+		work_confs[i].recv_q.info->blk_cnt = 0;
+
+		pipe(work_confs[i].recv_q.pipefd);
+		close(work_confs[i].recv_q.pipefd[1]);
+
+		add_fd_to_epinfo(epinfo.epfd, work_confs[i].send_q.pipefd[1]);
+		add_fd_to_epinfo(epinfo.epfd, work_confs[i].recv_q.pipefd[0]);
+	}
 
 	int stop = 0;
 	while (!stop) {
