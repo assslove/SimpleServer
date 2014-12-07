@@ -192,10 +192,10 @@ int main(int argc, char* argv[])
 			int stop = 0;
 			while (!stop) {
 				int nr = epoll_wait(epinfo.epfd, epinfo.evs, 1024, 100);
-				
-				int i = 0;
+				int i;
 				for (i = 0; i < nr; i++) {
-					
+					int fd = epinfo.evs[i].data.fd;
+					DEBUG(fd, "msg from %d", fd);
 				}
 			}
 
