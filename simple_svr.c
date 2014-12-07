@@ -183,11 +183,10 @@ int main(int argc, char* argv[])
 			close(epinfo.epfd);
 
 			epinfo.epfd = epoll_create(1024);
-			close(work_confs[0].send_q.pipefd[1]);
-			close(work_confs[0].recv_q.pipefd[0]);
+			close(work_confs[0].send_q.pipefd[0]);
+			close(work_confs[0].recv_q.pipefd[1]);
 
-			add_fd_to_epinfo(epinfo.epfd, work_confs[0].send_q.pipefd[0]);
-			add_fd_to_epinfo(epinfo.epfd, work_confs[0].recv_q.pipefd[1]);
+			add_fd_to_epinfo(epinfo.epfd, work_confs[0].recv_q.pipefd[0]);
 			
 			int stop = 0;
 			while (!stop) {
@@ -212,7 +211,7 @@ int main(int argc, char* argv[])
 		work_confs[i].send_q.info->tail = sizeof(mem_head_t);
 		work_confs[i].send_q.info->blk_cnt = 0;
 		pipe(work_confs[i].send_q.pipefd);
-		close(work_confs[i].send_q.pipefd[0]);
+		close(work_confs[i].send_q.pipefd[1]);
 
 		work_confs[i].recv_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
 				MAP_SHARED | MAP_ANONYMOUS, -1, 0);
@@ -222,10 +221,9 @@ int main(int argc, char* argv[])
 		work_confs[i].recv_q.info->blk_cnt = 0;
 
 		pipe(work_confs[i].recv_q.pipefd);
-		close(work_confs[i].recv_q.pipefd[1]);
+		close(work_confs[i].recv_q.pipefd[0]);
 
 		add_fd_to_epinfo(epinfo.epfd, work_confs[i].send_q.pipefd[1]);
-		add_fd_to_epinfo(epinfo.epfd, work_confs[i].recv_q.pipefd[0]);
 	}
 
 	int stop = 0;
@@ -271,6 +269,8 @@ read_again:
 					//epoll_ctl(epinfo.epfd, EPOLL_CTL_MOD, fd, &(epinfo.evs[i]));
 
 					send(fd, buf, 32, 0);					
+					char noti[] = {'r'};
+//					write(work_confs[0].recv_q.pipefd[1], noti, 1);
 
 					DEBUG(fd, "send to cli[%s]", buf);
 				}
