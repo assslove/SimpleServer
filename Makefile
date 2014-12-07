@@ -1,4 +1,8 @@
-echo_server: main.c
-	gcc -g -o echo_server main.c
-clean:
-	rm -rf *.o
+all : simple_svr simple_cli
+
+simple_svr: simple_svr.c net_util.c
+	gcc -g -o simple_svr simple_svr.c net_util.c log.c
+
+simple_cli: simple_cli.c net_util.c
+	gcc -g -o simple_cli simple_cli.c net_util.c log.c
+

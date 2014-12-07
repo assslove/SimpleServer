@@ -1,4 +1,0 @@
-SimpleServer
-============
-
-my own server 

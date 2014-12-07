@@ -25,8 +25,11 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <strings.h>   /* bzero */
+#include <strings.h>   
+#include <string.h>   
+#include <sys/epoll.h>
 
+#include "net_util.h"
 #include "log.h"
 
 enum RTYPE {
@@ -66,21 +69,23 @@ work_conf_t work_confs[] = {
 	{4, "127.0.0.1", 10004, 0}
 };
 
-int child_pids[1024] = [0];
+int chl_pids[1024] = {0};
 
-typedef struct setting {
+typedef struct svr_setting {
 	int nr_max_event; //
 } svr_setting_t;
 
 
 epoll_info_t epinfo;
-svr_setting_t setting = {1024};
+svr_setting_t setting = {
+	1024 
+};
 
 int main(int argc, char* argv[]) 
 {	
-	ep_info.epfd = epoll_create(setting.nr_max_event);
-	if (ep_info.epfd == -1) {
-		ERROR(0, strerror(errno));
+	epinfo.epfd = epoll_create(setting.nr_max_event);
+	if (epinfo.epfd == -1) {
+		ERROR(0, "%s", strerror(errno));
 		return ERROR;
 	}
 
@@ -101,133 +106,100 @@ int main(int argc, char* argv[])
 	int flag = 1;
 	int err = setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
 	if (err == -1) {
-		ERROR(0, strerror(errno));
+		ERROR(0, "%s", strerror(errno));
 		return ERROR;
 	}
 	
-	int bufsize = 1024 * 1024;
+	int bufsize = 1024 * 1024; //1M
 	err = setsockopt(listenfd, SOL_SOCKET, SO_RCVBUF, &bufsize, sizeof(int));
 	if (err == -1) {
-		ERROR(0, strerror(errno));
+		ERROR(0, "%s", strerror(errno));
 		return ERROR;
 	}
 	err = setsockopt(listenfd, SOL_SOCKET, SO_SNDBUF, &bufsize, sizeof(int));
 	if (err == -1) {
-		ERROR(0, strerror(errno));
+		ERROR(0, "%s", strerror(errno));
 		return ERROR;
 	}
 
 	err = bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 	if (err == -1) {
-		ERROR(0, strerror(errno));
+		ERROR(0, "%s", strerror(errno));
 		return ERROR;
 	}
 
-	epinfo.evs = (epoll_event *)calloc(sizeof(epoll_event) * setting.nr_max_event);		
+	epinfo.evs = (struct epoll_event *)calloc(setting.nr_max_event, sizeof(struct epoll_event));		
 
-	epoll_event event;	
-	event.fd = listenfd;
-	event.events = EPOLL_IN | EPOLL_ET;
+	struct epoll_event event;	
+	event.data.fd = listenfd;
+	event.events = EPOLLIN | EPOLLET;
 	epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, listenfd, &event);
 
+	set_io_nonblock(listenfd, 1);
 	err = listen(listenfd, 1024);
-	if (ret == -1) {
-		ERROR(0, perror(errno));
+	if (err == -1) {
+		ERROR(0, "%s", strerror(errno));
 		return ERROR;
 	}
 
-	int nr = epoll_wait(epinfo.epfd, epinfo.nr_max_event, epinfo.evs, 100);
-	int i = 0;
-	for (i = 0; i < nr; i++) {
-
-	}
-
-	int i = 0;
-	uint32_t nwork = sizeof(work_confs) / sizeof(work_confs[0]);
-	for (i = 0; i < nwork; i++) {
-		work_conf_t *item = work_confs[i];
-
-		int pid = fork();
-		if (pid > 0) { //parent
-			//开启epoll
-		} else if (pid == 0) { //work
-			//关闭资源
-
-			//开启epoll
-		} else { //释放资源
-			goto end;		
-		}
-
-	}
-
-	//父进程的状态
-
-end:
-
-	int listenfd, connfd;
-
-	listenfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (listenfd < 0) {
-		printf("socket error\n");
-		return ERROR;
-	}
-
-	struct sockaddr_in servaddr;
-	struct sockaddr_in cliaddr;
-	bzero(&servaddr, sizeof(struct sockaddr_in));
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	servaddr.sin_port = htons(8000);
-
-	int reuse_addr = 1;
-	setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &reuse_addr, sizeof(reuse_addr));
-
-	int ret = bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
-	if (ret < 0) {
-		printf("socket bind error\n");
-		return ERROR;
-	}
-
-
-	ret = listen(listenfd, 5);
-	if (ret < 0) {
-		printf("socket listen error\n");
-		return ERROR;
-	}
+	DEBUG(0, "listen on 8000\n");
 
 	int stop = 0;
-	char buf[1024] = {'\0'};
 	while (!stop) {
-		int clilen = sizeof(struct sockaddr_in);
-		connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
+		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 100);
+		int i = 0;
+		for (i = 0; i < nr; i++) {
+			int fd = epinfo.evs[i].data.fd;
+			if (epinfo.evs[i].events && EPOLLIN) { //监听端口
+				if (fd == listenfd) {
+					struct sockaddr_in cliaddr;
+					int clilen = sizeof(cliaddr);
+					int connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);	
+					if (connfd == -1) {
+						ERROR(0, "%s", strerror(errno));
+						continue;
+					}
 
-		printf("connfd=%u\n", connfd);
-		int n = 0;	
+					DEBUG(fd, "cli %s connect", inet_ntoa(cliaddr.sin_addr));
 
+					set_io_nonblock(connfd, 1);
+
+					struct epoll_event event;
+					event.data.fd = connfd;
+					event.events = EPOLLIN | EPOLLET;
+
+					epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, connfd, &event);
+				} else { //读数据
+					int n, buf[1024] = {'\0'};
 read_again:
-		while ((n = recv(connfd, buf, 1024, 0)) > 0) { //阻塞的
-			buf[n] = '\0';
-			ret = send(connfd, buf, n, 0);	
-			printf("read info %s\n", buf);
-			if (ret < 0) {
-				printf("write error");
-				return ERROR;
+					if ((n = recv(fd, buf, 1024, 0)) > 0) { //阻塞的
+						buf[n] = '\0';
+						DEBUG(0, "read info %s", buf);
+					} else if (n < 0) {
+						if (errno == EINTR) {
+							goto read_again;
+						} else {
+							break;
+						}
+					}
+
+					//epinfo.evs[i].events = EPOLLOUT | EPOLLET;
+					//epoll_ctl(epinfo.epfd, EPOLL_CTL_MOD, fd, &(epinfo.evs[i]));
+
+					send(fd, buf, 32, 0);					
+
+					DEBUG(fd, "send to cli[%s]", buf);
+				}
+			} else if (epinfo.evs[i].events && EPOLLOUT) { //写数据
+				epinfo.evs[i].events = EPOLLIN | EPOLLET;
+				epoll_ctl(epinfo.epfd, EPOLL_CTL_MOD, fd, &(epinfo.evs[i]));
+				DEBUG(fd, "hell");
 			}
 		}
-
-		if (n < 0) {
-			if (errno == EINTR) {
-				goto read_again;
-			} else {
-				printf("socket read error\n");
-				close(connfd);
-				return ERROR;
-			}
-		}
-
-		close(connfd);
 	}
 
+	free(epinfo.evs);
+	close(epinfo.epfd);
 	close(listenfd);
 
 	return 0;

@@ -21,5 +21,6 @@
 int main(int argc, char* argv[])
 {
 	DEBUG(100021, "%d: test", 1111);
+	ERROR(100021, "hell: test");
 	return 0;
 }

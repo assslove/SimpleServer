@@ -21,11 +21,16 @@
 #include <errno.h>
 #include <sys/epoll.h>
 #include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-int set_io_isblock(int fd, int isblock)
+#include "net_util.h"
+
+int set_io_nonblock(int fd, int nonblock)
 {
 	int val;
-	if (isblock) {
+	if (nonblock) {
 		val = (O_NONBLOCK | fcntl(fd, F_GETFL));
 	} else {
 		val = (~O_NONBLOCK & fcntl(fd, F_GETFL));
@@ -33,7 +38,7 @@ int set_io_isblock(int fd, int isblock)
 	return fcntl(fd, F_SETFL, val);
 }
 
-int set_sock_snd_timmo(int sockfd, int millisec)
+int set_sock_snd_timeo(int sockfd, int millisec)
 {
 	struct timeval tv;
 
@@ -172,7 +177,7 @@ int safe_tcp_accept(int sockfd, struct sockaddr_in* peer, int nonblock)
 		}
 	}
 
-	if (nonblock && (set_io_blockability(newfd, 1) == -1)) {
+	if (nonblock && (set_io_nonblock(newfd, 1) == -1)) {
 		err   = errno;
 		close(newfd);
 		errno = err;
@@ -198,7 +203,6 @@ int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblo
 		return -1;
 	}
 
-	// Works under Linux, although **UNDOCUMENTED**!!
 	if (timeout > 0) {
 		set_sock_snd_timeo(sockfd, timeout * 1000);
 	}
@@ -209,7 +213,7 @@ int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblo
 	if (timeout > 0) {
 		set_sock_snd_timeo(sockfd, 0);
 	}
-	set_io_blockability(sockfd, nonblock);
+	set_io_nonblock(sockfd, nonblock);
 
 	return sockfd;
 }
