@@ -1,4 +1,58 @@
 #ifndef MEM_QUEUE_H_
 #define MEM_QUEUE_H_
 
+/* @brief 共享内存首部,用于记录队列信息
+ */
+typedef struct mem_head {
+	void *ptr;
+	volatile int head;		//头部	
+	volatile int tail;		//尾部
+	volatile int blk_cnt;	//总共块数
+} __attribute__((packed)) mem_head_t;
+
+/* @brief 内存队列
+ */
+typedef struct mem_queue {
+	mem_head_t *info;
+	int len;				//总长
+	int pipefd[2];			//通知
+} __attribute__((packed)) mem_queue_t;
+
+/* @brief 内存块信息
+ */
+typedef struct mem_block {
+	int fd;					//fd
+	uint8_t type;			//类型
+	int head;				//头部位置
+	int len;				//长度
+	uint8_t data[];			//数据
+} __attribute__((packed)) mem_block_t;
+
+
+/* @brief b放在q的尾部
+ * @param q 共享内存队列
+ * @param b 队列块
+ */
+int mq_push(mem_queue_t *q, mem_block_t *b);
+
+/* @brief q从尾部出来
+ */
+mem_block_t* mq_pop(mem_queue_t *q);
+
+/* @biref 创建共享队列
+ */
+int mq_init(mem_queue_t **q, int size);
+
+/* @brief 释放共享队列
+ */
+int mq_fini(mem_queue_t **q, int size);
+
+/* @brief 对齐到头部
+ */
+int mq_align_head(mem_queue_t *q);
+
+/* @brief 对齐到尾部
+ */
+int mq_align_tail(mem_queue_t *q);
+
 #endif
