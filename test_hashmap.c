@@ -31,11 +31,11 @@ int main(int argc, char* argv[])
 	table = g_hash_table_new_full(g_int_hash, g_int_equal, do_free_item, do_free_item);	
 
 	int i = 0;
-	for (i = 0; i = 100; i++) {
+	for (i = 0; i < 100; i++) {
 		int* key = g_slice_alloc(sizeof(int));
 		int* value = g_slice_alloc(sizeof(int));
 		
-		*key = 0;
+		*key = i;
 		*value = i + 1;
 
 		g_hash_table_insert(table, key, value);
