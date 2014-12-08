@@ -41,11 +41,15 @@ int main(int argc, char* argv[])
 	}
 
 	close(pipefd[0]);
+	close(pipefd[0]);
+	close(pipefd[0]);
+	printf("fd = %d\n", pipefd[0]);
 
 	for (;;) {
 		char buf[] = {'c'};
 		write(pipefd[1], buf, 1);
 		sleep(1);
 	}
+
 	return 0;
 }
