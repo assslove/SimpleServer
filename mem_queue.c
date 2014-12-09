@@ -49,10 +49,32 @@ int mq_fini(mem_queue_t *q, int size)
 
 mem_block_t *mq_get(mem_queue_t *q)
 {
-	if (q->blk_cnt > 0) {
-		mem_block_t *b = (mem_block_t *)((uint8_t *)(q->ptr) + q->ptr->tail); //copy head
-		memcpy(b->data, (uint8_t *)(q->ptr) + p->ptr->tail + blk_head_len, b->len - blk_head_len); //copy data
-		return b;
+	//if (q->blk_cnt > 0) {
+		//mem_block_t *b = (mem_block_t *)((uint8_t *)(q->ptr) + q->ptr->tail); //copy head
+		//memcpy(b->data, (uint8_t *)(q->ptr) + p->ptr->tail + blk_head_len, b->len - blk_head_len); //copy data
+		//return b;
+	//}
+	mem_head_t *ptr = q->ptr;		
+get_again:
+	if (ptr->head > ptr->tail) { 
+		if (ptr->head > ptr->tail + blk_head_len) { 
+			return blk_tail(q);
+		}
+	} else if (ptr->head < ptr->tail) {
+		if (q->len < ptr->tail + blk_head_len) { //如果容纳不下一个块
+			ptr->tail = mem_head_len;
+			goto again;
+		} else { //如果可以容纳一个块
+			mem_block_t *blk = (mem_block_t *)ptr->tail;
+			if (blk->type == BLK_ALIGN) { //如果是填充块 则调整位置
+				ptr->tail = mem_head_len;
+				goto get_again;
+			} else {
+				return blk;
+			}
+		}
+	} else if (ptr->blk_cnt > 20) { //相等情况下如果大于10块说明还有数据
+		return blk_tail(q);	
 	}
 
 	return NULL;
@@ -60,8 +82,28 @@ mem_block_t *mq_get(mem_queue_t *q)
 
 int mq_push(mem_queue_t *q, mem_block_t *b)
 {
-	//先对齐尾部
-	mq_align_tail(q);		
+	mem_head_t *ptr = q->ptr;
+push_again:
+	if (ptr->head > ptr->tail) { //
+		if (ptr->head + b->len > q->len) { //如果大于最大长度
+			if (ptr->head + blk_head_len <= q->len) { //如果容不下一个块头
+				//填充
+				mem_block_t *blk = blk_head(q);
+				blk->type = BLK_ALIGN;
+				blk->len = q->len; 
+			}
+
+			ptr->head = blk_head_len;		//调整到头部
+			goto push_again;
+		} else {
+			mem_block_t *blk = blk_head(q);
+			memcpy(blk, b, blk_head_len);
+			memcpy(blk->data, b->data, b->len - blk_head_len);
+			blk->head += b->len;
+		}
+	} else if (ptr->head < ptr->tail) { //
+
+	}
 }
 
 
@@ -77,5 +119,15 @@ int mq_align_head(mem_queue_t *q)
 
 int mq_align_tail(mem_queue_t *q)
 {
-	
+
+}
+
+mem_block_t* blk_head(mem_queue_t *q)
+{
+	return (mem_block_t *)((char *)q->ptr + q->ptr->head);
+}
+
+mem_block_t* blk_tail(mem_queue_t *q)
+{
+	return (mem_block_t *)((char *)q->ptr + q->ptr->tail);
 }

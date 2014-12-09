@@ -69,4 +69,12 @@ int mq_align_head(mem_queue_t *q);
  */
 int mq_align_tail(mem_queue_t *q);
 
+/* @brief 尾块
+ */
+mem_block_t* blk_tail(mem_queue_t *q);
+
+/* @brief 头部块
+ */
+mem_block_t* blk_head(mem_queue_t *q);
+
 #endif
