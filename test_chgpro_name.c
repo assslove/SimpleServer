@@ -43,7 +43,7 @@ int chg_proc_title(const char *fmt, ...)
 	int len = strlen(title) + 1;
 	memcpy(argv_start, title, len);
 	argv_start[len] = '\0';
-	memcpy(argv_start + len, '\0', argv_end - argv_start);
+	memcpy(argv_start + len, '\0', (argv_end - argv_start) - len);
 
 	return 0;
 }
