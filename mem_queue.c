@@ -18,6 +18,7 @@
 
 #include <sys/mman.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "mem_queue.h"
 
@@ -26,7 +27,7 @@ int mq_init(mem_queue_t *q, int size)
 	q->len = size;	
 	pipe(q->pipefd);
 
-	q->ptr = (mem_head_t *)mmap(-1, size, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);	
+	q->ptr = (mem_head_t *)mmap((void *)-1, size, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);	
 	if (q->ptr == MAP_FAILED) {
 		return -1;
 	}
@@ -44,8 +45,8 @@ int mq_fini(mem_queue_t *q, int size)
 {
 	munmap(q->ptr, size);	
 	//关闭管道
-	close(pipefd[0]);
-	close(pipefd[1]);
+	close(q->pipefd[0]);
+	close(q->pipefd[1]);
 }
 
 mem_block_t *mq_get(mem_queue_t *q)
@@ -53,17 +54,17 @@ mem_block_t *mq_get(mem_queue_t *q)
 	mem_head_t *ptr = q->ptr;		
 get_again:
 	if (ptr->head > ptr->tail) { 
-		if (ptr->head > ptr->tail + blk_head_len) { 
+		if (ptr->head > ptr->tail + q->blk_head_len) { 
 			return blk_tail(q);
 		}
 	} else if (ptr->head < ptr->tail) {
-		if (q->len < ptr->tail + blk_head_len) { //如果容纳不下一个块
-			ptr->tail = mem_head_len;
-			goto again;
+		if (q->len < ptr->tail + q->blk_head_len) { //如果容纳不下一个块
+			ptr->tail = q->mem_head_len;
+			goto get_again;
 		} else { //如果可以容纳一个块
-			mem_block_t *blk = (mem_block_t *)ptr->tail;
+			mem_block_t *blk = blk_tail(q);
 			if (blk->type == BLK_ALIGN) { //如果是填充块 则调整位置
-				ptr->tail = mem_head_len;
+				ptr->tail = q->mem_head_len;
 				goto get_again;
 			} else {
 				return blk;
@@ -82,22 +83,22 @@ int mq_push(mem_queue_t *q, mem_block_t *b)
 push_again:
 	if (ptr->head > ptr->tail) { //
 		if (ptr->head + b->len > q->len) { //如果大于最大长度
-			if (ptr->head + blk_head_len <= q->len) { //如果容不下一个块头
+			if (ptr->head + q->blk_head_len <= q->len) { //如果容不下一个块头
 				//填充
 				mem_block_t *blk = blk_head(q);
 				blk->type = BLK_ALIGN;
 				blk->len = q->len; 
 			}
 
-			ptr->head = blk_head_len;		//调整到头部
+			ptr->head = q->blk_head_len;		//调整到头部
 			goto push_again;
 		} else {
 			mem_block_t *blk = blk_head(q);
-			memcpy(blk, b, blk_head_len);
-			memcpy(blk->data, b->data, b->len - blk_head_len);
+			memcpy(blk, b, q->blk_head_len);
+			memcpy(blk->data, b->data, b->len - q->blk_head_len);
 			blk->head += b->len;
 			++ptr->blk_cnt;
-			write(q->pipefd, 'c', 1);
+			write(q->pipefd[1], q, 1);
 		}
 	} else if (ptr->head < ptr->tail) { 
 		if (ptr->head + b->len > ptr->tail) {//full
@@ -105,22 +106,22 @@ push_again:
 			return -1;	
 		} else {
 			mem_block_t *blk = blk_head(q);
-			memcpy(blk, b, blk_head_len);
-			memcpy(blk->data, b->data, b->len - blk_head_len);
+			memcpy(blk, b, q->blk_head_len);
+			memcpy(blk->data, b->data, b->len - q->blk_head_len);
 			ptr->head += b->len;
 			++ptr->blk_cnt;
-			write(q->pipefd, 'c', 1);
+			write(q->pipefd[1], q, 1);
 		}
 	} else {
 		if (ptr->blk_cnt > 10) { //full
 			return -1;
 		} else { //empty memcpy((char *)ptr + ptr->head, b, b->len);
 			mem_block_t *blk = blk_head(q);
-			memcpy(blk, b, blk_head_len);
-			memcpy(blk->data, b->data, b->len - blk_head_len);
+			memcpy(blk, b, q->blk_head_len);
+			memcpy(blk->data, b->data, b->len - q->blk_head_len);
 			ptr->head += b->len;
 			++ptr->blk_cnt;
-			write(q->pipefd, 'c', 1);
+			write(q->pipefd[1], q, 1);
 		}
 		return 0;
 	}

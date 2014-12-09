@@ -1,6 +1,8 @@
 #ifndef MEM_QUEUE_H_
 #define MEM_QUEUE_H_
 
+#include <stdint.h>
+
 /* @brief 内存块类型
  */
 enum MEM_BLOCK_TYPE {
@@ -35,7 +37,7 @@ typedef struct mem_block {
 	uint8_t type;			//类型
 	int head;				//头部位置
 	int len;				//长度
-	uint8_t data[];			//数据
+	char data[];			//数据
 } __attribute__((packed)) mem_block_t;
 
 
