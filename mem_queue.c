@@ -19,7 +19,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-#include "mem_queue_t.h"
+#include "mem_queue.h"
 
 int mq_init(mem_queue_t *q, int size)
 {
@@ -33,6 +33,7 @@ int mq_init(mem_queue_t *q, int size)
 
 	q->blk_head_len = sizeof(mem_block_t);
 	q->mem_head_len = sizeof(mem_head_t);
+
 	q->ptr->head = q->mem_head_len;
 	q->ptr->tail = q->mem_head_len;
 
@@ -49,11 +50,6 @@ int mq_fini(mem_queue_t *q, int size)
 
 mem_block_t *mq_get(mem_queue_t *q)
 {
-	//if (q->blk_cnt > 0) {
-		//mem_block_t *b = (mem_block_t *)((uint8_t *)(q->ptr) + q->ptr->tail); //copy head
-		//memcpy(b->data, (uint8_t *)(q->ptr) + p->ptr->tail + blk_head_len, b->len - blk_head_len); //copy data
-		//return b;
-	//}
 	mem_head_t *ptr = q->ptr;		
 get_again:
 	if (ptr->head > ptr->tail) { 
@@ -100,26 +96,44 @@ push_again:
 			memcpy(blk, b, blk_head_len);
 			memcpy(blk->data, b->data, b->len - blk_head_len);
 			blk->head += b->len;
+			++ptr->blk_cnt;
+			write(q->pipefd, 'c', 1);
 		}
-	} else if (ptr->head < ptr->tail) { //
-
+	} else if (ptr->head < ptr->tail) { 
+		if (ptr->head + b->len > ptr->tail) {//full
+			//log
+			return -1;	
+		} else {
+			mem_block_t *blk = blk_head(q);
+			memcpy(blk, b, blk_head_len);
+			memcpy(blk->data, b->data, b->len - blk_head_len);
+			ptr->head += b->len;
+			++ptr->blk_cnt;
+			write(q->pipefd, 'c', 1);
+		}
+	} else {
+		if (ptr->blk_cnt > 10) { //full
+			return -1;
+		} else { //empty memcpy((char *)ptr + ptr->head, b, b->len);
+			mem_block_t *blk = blk_head(q);
+			memcpy(blk, b, blk_head_len);
+			memcpy(blk->data, b->data, b->len - blk_head_len);
+			ptr->head += b->len;
+			++ptr->blk_cnt;
+			write(q->pipefd, 'c', 1);
+		}
+		return 0;
 	}
+
+	return 0;
 }
 
-
-mem_block_t* mq_pop(mem_queue_t *q)
+void mq_pop(mem_queue_t *q)
 {
-
-}
-
-int mq_align_head(mem_queue_t *q)
-{
-
-}
-
-int mq_align_tail(mem_queue_t *q)
-{
-
+	mem_head_t *ptr = q->ptr;
+	mem_block_t *b = blk_tail(q);
+	ptr->tail += b->len;
+	--ptr->blk_cnt;
 }
 
 mem_block_t* blk_head(mem_queue_t *q)

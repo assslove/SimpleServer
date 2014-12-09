@@ -47,7 +47,7 @@ int mq_push(mem_queue_t *q, mem_block_t *b);
 
 /* @brief q从尾部出来
  */
-int mq_pop(mem_queue_t *q);
+void mq_pop(mem_queue_t *q);
 
 /* @brief get mem_block_t
  */
@@ -61,20 +61,12 @@ int mq_init(mem_queue_t *q, int size);
  */
 int mq_fini(mem_queue_t *q, int size);
 
-/* @brief 对齐到头部
- */
-int mq_align_head(mem_queue_t *q);
-
-/* @brief 对齐到尾部
- */
-int mq_align_tail(mem_queue_t *q);
-
 /* @brief 尾块
  */
-mem_block_t* blk_tail(mem_queue_t *q);
+inline mem_block_t* blk_tail(mem_queue_t *q);
 
 /* @brief 头部块
  */
-mem_block_t* blk_head(mem_queue_t *q);
+inline mem_block_t* blk_head(mem_queue_t *q);
 
 #endif
