@@ -16,20 +16,35 @@
  * =====================================================================================
  */
 
-#include <sys/prctl.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <malloc.h>
+#include <stdarg.h>
 
 
 int g_argc = 0;
 char **g_argv;
+char *argv_start;
+char *argv_end;
+char *env_end;
+extern char **environ;
 
-int chg_proc_title(int argc, char* argv[], const char *title) 
+int chg_proc_title(const char *fmt, ...) 
 {
-	memcpy(argv[0], title, sizeof(title));
+	char title[48] = {'\0'};
+
+	va_list ap;
+	va_start(ap, fmt);
+	vsprintf(title, fmt, ap);
+	va_end(ap);
+
+	int len = strlen(title) + 1;
+	memcpy(argv_start, title, len);
+	argv_start[len] = '\0';
+	memcpy(argv_start + len, '\0', argv_end - argv_start);
+
 	return 0;
 }
 
@@ -43,6 +58,30 @@ int save_args(int argc, char* argv[])
 	for (; i < argc; i++) {
 		g_argv[i] = strdup(argv[i]);
 	}
+
+	argv_start = (char *)argv[0];
+	argv_end = (char*)(argv[argc-1]) + strlen(argv[argc-1]) + 1;
+
+	int env_size = 0;
+	for (i = 0; environ[i]; i++) {
+		env_size += strlen(environ[i]) + 1;
+	}
+
+	char *env_new = (char *)malloc(sizeof(char) * env_size);;
+	if (env_new =  NULL) {
+		printf("error malloc env");
+		return 0;
+	}
+
+	for (i = 0; environ[i]; i++) {
+		int len = strlen(environ[i]) + 1;
+		argv_end += len;
+
+		memcpy(env_new, environ[i], len);
+		environ[i] = env_new;
+		env_new += len;
+	}
+
 	return 0;
 }
 
@@ -63,7 +102,6 @@ void print_args()
 	}
 }
 
-extern char **environ;
 
 int print_env() 
 {
@@ -86,8 +124,7 @@ int main(int argc, char* argv[])
 
 	if (pid == 0) {
 		char chl_name[30];
-		sprintf(chl_name, "%s-%d", proc_name, getpid());
-		chg_proc_title(argc, argv, chl_name);
+		chg_proc_title("%s-%d", proc_name, getpid());
 
 		while (1) {sleep(5);};
 		free_args();
@@ -96,7 +133,7 @@ int main(int argc, char* argv[])
 		printf("fork error");
 	}
 
-	chg_proc_title(argc, argv, proc_name);
+	chg_proc_title("%s", proc_name);
 	while (1) {sleep(5);};
 	free_args();
 	return 0;
