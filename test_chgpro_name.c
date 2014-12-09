@@ -42,8 +42,9 @@ int chg_proc_title(const char *fmt, ...)
 
 	int len = strlen(title) + 1;
 	memcpy(argv_start, title, len);
-	argv_start[len] = '\0';
-	memcpy(argv_start + len, '\0', (argv_end - argv_start) - len);
+	argv_start[len-1] = '\0';
+	//clear old environ
+	memset(argv_start + len, '\0', (argv_end - argv_start) - len);
 
 	return 0;
 }
@@ -68,7 +69,7 @@ int save_args(int argc, char* argv[])
 	}
 
 	char *env_new = (char *)malloc(sizeof(char) * env_size);;
-	if (env_new =  NULL) {
+	if (env_new == NULL) {
 		printf("error malloc env");
 		return 0;
 	}
@@ -82,6 +83,7 @@ int save_args(int argc, char* argv[])
 		env_new += len;
 	}
 
+	printf("env size=%u", env_size);
 	return 0;
 }
 
@@ -109,16 +111,19 @@ int print_env()
 	for (; environ[i]; i++) {
 		printf("%s\n", environ[i]);
 	}
+
+	printf("-----------------------");
 }
 
 
 int main(int argc, char* argv[]) 
 {
+	print_env();
 	save_args(argc, argv);
 	print_args();
 	print_env();
 
-	const char *proc_name = "Simp";
+	const char *proc_name = "SimpleServer";
 
 	int pid = fork();
 
