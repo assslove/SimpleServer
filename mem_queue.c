@@ -19,6 +19,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "mem_queue.h"
 
@@ -70,7 +71,7 @@ get_again:
 				return blk;
 			}
 		}
-	} else if (ptr->blk_cnt > 20) { //相等情况下如果大于10块说明还有数据
+	} else if (ptr->blk_cnt >= 10) { //相等情况下如果大于10块说明还有数据
 		return blk_tail(q);	
 	}
 
@@ -83,26 +84,25 @@ int mq_push(mem_queue_t *q, mem_block_t *b)
 push_again:
 	if (ptr->head > ptr->tail) { //
 		if (ptr->head + b->len > q->len) { //如果大于最大长度
-			if (ptr->head + q->blk_head_len <= q->len) { //如果容不下一个块头
+			if (ptr->head + q->blk_head_len <= q->len) { //如果容下一个块头
 				//填充
 				mem_block_t *blk = blk_head(q);
 				blk->type = BLK_ALIGN;
 				blk->len = q->len; 
 			}
 
-			ptr->head = q->blk_head_len;		//调整到头部
+			ptr->head = q->mem_head_len;		//调整到头部
 			goto push_again;
 		} else {
 			mem_block_t *blk = blk_head(q);
 			memcpy(blk, b, q->blk_head_len);
 			memcpy(blk->data, b->data, b->len - q->blk_head_len);
-			blk->head += b->len;
+			ptr->head += b->len;
 			++ptr->blk_cnt;
 			write(q->pipefd[1], q, 1);
 		}
 	} else if (ptr->head < ptr->tail) { 
 		if (ptr->head + b->len > ptr->tail) {//full
-			//log
 			return -1;	
 		} else {
 			mem_block_t *blk = blk_head(q);
@@ -113,7 +113,7 @@ push_again:
 			write(q->pipefd[1], q, 1);
 		}
 	} else {
-		if (ptr->blk_cnt > 10) { //full
+		if (ptr->blk_cnt >= 10) { //full
 			return -1;
 		} else { //empty memcpy((char *)ptr + ptr->head, b, b->len);
 			mem_block_t *blk = blk_head(q);
@@ -145,4 +145,10 @@ mem_block_t* blk_head(mem_queue_t *q)
 mem_block_t* blk_tail(mem_queue_t *q)
 {
 	return (mem_block_t *)((char *)q->ptr + q->ptr->tail);
+}
+
+void mq_display(mem_queue_t *q)
+{
+	printf("blk_len=%d, head_len=%u, blk_cnt=%d, head=%d, tail=%d, len=%u\n", \
+			q->blk_head_len, q->mem_head_len, q->ptr->blk_cnt, q->ptr->head, q->ptr->tail, q->len);
 }

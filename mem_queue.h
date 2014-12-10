@@ -17,7 +17,7 @@ enum MEM_BLOCK_TYPE {
 typedef struct mem_head {
 	volatile int head;		//头部	
 	volatile int tail;		//尾部
-	volatile int blk_cnt;	//总共块数
+	volatile int blk_cnt;	//总共块数 
 } __attribute__((packed)) mem_head_t;
 
 /* @brief 内存队列
@@ -33,11 +33,11 @@ typedef struct mem_queue {
 /* @brief 内存块信息
  */
 typedef struct mem_block {
+	int id;					//server id
 	int fd;					//fd
 	uint8_t type;			//类型
-	int head;				//头部位置
 	int len;				//长度
-	char data[];			//数据
+	char *data;			//数据
 } __attribute__((packed)) mem_block_t;
 
 
@@ -70,5 +70,9 @@ inline mem_block_t* blk_tail(mem_queue_t *q);
 /* @brief 头部块
  */
 inline mem_block_t* blk_head(mem_queue_t *q);
+
+/* @brief 打印调试信息
+ */
+void mq_display(mem_queue_t *q);
 
 #endif
