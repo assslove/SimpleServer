@@ -3,8 +3,8 @@ WORKDIR = /home/houbin/work/SimpleServer/
 
 all : simple_svr simple_cli test_hashtb test_mq test_mq2
 
-simple_svr: simple_svr.c net_util.c
-	gcc -g -o simple_svr simple_svr.c net_util.c log.c
+simple_svr: simple_svr.c net_util.c mem_queue.c
+	gcc -g -o simple_svr simple_svr.c net_util.c log.c mem_queue.c
 
 simple_cli: simple_cli.c net_util.c
 	gcc -g -o simple_cli simple_cli.c net_util.c log.c

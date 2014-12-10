@@ -32,36 +32,12 @@
 
 #include "net_util.h"
 #include "log.h"
+#include "mem_queue.h"
 
 enum RTYPE {
 	SUCCESS = 0,
 	ERROR = -1 
 };
-
-typedef struct mem_head {
-	void *ptr;
-	int head;
-	int tail;
-	int blk_cnt; //总共块数
-} mem_head_t;
-
-/* @brief 内存队列
- */
-typedef struct mem_queue {
-	mem_head_t *info;
-	int len;
-	int pipefd[2];
-} mem_queue_t;
-
-/* @brief 内存块
- */
-typedef struct mem_block {
-	int fd;
-	uint8_t type;
-	int head;
-	int len;
-	uint8_t data[];
-} mem_block_t;
 
 /* @brief 工作进程配置项
  */
@@ -79,7 +55,8 @@ typedef struct {
 	uint32_t id;
 	int fd;
 	uint8_t type;
-	uint8_t buf[1024]; //接受缓冲区
+	uint8_t recvbuf[1024]; //接受缓冲区
+	int recvlen;
 	void (*callback)(int fd, void* arg);
 	void *arg;
 } __attribute__((packed)) fd_wrap_t;
@@ -97,13 +74,15 @@ work_conf_t work_confs[4];
 int chl_pids[1024] = {0};
 
 typedef struct svr_setting {
-	int nr_max_event; //
+	int nr_max_event; // 最大的事件类型 epoll_create ms不需要这人参数了
+	int mem_queue_len; // 共享内存队列长度
 } svr_setting_t;
 
 
 epoll_info_t epinfo;
 svr_setting_t setting = {
-	1024 
+	1024, 
+	1024 * 1024 * 10
 };
 
 int main(int argc, char* argv[]) 
@@ -203,27 +182,27 @@ int main(int argc, char* argv[])
 
 		chl_pids[i]	= pid; //赋值pid
 
-		int queue_len = 1024 * 1024;
-		work_confs[i].send_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
-				MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-		work_confs[i].send_q.len = queue_len;
-		work_confs[i].send_q.info->head = sizeof(mem_head_t);
-		work_confs[i].send_q.info->tail = sizeof(mem_head_t);
-		work_confs[i].send_q.info->blk_cnt = 0;
-		pipe(work_confs[i].send_q.pipefd);
-		close(work_confs[i].send_q.pipefd[1]);
+		//int queue_len = 1024 * 1024;
+		//work_confs[i].send_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
+				//MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+		//work_confs[i].send_q.len = queue_len;
+		//work_confs[i].send_q.info->head = sizeof(mem_head_t);
+		//work_confs[i].send_q.info->tail = sizeof(mem_head_t);
+		//work_confs[i].send_q.info->blk_cnt = 0;
+		//pipe(work_confs[i].send_q.pipefd);
+		//close(work_confs[i].send_q.pipefd[1]);
 
-		work_confs[i].recv_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
-				MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-		work_confs[i].recv_q.len = queue_len;
-		work_confs[i].recv_q.info->head = sizeof(mem_head_t);
-		work_confs[i].recv_q.info->tail = sizeof(mem_head_t);
-		work_confs[i].recv_q.info->blk_cnt = 0;
+		//work_confs[i].recv_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
+				//MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+		//work_confs[i].recv_q.len = queue_len;
+		//work_confs[i].recv_q.info->head = sizeof(mem_head_t);
+		//work_confs[i].recv_q.info->tail = sizeof(mem_head_t);
+		//work_confs[i].recv_q.info->blk_cnt = 0;
 
-		pipe(work_confs[i].recv_q.pipefd);
-		close(work_confs[i].recv_q.pipefd[0]);
+		//pipe(work_confs[i].recv_q.pipefd);
+		//close(work_confs[i].recv_q.pipefd[0]);
 
-		add_fd_to_epinfo(epinfo.epfd, work_confs[i].send_q.pipefd[1]);
+		//add_fd_to_epinfo(epinfo.epfd, work_confs[i].send_q.pipefd[1]);
 	}
 
 	int stop = 0;
@@ -265,12 +244,8 @@ read_again:
 						}
 					}
 
-					//epinfo.evs[i].events = EPOLLOUT | EPOLLET;
-					//epoll_ctl(epinfo.epfd, EPOLL_CTL_MOD, fd, &(epinfo.evs[i]));
-
 					send(fd, buf, 32, 0);					
 					char noti[] = {'r'};
-//					write(work_confs[0].recv_q.pipefd[1], noti, 1);
 
 					DEBUG(fd, "send to cli[%s]", buf);
 				}
