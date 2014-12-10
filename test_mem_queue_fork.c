@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 			char *data = (char*)malloc(30);
 			memcpy(data, "hello, world", 30);
 			b.len = 100;
-			printf("\nparent --\n");
+			printf("\nparent --%d\n", i);
 			mq_display(&q);
 			mq_push(&q, &b, data);
 			mq_display(&q);
@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
 			sleep(1);
 			free(data);
 		}
+		getchar();
 		c = getchar();
 	}
 

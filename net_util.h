@@ -44,6 +44,6 @@ int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblo
 
 /* @brief 加入epoll
  */
-int add_fd_to_epinfo(int epfd, int fd);
+int add_fd_to_epinfo(int epfd, int fd, int events);
 
 #endif

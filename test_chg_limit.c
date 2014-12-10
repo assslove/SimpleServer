@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  test_log.c
+ *       Filename:  test_chg_limit.c
  *
- *    Description:  
+ *    Description:  test chg limit
  *
  *        Version:  1.0
- *        Created:  2014年12月04日 22时26分06秒
+ *        Created:  2014年12月10日 22时35分45秒
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,12 +16,18 @@
  * =====================================================================================
  */
 
-#include "log.h"
+#include <sys/resource.h>
+
+
+int init_rlimit()
+{
+	struct rlimit rlim;
+	rlim.rlim_cur = rlim.rlim_max = RLIM_INFINITY;
+	setrlimit(RLIMIT_CORE, &rlim);
+}
 
 int main(int argc, char* argv[])
 {
-	DEBUG(100021, "%s: test", "hello");
-	ERROR(100021, "hell: test");
-	ERROR(100021, "hell: test %s", "hello");
+	init_rlimit();
 	return 0;
 }

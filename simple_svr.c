@@ -29,6 +29,7 @@
 #include <string.h>   
 #include <sys/epoll.h>
 #include <sys/mman.h>
+#include <arpa/inet.h>
 
 #include "net_util.h"
 #include "log.h"
@@ -87,6 +88,7 @@ svr_setting_t setting = {
 
 int main(int argc, char* argv[]) 
 {	
+	//chg limit
 	epinfo.epfd = epoll_create(setting.nr_max_event);
 	if (epinfo.epfd == -1) {
 		ERROR(0, "%s", strerror(errno));
@@ -165,7 +167,7 @@ int main(int argc, char* argv[])
 			close(work_confs[0].send_q.pipefd[0]);
 			close(work_confs[0].recv_q.pipefd[1]);
 
-			add_fd_to_epinfo(epinfo.epfd, work_confs[0].recv_q.pipefd[0]);
+			add_fd_to_epinfo(epinfo.epfd, work_confs[0].recv_q.pipefd[0], EPOLLIN);
 			
 			int stop = 0;
 			while (!stop) {
@@ -220,16 +222,10 @@ int main(int argc, char* argv[])
 						ERROR(0, "%s", strerror(errno));
 						continue;
 					}
-
-					DEBUG(fd, "cli %s connect", inet_ntoa(cliaddr.sin_addr));
-
-					set_io_nonblock(connfd, 1);
-
-					struct epoll_event event;
-					event.data.fd = connfd;
-					event.events = EPOLLIN | EPOLLET;
-
-					epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, connfd, &event);
+					char ip[32];
+					inet_ntop(AF_INET, &(cliaddr.sin_addr), ip, 32);
+					DEBUG(fd, "cli %s connect", ip);
+					add_fd_to_epinfo(epinfo.epfd, connfd, EPOLLIN);
 				} else { //读数据
 					int n, buf[1024] = {'\0'};
 read_again:

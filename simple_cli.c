@@ -61,9 +61,15 @@ int main(int argc, char* argv[])
 		DEBUG(cli_sock, "send to svr[%s]", buf);
 
 		char recv_buf[32] = {'\0'};
-		recv(cli_sock, recv_buf, 1024, 0);
-
-		DEBUG(cli_sock, "svr to cli[%s]", recv_buf);
+		int ret = recv(cli_sock, recv_buf, 1024, 0);
+		if (ret == 0) {
+			DEBUG(0, "serv closed");
+			break;
+		} else if (ret == -1) {
+			DEBUG(0, "no data");
+		} else {
+			DEBUG(cli_sock, "svr to cli[%s]", recv_buf);
+		}
 	}
 
 	ERROR(0, "%s", strerror(errno));
