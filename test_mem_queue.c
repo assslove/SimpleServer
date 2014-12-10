@@ -35,9 +35,8 @@ int main(int argc, char* argv[])
 		mem_block_t blk;
 		char *str = (char *)malloc(30); 
 		memcpy(str, "hello, world", 30);
-		blk.data = str;
 		blk.len = 100;
-		mq_push(&q, &blk);
+		mq_push(&q, &blk, str);
 		mq_display(&q);
 	}
 	printf("--------------------\n");
@@ -53,12 +52,11 @@ int main(int argc, char* argv[])
 	printf("--------------------\n");
 	for (i = 0; i < 12; i++) {
 		mem_block_t blk;
+
 		char *str = (char *)malloc(30); 
 		memcpy(str, "hello, world", 30);
-		blk.data = str;
-
 		blk.len = 100;
-		mq_push(&q, &blk);
+		mq_push(&q, &blk, str);
 		mq_display(&q);
 	}
 	printf("--------------------\n");

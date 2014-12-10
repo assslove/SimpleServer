@@ -37,7 +37,7 @@ typedef struct mem_block {
 	int fd;					//fd
 	uint8_t type;			//类型
 	int len;				//长度
-	char *data;			//数据
+	char data[];			//数据
 } __attribute__((packed)) mem_block_t;
 
 
@@ -45,7 +45,7 @@ typedef struct mem_block {
  * @param q 共享内存队列
  * @param b 队列块
  */
-int mq_push(mem_queue_t *q, mem_block_t *b);
+int mq_push(mem_queue_t *q, mem_block_t *b, void *data);
 
 /* @brief q从尾部出来
  */

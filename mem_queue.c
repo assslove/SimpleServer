@@ -19,6 +19,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
 #include <stdio.h>
 
 #include "mem_queue.h"
@@ -27,6 +28,9 @@ int mq_init(mem_queue_t *q, int size)
 {
 	q->len = size;	
 	pipe(q->pipefd);
+
+	fcntl(q->pipefd[0], F_SETFL, O_NONBLOCK | fcntl(q->pipefd[0], F_GETFL, 0));
+	fcntl(q->pipefd[1], F_SETFL, O_NONBLOCK | fcntl(q->pipefd[1], F_GETFL, 0));
 
 	q->ptr = (mem_head_t *)mmap((void *)-1, size, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);	
 	if (q->ptr == MAP_FAILED) {
@@ -78,11 +82,14 @@ get_again:
 	return NULL;
 }
 
-int mq_push(mem_queue_t *q, mem_block_t *b)
+int mq_push(mem_queue_t *q, mem_block_t *b, void *data)
 {
 	mem_head_t *ptr = q->ptr;
 push_again:
-	if (ptr->head > ptr->tail) { //
+	if (ptr->head >= ptr->tail) { //
+		if (ptr->blk_cnt >= 10) {
+			return -1;
+		} 
 		if (ptr->head + b->len > q->len) { //如果大于最大长度
 			if (ptr->head + q->blk_head_len <= q->len) { //如果容下一个块头
 				//填充
@@ -96,7 +103,7 @@ push_again:
 		} else {
 			mem_block_t *blk = blk_head(q);
 			memcpy(blk, b, q->blk_head_len);
-			memcpy(blk->data, b->data, b->len - q->blk_head_len);
+			memcpy(blk->data, data, b->len - q->blk_head_len);
 			ptr->head += b->len;
 			++ptr->blk_cnt;
 			write(q->pipefd[1], q, 1);
@@ -107,24 +114,12 @@ push_again:
 		} else {
 			mem_block_t *blk = blk_head(q);
 			memcpy(blk, b, q->blk_head_len);
-			memcpy(blk->data, b->data, b->len - q->blk_head_len);
+			memcpy(blk->data, data, b->len - q->blk_head_len);
 			ptr->head += b->len;
 			++ptr->blk_cnt;
 			write(q->pipefd[1], q, 1);
 		}
-	} else {
-		if (ptr->blk_cnt >= 10) { //full
-			return -1;
-		} else { //empty memcpy((char *)ptr + ptr->head, b, b->len);
-			mem_block_t *blk = blk_head(q);
-			memcpy(blk, b, q->blk_head_len);
-			memcpy(blk->data, b->data, b->len - q->blk_head_len);
-			ptr->head += b->len;
-			++ptr->blk_cnt;
-			write(q->pipefd[1], q, 1);
-		}
-		return 0;
-	}
+	} 
 
 	return 0;
 }
