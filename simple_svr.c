@@ -40,43 +40,14 @@ enum RTYPE {
 	ERROR = -1 
 };
 
-/* @brief 工作进程配置项
- */
-typedef struct {
-	uint32_t work_id;
-	char ip[32];
-	uint16_t port;
-	uint8_t proto_type; 
-	
-	mem_queue_t recv_q; //接收队列
-	mem_queue_t send_q;  //发送队列
-}__attribute__((packed)) work_conf_t;
-
-typedef struct {
-	uint32_t id;
-	int fd;
-	uint8_t type;
-	uint8_t recvbuf[1024]; //接受缓冲区
-	int recvlen;
-	void (*callback)(int fd, void* arg);
-	void *arg;
-} __attribute__((packed)) fd_wrap_t;
-
-
-typedef struct {
-	int epfd;
-	struct epoll_event *evs;
-	fd_wrap_t *fds;
-	int max_fd;
-	int max_ev;
-}__attribute__((packed)) epoll_info_t;
-
-work_conf_t work_confs[4];
+work_t works[4];
 int chl_pids[1024] = {0};
 
 typedef struct svr_setting {
-	int nr_max_event; // 最大的事件类型 epoll_create ms不需要这人参数了
-	int mem_queue_len; // 共享内存队列长度
+	int nr_max_event;	// 最大的事件类型 epoll_create ms不需要这个参数了
+	int mem_queue_len;	// 共享内存队列长度
+	int max_msg_len;	// 最大消息长度
+	int max_buf_len;	//发送(接收)缓冲区最大长度 超过报错
 } svr_setting_t;
 
 
@@ -164,10 +135,10 @@ int main(int argc, char* argv[])
 			close(epinfo.epfd);
 
 			epinfo.epfd = epoll_create(1024);
-			close(work_confs[0].send_q.pipefd[0]);
-			close(work_confs[0].recv_q.pipefd[1]);
+			close(works[0].send_q.pipefd[0]);
+			close(works[0].recv_q.pipefd[1]);
 
-			add_fd_to_epinfo(epinfo.epfd, work_confs[0].recv_q.pipefd[0], EPOLLIN);
+			add_fd_to_epinfo(epinfo.epfd, works[0].recv_q.pipefd[0], EPOLLIN);
 			
 			int stop = 0;
 			while (!stop) {
@@ -185,26 +156,26 @@ int main(int argc, char* argv[])
 		chl_pids[i]	= pid; //赋值pid
 
 		//int queue_len = 1024 * 1024;
-		//work_confs[i].send_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
+		//works[i].send_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
 				//MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-		//work_confs[i].send_q.len = queue_len;
-		//work_confs[i].send_q.info->head = sizeof(mem_head_t);
-		//work_confs[i].send_q.info->tail = sizeof(mem_head_t);
-		//work_confs[i].send_q.info->blk_cnt = 0;
-		//pipe(work_confs[i].send_q.pipefd);
-		//close(work_confs[i].send_q.pipefd[1]);
+		//works[i].send_q.len = queue_len;
+		//works[i].send_q.info->head = sizeof(mem_head_t);
+		//works[i].send_q.info->tail = sizeof(mem_head_t);
+		//works[i].send_q.info->blk_cnt = 0;
+		//pipe(works[i].send_q.pipefd);
+		//close(works[i].send_q.pipefd[1]);
 
-		//work_confs[i].recv_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
+		//works[i].recv_q.info = (mem_head_t *)mmap((void *)-1, 1024 * 1024, PROT_READ | PROT_WRITE, \
 				//MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-		//work_confs[i].recv_q.len = queue_len;
-		//work_confs[i].recv_q.info->head = sizeof(mem_head_t);
-		//work_confs[i].recv_q.info->tail = sizeof(mem_head_t);
-		//work_confs[i].recv_q.info->blk_cnt = 0;
+		//works[i].recv_q.len = queue_len;
+		//works[i].recv_q.info->head = sizeof(mem_head_t);
+		//works[i].recv_q.info->tail = sizeof(mem_head_t);
+		//works[i].recv_q.info->blk_cnt = 0;
 
-		//pipe(work_confs[i].recv_q.pipefd);
-		//close(work_confs[i].recv_q.pipefd[0]);
+		//pipe(works[i].recv_q.pipefd);
+		//close(works[i].recv_q.pipefd[0]);
 
-		//add_fd_to_epinfo(epinfo.epfd, work_confs[i].send_q.pipefd[1]);
+		//add_fd_to_epinfo(epinfo.epfd, works[i].send_q.pipefd[1]);
 	}
 
 	int stop = 0;

@@ -230,5 +230,14 @@ int add_fd_to_epinfo(int epfd, int fd, int events)
 	return epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &event);	
 }
 
+int mod_fd_to_epinfo(int epfd, int fd, int events)
+{
+	struct epoll_event event;
+	event.data.fd = fd;
+	event.events = events | EPOLLET;
+
+	return epoll_ctl(epfd, EPOLL_CTL_MOD, fd, &event);	
+}
+
 
 
