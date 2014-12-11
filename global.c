@@ -40,4 +40,5 @@ svr_setting_t setting = {
 	32 * 1024,		   //32k
 	1024 * 1024 * 10   //10M
 };
-
+//配置文件
+GHashTable *sim_data;

@@ -1,6 +1,8 @@
 #ifndef GLOBAL_H_
 #define GLOBAL_H_
 
+#include <glib.h>
+
 #include "net_util.h"
 #include "master.h"
 
@@ -27,5 +29,6 @@ extern int chl_pids[MAX_WORKS];
 extern work_mgr_t workmgr;
 extern epoll_info_t epinfo;
 extern svr_setting_t setting;
+extern GHashTable *sim_data;
 
 #endif
