@@ -25,4 +25,4 @@ test_load_conf: test_load_conf.c
 	gcc -g -o test_load_conf test_load_conf.c `pkg-config --cflags --libs glib-2.0` 
 
 clean:
-	rm -rf *.o
+	rm -rf *.o simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf

@@ -52,6 +52,7 @@ int mq_fini(mem_queue_t *q, int size)
 	//关闭管道
 	close(q->pipefd[0]);
 	close(q->pipefd[1]);
+	return 0;
 }
 
 mem_block_t *mq_get(mem_queue_t *q)
