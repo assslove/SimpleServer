@@ -3,7 +3,7 @@
  *
  *       Filename:  timer.c
  *
- *    Description:  
+ *    Description:	时间回调
  *
  *        Version:  1.0
  *        Created:  2014年12月04日 23时07分39秒

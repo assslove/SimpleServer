@@ -1,10 +1,10 @@
 
 WORKDIR = /home/houbin/work/SimpleServer/
 
-all : simple_svr simple_cli test_hashtb test_mq test_mq2 test_log
+all : simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf
 
-simple_svr: simple_svr.c net_util.c mem_queue.c
-	gcc -g -o simple_svr simple_svr.c net_util.c log.c mem_queue.c
+simple_svr: simple_svr.c net_util.c mem_queue.c conf.h log.c util.c master.c work.c global.c 
+	gcc -g -Wall -DENABLE_TRACE -o simple_svr  simple_svr.c global.c net_util.c log.c util.c mem_queue.c conf.c master.c work.c 
 
 simple_cli: simple_cli.c net_util.c
 	gcc -g -o simple_cli simple_cli.c net_util.c log.c
@@ -20,5 +20,8 @@ test_mq2: 	test_mem_queue_fork.c mem_queue.c
 
 test_log: test_log.c log.c
 	gcc -g -o test_log test_log.c log.c
+test_load_conf: test_load_conf.c
+	gcc -g -o test_load_conf test_load_conf.c `pkg-config --cflags --libs glib-2.0` 
+
 clean:
 	rm -rf *.o

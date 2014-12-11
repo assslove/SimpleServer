@@ -40,6 +40,7 @@ int chg_proc_title(const char *fmt, ...)
 	vsprintf(title, fmt, ap);
 	va_end(ap);
 
+	printf("%s", title);
 	int len = strlen(title) + 1;
 	memcpy(argv_start, title, len);
 	argv_start[len-1] = '\0';
@@ -122,7 +123,7 @@ int main(int argc, char* argv[])
 	save_args(argc, argv);
 	print_args();
 	print_env();
-
+	daemon(0, 0);
 	const char *proc_name = "SimpleServer";
 
 	int pid = fork();

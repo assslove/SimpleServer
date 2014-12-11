@@ -17,7 +17,27 @@
  */
 
 
-#include "fds.h"
+#include "global.h"
 
-//监听的fd列表
-fdinfo_t fds[65536];
+/* @brief 用于修改进进程名字用
+ */
+int g_argc;
+char **g_argv;
+char *argv_start;
+char *argv_end;
+char *env_end;
+
+int chl_pids[1024] = {0};
+
+//work进程管理
+work_mgr_t  workmgr;
+//epoll相关信息
+epoll_info_t epinfo;
+//配置信息
+svr_setting_t setting = {
+	1024, 
+	1024 * 1024 * 10,  //10M
+	32 * 1024,		   //32k
+	1024 * 1024 * 10   //10M
+};
+
