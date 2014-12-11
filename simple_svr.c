@@ -50,11 +50,10 @@ typedef struct svr_setting {
 	int max_buf_len;	//发送(接收)缓冲区最大长度 超过报错
 } svr_setting_t;
 
-
 epoll_info_t epinfo;
 svr_setting_t setting = {
 	1024, 
-	1024 * 1024 * 10
+	1024 * 1024 * 10, 
 };
 
 int main(int argc, char* argv[]) 

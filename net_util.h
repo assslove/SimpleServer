@@ -9,6 +9,17 @@
 
 #include "mem_queue.h"
 
+/* fd 类型
+ */
+enum fd_type {
+	fd_type_listen,
+	fd_type_connect,
+	fd_type_mcast, 
+	fd_type_pipe, 
+	fd_type_cli,  //客户端fd
+	fd_type_svr,  //服务端fd
+};
+
 /* @brief 工作进程配置项
  */
 typedef struct work {
@@ -17,9 +28,16 @@ typedef struct work {
 	uint16_t port;
 	uint8_t proto_type; 
 	
-	mem_queue_t recv_q; //接收队列
+	mem_queue_t recv_q;	 //接收队列
 	mem_queue_t send_q;  //发送队列
 }__attribute__((packed)) work_t;
+
+/* @brief work配置项
+ */
+typedef struct work_mgr {
+	int nr_work;
+	work_t *works; //配置项
+} __attribute__((packed)) work_mgr_t;
 
 /* @brief 连接缓存区 用于读写
  */
@@ -42,10 +60,8 @@ typedef struct fd_addr {
  */
 typedef struct {
 	uint32_t id;
-	int fd;
 	uint8_t type;
-	void (*callback)(int fd, void* arg);
-	void *arg;
+	int fd;
 	fd_buff_t buff;
 	fd_addr_t addr;
 } __attribute__((packed)) fd_wrap_t;
