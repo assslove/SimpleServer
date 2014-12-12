@@ -17,3 +17,9 @@
  */
 
 #include "master.h"
+
+
+int master_init()
+{
+
+}

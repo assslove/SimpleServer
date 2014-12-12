@@ -9,4 +9,9 @@ typedef struct svr_setting {
 	char serv_name[32];	//服务器名字
 } svr_setting_t;
 
+/* @brief master init
+ * @note 创建线程，并且初始化
+ */
+int master_init();
+
 #endif
