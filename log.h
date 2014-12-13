@@ -16,7 +16,7 @@ enum LOG_LV {
 
 void slog(int llv, uint32_t key, const char* fmt, ...);
 
-#define BOOT(key, fmt, arg...) slog(LOG_LV_BOOT, key, fmt, ##arg)
+#define BOOT(key, fmt, arg...) printf("%d "fmt, key, ##arg)
 #define TRACE(key, fmt, arg...) slog(LOG_LV_TRACE, key, fmt, ##arg)
 #define DEBUG(key, fmt, arg...) slog(LOG_LV_DEBUG, key, fmt, ##arg)
 #define INFO(key, fmt, arg...) slog(LOG_LV_INFO, key, fmt, ##arg)

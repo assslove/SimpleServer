@@ -104,7 +104,7 @@ void free_sim_data()
 
 void print(void *key, void *value, void *userdata)
 {
-	printf("%s-%s\n", (char *)key, (char *)value);
+	BOOT(0, "%s-%s\n", (char *)key, (char *)value);
 }
 
 void print_simple_conf()
@@ -116,7 +116,9 @@ int load_work_data()
 {
 	int nr_work = 100;
 	workmgr.nr_work = 0;
+	workmgr.nr_used = 0;
 	workmgr.works = (work_t *)malloc(sizeof(work_t) * nr_work);
+	workmgr.nr_work = nr_work;
 	
 	int fd = open("work.conf", O_RDWR);
 	if (fd == -1) {
@@ -156,14 +158,15 @@ int load_work_data()
 					continue;
 				}
 				line[len] = '\0';
-				sscanf(line, "%d %s %d", id, ip, port);
-				if (id >= workmgr.nr_work) {
-					workmgr.works = (work_t *)realloc(workmgr.works, sizeof(work_t) * workmgr.nr_work * 2);
+				sscanf(line, "%d %s %d", &id, ip, &port);
+				if (workmgr.nr_used >= workmgr.nr_work) {
+					workmgr.works = (work_t *)realloc(workmgr.works, sizeof(work_t) * workmgr.nr_work + nr_work);
+					workmgr.nr_work += nr_work;
 				} else {
-					workmgr.works[id].id = id;	
-					memcpy(workmgr.works[id].ip, ip, 32);
-					workmgr.works[id].port = port;
-					++workmgr.nr_work;
+					workmgr.works[workmgr.nr_used].id = id;	
+					memcpy(workmgr.works[workmgr.nr_used].ip, ip, 32);
+					workmgr.works[workmgr.nr_used].port = port;
+					++workmgr.nr_used;
 				}
 				//清下个状态
 				start = i + 1;
@@ -181,7 +184,7 @@ int load_work_data()
 void print_work_conf()
 {
 	int i = 0;
-	for (; i < workmgr.nr_work; i++) {
+	for (; i < workmgr.nr_used; i++) {
 		work_t *work = &workmgr.works[i];
 		DEBUG(0, "id=%d, ip=%s, port=%d", work->id, work->ip, work->port);
 	}

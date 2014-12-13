@@ -21,5 +21,5 @@
 
 int master_init()
 {
-
+	return 0;
 }

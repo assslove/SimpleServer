@@ -35,6 +35,7 @@ typedef struct work {
  */
 typedef struct work_mgr {
 	int nr_work;
+	int nr_used;
 	work_t *works; //配置项
 } __attribute__((packed)) work_mgr_t;
 
