@@ -16,10 +16,18 @@
  * =====================================================================================
  */
 
+#include "net_util.h"
+#include "util.h"
+#include "global.h"
 #include "work.h"
 
 int work_init(int i)
 {
+	work_t *work = &workmgr.works[i];
+	//chg title
+	chg_proc_title("SimpleServer-%d", work->id);
+	//release master resource
+	close(epinfo.epfd);
 	return 0;
 }
 

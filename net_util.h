@@ -125,10 +125,10 @@ int mod_fd_to_epinfo(int epfd, int fd, int events);
 
 /* @brief 
  */
-int add_fd_to_epinfo(int epfd, void *pfd, int events);
+int add_pfd_to_epinfo(int epfd, void *pfd, int events);
 
 /* @brief 
  */
-int mod_fd_to_epinfo(int epfd, void *pfd, int events);
+int mod_pfd_to_epinfo(int epfd, void *pfd, int events);
 
 #endif

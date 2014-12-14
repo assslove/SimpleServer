@@ -16,7 +16,11 @@
  * =====================================================================================
  */
 
+#include <stdint.h>
+#include <string.h>
+
 #include "global.h"
+
 
 int	init_fds()
 {
@@ -29,13 +33,13 @@ fdsess_t *get_fd(int fd)
 	return  &fds[fd];
 }
 
-int save_fd(int fd, int id, int type, sockaddr_in *addr)
+int save_fd(int fd, int id, int type, uint32_t ip, uint16_t port)
 {
-	fdsess *pfd = &fds[fd];
+	fdsess_t *pfd = &fds[fd];
 	pfd->fd = fd;
 	pfd->id = id;
 	pfd->type = type;
-	pfd->port = addr->sin_port;
-	pfd->ip = addr->sin_addr->s_addr;
+	pfd->port = port;
+	pfd->ip = ip;
 	return 0;
 }

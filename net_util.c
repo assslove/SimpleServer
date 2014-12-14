@@ -27,6 +27,7 @@
 #include <arpa/inet.h>
 
 #include "net_util.h"
+#include "fds.h"
 
 int set_io_nonblock(int fd, int nonblock)
 {
@@ -240,24 +241,26 @@ int mod_fd_to_epinfo(int epfd, int fd, int events)
 	return epoll_ctl(epfd, EPOLL_CTL_MOD, fd, &event);	
 }
 
-int add_fd_to_epinfo(int epfd, void *pfd, int events)
+int add_pfd_to_epinfo(int epfd, void *pfd, int events)
 {
-	set_io_nonblock(fd, 1);
+	fdsess_t *sess = pfd;
+	set_io_nonblock(sess->fd, 1);
 
 	struct epoll_event event;
 	event.data.ptr = pfd;
 	event.events = events | EPOLLET;
 
-	return epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &event);	
+	return epoll_ctl(epfd, EPOLL_CTL_ADD, sess->fd, &event);	
 }
 
-int mod_fd_to_epinfo(int epfd, void *pfd, int events)
+int mod_pfd_to_epinfo(int epfd, void *pfd, int events)
 {
+	fdsess_t *sess = pfd;
 	struct epoll_event event;
 	event.data.ptr = pfd;
 	event.events = events | EPOLLET;
 
-	return epoll_ctl(epfd, EPOLL_CTL_MOD, fd, &event);	
+	return epoll_ctl(epfd, EPOLL_CTL_MOD, sess->fd, &event);	
 }
 
 

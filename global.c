@@ -44,3 +44,5 @@ svr_setting_t setting = {
 GHashTable *sim_data;
 //fd manager
 fdsess_t fds[65536];
+//stop flag
+int stop;

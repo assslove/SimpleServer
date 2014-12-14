@@ -32,5 +32,5 @@ extern epoll_info_t epinfo;
 extern svr_setting_t setting;
 extern GHashTable *sim_data;
 extern fdsess_t fds[65536];
-
+extern int stop;
 #endif

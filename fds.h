@@ -15,4 +15,17 @@ typedef struct fdsess {
 	int ip;
 } fdsess_t;
 
+/* @brief 保存fd
+ */
+int save_fd(int fd, int id, int type, uint32_t ip, uint16_t port);
+
+/* @brief 初始化fds
+ */
+int	init_fds();
+
+
+/* @brief 获取fd
+ */
+fdsess_t *get_fd(int fd);
+
 #endif 
