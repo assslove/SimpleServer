@@ -30,7 +30,6 @@
 #include "master.h"
 #include "log.h"
 
-
 int master_init()
 {
 	epinfo.epfd = epoll_create(setting.nr_max_event);
@@ -51,13 +50,15 @@ int master_init()
 		return -1;
 	}
 
+	//init mem pool
+	stop = 0;
 	return 0;
 }
 
 int master_listen(int i)
 {
-	work_t *works = workmgr.works;
-	int listenfd = safe_socket_listen(works[i].ip, works[i].port, SOCK_STREAM, 1024, 1024);
+	work_t *work = &workmgr.works[i];
+	int listenfd = safe_socket_listen(work->ip, work->port, SOCK_STREAM, 1024, 1024);
 	if (listenfd == -1) {
 		ERROR(0, "listen error[i][%s]", i, strerror(errno));
 		return -1;
@@ -70,9 +71,24 @@ int master_listen(int i)
 	}
 
 	struct in_addr addr;
-	inet_aton(works[i].ip, &addr);
-	save_fd(listenfd, i, fd_type_listen, addr.s_addr, works[i].port);
+	inet_aton(work->ip, &addr);
+	save_fd(listenfd, i, fd_type_listen, addr.s_addr, work->port);
 	
+	//mem_queue init
+	if ((ret = mq_init(&(work->rq), setting.mem_queue_len)) == -1) {
+		ERROR(0, "init rq fail");
+		return -1;
+	}
+
+	if ((ret = mq_init(&(work->wq), setting.mem_queue_len)) == -1) {
+		ERROR(0, "init wq fail");
+		return -1;
+	}
+
+	//close pipe
+	close(work->rq.pipefd[1]);
+	close(work->wq.pipefd[0]);
+
 	return 0;
 }
 

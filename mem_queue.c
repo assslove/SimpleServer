@@ -23,14 +23,15 @@
 #include <stdio.h>
 
 #include "mem_queue.h"
+#include "util.h"
 
 int mq_init(mem_queue_t *q, int size)
 {
 	q->len = size;	
 	pipe(q->pipefd);
 
-	fcntl(q->pipefd[0], F_SETFL, O_NONBLOCK | fcntl(q->pipefd[0], F_GETFL, 0));
-	fcntl(q->pipefd[1], F_SETFL, O_NONBLOCK | fcntl(q->pipefd[1], F_GETFL, 0));
+	set_io_nonblock(q->pipefd[0], 1);
+	set_io_nonblock(q->pipefd[1], 1);
 
 	q->ptr = (mem_head_t *)mmap((void *)-1, size, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);	
 	if (q->ptr == MAP_FAILED) {

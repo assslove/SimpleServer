@@ -27,18 +27,8 @@
 #include <arpa/inet.h>
 
 #include "net_util.h"
+#include "util.h"
 #include "fds.h"
-
-int set_io_nonblock(int fd, int nonblock)
-{
-	int val;
-	if (nonblock) {
-		val = (O_NONBLOCK | fcntl(fd, F_GETFL));
-	} else {
-		val = (~O_NONBLOCK & fcntl(fd, F_GETFL));
-	}
-	return fcntl(fd, F_SETFL, val);
-}
 
 int set_sock_snd_timeo(int sockfd, int millisec)
 {

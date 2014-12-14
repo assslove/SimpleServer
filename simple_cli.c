@@ -28,7 +28,7 @@
 #include <string.h>   
 #include <sys/epoll.h>
 
-#include "net_util.h"
+#include "util.h"
 #include "log.h"
 
 int main(int argc, char* argv[])

@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 
+#include <fcntl.h>
+
 #include "util.h"
 #include "log.h"
 
@@ -107,5 +109,16 @@ void  print_env()
 	}
 
 	printf("-----------------------");
+}
+
+int set_io_nonblock(int fd, int nonblock)
+{
+	int val;
+	if (nonblock) {
+		val = (O_NONBLOCK | fcntl(fd, F_GETFL));
+	} else {
+		val = (~O_NONBLOCK & fcntl(fd, F_GETFL));
+	}
+	return fcntl(fd, F_SETFL, val);
 }
 

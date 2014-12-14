@@ -9,8 +9,8 @@ simple_svr: simple_svr.c net_util.c mem_queue.c conf.h log.c util.c master.c wor
 		 -o simple_svr  simple_svr.c global.c net_util.c log.c util.c mem_queue.c conf.c master.c work.c  fds.c\
 		 `pkg-config --cflags --libs glib-2.0` 
 
-simple_cli: simple_cli.c net_util.c
-	gcc -g -o simple_cli simple_cli.c net_util.c log.c
+simple_cli: simple_cli.c util.c
+	gcc -g -o simple_cli simple_cli.c util.c log.c
 
 test_hashtb: test_hashmap.c
 	gcc test_hashmap.c -o test_hashmap `pkg-config --cflags --libs glib-2.0` 

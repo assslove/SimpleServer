@@ -27,8 +27,8 @@ typedef struct work {
 	char ip[32];
 	uint16_t port;
 	uint8_t proto_type; 
-	mem_queue_t recv_q;	 //接收队列
-	mem_queue_t send_q;  //发送队列
+	mem_queue_t rq;	 //接收队列
+	mem_queue_t wq;  //发送队列
 }__attribute__((packed)) work_t;
 
 /* @brief work配置项
@@ -82,10 +82,6 @@ typedef struct {
  *	@brief net util
  *	@ref 
  */
-
-/* @brief 设置io非阻塞
- */
-int set_io_nonblock(int fd, int nonblock);
 
 /* @brief 设置sock send time out
  */
