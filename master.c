@@ -86,8 +86,8 @@ int master_listen(int i)
 	}
 
 	//close pipe
-	close(work->rq.pipefd[1]);
-	close(work->wq.pipefd[0]);
+	close(work->rq.pipefd[1]); //接收管道关闭写
+	close(work->wq.pipefd[0]); //发送管理关闭读
 
 	return 0;
 }
