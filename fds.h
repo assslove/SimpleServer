@@ -9,8 +9,10 @@
  */
 typedef struct fdsess {
 	int fd;
-	int id;
-	int sockaddr_in;
+	int id; //work
+	int type;
+	int port;
+	int ip;
 } fdsess_t;
 
 #endif 

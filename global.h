@@ -30,5 +30,6 @@ extern work_mgr_t workmgr;
 extern epoll_info_t epinfo;
 extern svr_setting_t setting;
 extern GHashTable *sim_data;
+extern GHashTable *fds;
 
 #endif

@@ -88,6 +88,7 @@ int master_dispatch()
 						ERROR(0, "add fd to epinfo error[fd=%d][%s]", newfd, strerror(errno));
 						return -1;
 					}
+					save_fd(newfd, id, fd_type_, &cliaddr);
 				} else if (fd == fd_type_) { //read
 
 				}
