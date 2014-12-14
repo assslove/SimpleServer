@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <malloc.h>
+#include <sys/types.h>
 
 #include "list.h"
 

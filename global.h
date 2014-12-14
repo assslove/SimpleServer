@@ -6,6 +6,7 @@
 #include "net_util.h"
 #include "master.h"
 #include "fds.h"
+#include "list.h"
 
 /* 定义的一些常量
  */
@@ -33,4 +34,6 @@ extern svr_setting_t setting;
 extern GHashTable *sim_data;
 extern fdsess_t fds[65536];
 extern int stop;
+extern list_head_t readlist;
+extern list_head_t closelist;
 #endif

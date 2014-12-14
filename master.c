@@ -29,6 +29,8 @@
 #include "global.h"
 #include "master.h"
 #include "log.h"
+#include "list.h"
+#include "mem_queue.h"
 
 int master_init()
 {
@@ -50,10 +52,11 @@ int master_init()
 		return -1;
 	}
 
-	//init mem pool
 	stop = 0;
 	//init list_head
-		
+	INIT_LIST_HEAD(&readlist);				
+	INIT_LIST_HEAD(&closelist);				
+
 	return 0;
 }
 
@@ -91,12 +94,16 @@ int master_listen(int i)
 	close(work->rq.pipefd[1]); //接收管道关闭写
 	close(work->wq.pipefd[0]); //发送管理关闭读
 
+	INFO(0, "serv [%d] have listened", i);
 	return 0;
 }
 
 int master_dispatch()
 {
 	while (!stop) {
+		//handle readlist
+		//handle closelist
+		
 		int i = 0;
 		int fd = 0, newfd = 0;
 		struct sockaddr_in cliaddr;
@@ -109,7 +116,7 @@ int master_dispatch()
 					newfd = safe_tcp_accept(fd, &cliaddr, 1);	
 					if (newfd == -1) {
 						ERROR(0, "accept error: [%s]", strerror(errno));
-							continue;
+						continue;
 					}
 
 					if ((ret = add_fd_to_epinfo(epinfo.epfd, newfd, EPOLLIN)) == -1) {
@@ -131,8 +138,16 @@ int master_dispatch()
 
 int master_fini()
 {
+	int i = 0;
+	for (; i < workmgr.nr_used; i++) {
+		work_t *work = &workmgr.works[i];
+		mq_fini(&work->rq, setting.mem_queue_len);
+		mq_fini(&work->wq, setting.mem_queue_len);
+	}
+
 	close(epinfo.epfd);
 	free(epinfo.evs);
 
+	DEBUG(0, "serv have stopped!");
 	return 0;	
 }

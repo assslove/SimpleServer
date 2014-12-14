@@ -66,6 +66,9 @@ typedef struct {
 	int fd;
 	fd_buff_t buff;
 	fd_addr_t addr;
+
+	list_head_t closelist; //待关闭链表
+	list_head_t readlist;  //待读取链表
 } __attribute__((packed)) fd_wrap_t;
 
 /* @brief 对epoll的封装
@@ -76,8 +79,6 @@ typedef struct {
 	fd_wrap_t *fds;
 	int max_fd;
 	int max_ev;
-	list_head_t closelist; //待关闭链表
-	list_head_t readlist;  //待读取链表
 }__attribute__((packed)) epoll_info_t;
 
 

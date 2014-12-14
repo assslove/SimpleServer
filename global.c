@@ -35,10 +35,12 @@ work_mgr_t  workmgr;
 epoll_info_t epinfo;
 //配置信息
 svr_setting_t setting = {
+	10240,
 	1024, 
 	1024 * 1024 * 10,  //10M
 	32 * 1024,		   //32k
-	1024 * 1024 * 10   //10M
+	1024 * 1024 * 10,  //10M
+	"SimpleServer"
 };
 //配置文件
 GHashTable *sim_data;
@@ -46,3 +48,6 @@ GHashTable *sim_data;
 fdsess_t fds[65536];
 //stop flag
 int stop;
+
+list_head_t readlist;
+list_head_t closelist;

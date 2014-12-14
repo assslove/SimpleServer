@@ -51,22 +51,31 @@ int main(int argc, char* argv[])
 	//chg serv name
 	chg_proc_title("SimpleServer");
 	//daemon mode
-	daemon(0, 0);
+	daemon(1, 0);
 
 	//handle signal
+		
 	//handle pipe
 	
 	//master_init
-	master_init();
+	int ret = master_init();
+	if (ret == -1) {
+		ERROR(0, "err master init [%s]", strerror(errno));
+		return 0;
+	}
 
 	int i = 0;
 	for (; i < workmgr.nr_used; i++) {
 		int pid = fork();
-		if (pid <= 0) {
+		if (pid < 0) {
 			ERROR(0, "create work fail[%d][%s]", i, strerror(errno));
 			goto fail;	
 		} else if (pid == 0) { //child
-			work_init(i);
+			int ret = work_init(i);
+			if (ret == -1) {
+				ERROR(0, "err work init [%s]", strerror(errno));
+				exit(0);
+			}
 			work_dispatch(i);
 			work_fini(i);
 			exit(0);
