@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include "mem_queue.h"
+#include "list.h"
 
 /* fd 类型
  */

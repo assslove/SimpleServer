@@ -40,7 +40,8 @@ int main(int argc, char* argv[])
 	printf("%d\n", list_empty(&readlist));;
 
 	node_t *tmp;
-	list_for_each_entry_safe(tmp, &readlist, list) {
+	node_t *tmp2;
+	list_for_each_entry_safe(tmp, tmp2, &readlist, list) {
 		printf("%d\n", tmp->data);
 		list_del(&tmp->list);
 		free(tmp);
