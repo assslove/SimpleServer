@@ -16,28 +16,26 @@
  * =====================================================================================
  */
 
-#include <glib.h>
 #include "global.h"
-
-static void do_free_fd(void* fd)
-{
-	g_free(fd);
-	fd = NULL;
-}
 
 int	init_fds()
 {
-	fds = g_hash_table_new_full(g_int_hash, g_int_equal, 0, do_free_fd);
+	memset(fds, 0, sizeof(fds));
 	return 0;
 }
 
 fdsess_t *get_fd(int fd)
 {
-	return  g_hash_table_lookup(fds, &fd);;
+	return  &fds[fd];
 }
 
 int save_fd(int fd, int id, int type, sockaddr_in *addr)
 {
-	fdsess_t *sess;
-	g_hash_table_insert(fds, &(fdsess->fd), fdsess);
+	fdsess *pfd = &fds[fd];
+	pfd->fd = fd;
+	pfd->id = id;
+	pfd->type = type;
+	pfd->port = addr->sin_port;
+	pfd->ip = addr->sin_addr->s_addr;
+	return 0;
 }

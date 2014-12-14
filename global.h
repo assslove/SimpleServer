@@ -5,6 +5,7 @@
 
 #include "net_util.h"
 #include "master.h"
+#include "fds.h"
 
 /* 定义的一些常量
  */
@@ -30,6 +31,6 @@ extern work_mgr_t workmgr;
 extern epoll_info_t epinfo;
 extern svr_setting_t setting;
 extern GHashTable *sim_data;
-extern GHashTable *fds;
+extern fdsess_t fds[65536];
 
 #endif
