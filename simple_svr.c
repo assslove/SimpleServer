@@ -52,74 +52,34 @@ int main(int argc, char* argv[])
 	chg_proc_title("SimpleServer");
 	//daemon mode
 	daemon(0, 0);
+
 	//handle signal
 	//handle pipe
 	
-	//create work
-	
+	//master_init
+	master_init();
+
+	int i = 0;
+	for (; i < workmgr.nr_used; i++) {
+		int pid = fork();
+		if (pid <= 0) {
+			ERROR(0, "create work fail[%d][%s]", i, strerror(errno));
+			goto fail;	
+		} else if (pid == 0) { //child
+			work_init(i);
+			work_dispatch(i);
+			work_fini(i);
+			exit(0);
+		} else { //parent
+			child_pid[i] = pid;
+			parent_listen(i);
+		}
+	}
+
 	//master loop
-		
-	//master free
-	epinfo.epfd = epoll_create(setting.nr_max_event);
-	if (epinfo.epfd == -1) {
-		ERROR(0, "%s", strerror(errno));
-		return ERROR;
-	}
-
-	int listenfd;
-	listenfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (listenfd < 0) {
-		ERROR(0, "listen socket error\n");
-		return ERROR;
-	}
-
-	struct sockaddr_in servaddr;	
-	memset(&servaddr, 0, sizeof(struct sockaddr_in));
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_addr.s_addr = INADDR_ANY;
-	servaddr.sin_port = htons(8000);
-
-	//设置socket
-	int flag = 1;
-	int err = setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
-	if (err == -1) {
-		ERROR(0, "%s", strerror(errno));
-		return ERROR;
-	}
-	
-	int bufsize = 1024 * 1024; //1M
-	err = setsockopt(listenfd, SOL_SOCKET, SO_RCVBUF, &bufsize, sizeof(int));
-	if (err == -1) {
-		ERROR(0, "%s", strerror(errno));
-		return ERROR;
-	}
-	err = setsockopt(listenfd, SOL_SOCKET, SO_SNDBUF, &bufsize, sizeof(int));
-	if (err == -1) {
-		ERROR(0, "%s", strerror(errno));
-		return ERROR;
-	}
-
-	err = bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
-	if (err == -1) {
-		ERROR(0, "%s", strerror(errno));
-		return ERROR;
-	}
-
-	epinfo.evs = (struct epoll_event *)calloc(setting.nr_max_event, sizeof(struct epoll_event));		
-
-	struct epoll_event event;	
-	event.data.fd = listenfd;
-	event.events = EPOLLIN | EPOLLET;
-	epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, listenfd, &event);
-
-	set_io_nonblock(listenfd, 1);
-	err = listen(listenfd, 1024);
-	if (err == -1) {
-		ERROR(0, "%s", strerror(errno));
-		return ERROR;
-	}
-
-	DEBUG(0, "listen on 8000\n");
+	master_dispatch();
+	//master fini();
+	master_fini();
 
 	int i = 0;
 	for (i = 0; i < 1; i++) {
@@ -229,6 +189,8 @@ end:
 	free(epinfo.evs);
 	close(epinfo.epfd);
 	close(listenfd);
+fail:
+
 
 	return 0;
 }

@@ -17,3 +17,18 @@
  */
 
 #include "work.h"
+
+int work_init(int i)
+{
+	return 0;
+}
+
+int work_dispatch(int i)
+{
+	return 0;	
+}
+
+int work_fini(int i)
+{
+	return 0;	
+}

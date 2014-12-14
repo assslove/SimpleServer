@@ -59,7 +59,8 @@ typedef struct fd_addr {
 /* @brief fd信息
  */
 typedef struct {
-	uint32_t id;
+	int idx;  //fds index
+	uint32_t id; //child ref
 	uint8_t type;
 	int fd;
 	fd_buff_t buff;
@@ -121,4 +122,13 @@ int add_fd_to_epinfo(int epfd, int fd, int events);
 /* @brief 修改epoll的属性
  */
 int mod_fd_to_epinfo(int epfd, int fd, int events);
+
+/* @brief 
+ */
+int add_fd_to_epinfo(int epfd, void *pfd, int events);
+
+/* @brief 
+ */
+int mod_fd_to_epinfo(int epfd, void *pfd, int events);
+
 #endif
