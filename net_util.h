@@ -23,11 +23,10 @@ enum fd_type {
 /* @brief 工作进程配置项
  */
 typedef struct work {
-	uint32_t work_id;
+	uint32_t id;
 	char ip[32];
 	uint16_t port;
 	uint8_t proto_type; 
-	
 	mem_queue_t recv_q;	 //接收队列
 	mem_queue_t send_q;  //发送队列
 }__attribute__((packed)) work_t;
@@ -36,6 +35,7 @@ typedef struct work {
  */
 typedef struct work_mgr {
 	int nr_work;
+	int nr_used;
 	work_t *works; //配置项
 } __attribute__((packed)) work_mgr_t;
 

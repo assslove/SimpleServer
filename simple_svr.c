@@ -52,12 +52,13 @@ int main(int argc, char* argv[])
 	chg_proc_title("SimpleServer");
 	//daemon mode
 	daemon(0, 0);
+	//handle signal
 	//handle pipe
 	
 	//create work
 	
 	//master loop
-	
+		
 	//master free
 	epinfo.epfd = epoll_create(setting.nr_max_event);
 	if (epinfo.epfd == -1) {
