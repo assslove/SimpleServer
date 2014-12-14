@@ -75,6 +75,8 @@ typedef struct {
 	fd_wrap_t *fds;
 	int max_fd;
 	int max_ev;
+	list_head_t closelist; //待关闭链表
+	list_head_t readlist;  //待读取链表
 }__attribute__((packed)) epoll_info_t;
 
 

@@ -52,6 +52,8 @@ int master_init()
 
 	//init mem pool
 	stop = 0;
+	//init list_head
+		
 	return 0;
 }
 
@@ -69,7 +71,7 @@ int master_listen(int i)
 		ERROR(0, "add fd to epinfo error [%s]", strerror(errno));
 		return -1;
 	}
-
+	//save fd
 	struct in_addr addr;
 	inet_aton(work->ip, &addr);
 	save_fd(listenfd, i, fd_type_listen, addr.s_addr, work->port);
