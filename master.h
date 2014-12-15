@@ -27,4 +27,8 @@ int master_dispatch();
  */
 int master_fini();
 
+/* @brief 增加fd到epinfo
+ */
+int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port);
+
 #endif

@@ -71,16 +71,10 @@ int master_listen(int i)
 		return -1;
 	}
 
-	int ret = add_fd_to_epinfo(epinfo.epfd, listenfd, EPOLLIN);
-	if (ret == -1) {
-		ERROR(0, "add fd to epinfo error [%s]", strerror(errno));
+	int ret = 0;
+	if ((ret = add_fdinfo_to_epinfo(listenfd, i, fd_type_listen, inet_addr(work->ip), work->port)) == -1) {
 		return -1;
 	}
-	//save fd
-	struct in_addr addr;
-	inet_aton(work->ip, &addr);
-	//save_fd(listenfd, i, fd_type_listen, addr.s_addr, work->port);
-	
 	//mem_queue init
 	if ((ret = mq_init(&(work->rq), setting.mem_queue_len)) == -1) {
 		ERROR(0, "init rq fail");
@@ -121,11 +115,10 @@ int master_dispatch()
 						continue;
 					}
 
-					if ((ret = add_fd_to_epinfo(epinfo.epfd, newfd, EPOLLIN)) == -1) {
-						ERROR(0, "add fd to epinfo error[fd=%d][%s]", newfd, strerror(errno));
+					if ((ret = add_fdinfo_to_epinfo(newfd, epinfo.fds[fd].idx, fd_type_cli, \
+									cliaddr.sin_addr.s_addr, cliaddr.sin_port)) == -1) {
 						return -1;
 					}
-				//	save_fd(newfd, epinfo.fds[fd].id, fd_type_cli, cliaddr.sin_addr.s_addr, cliaddr.sin_port);
 				} else if (epinfo.fds[fd].type == fd_type_cli) { //read
 
 				}
@@ -154,13 +147,20 @@ int master_fini()
 	return 0;	
 }
 
-int add_fdinfo_to_epinfo(int fd, uint8_t type, int id, int ip, uint16_t port, int events)
+int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 {
 	set_io_nonblock(fd, 1);
 
 	struct epoll_event event;
 	event.data.fd = fd;
-	event.events = events | EPOLLET;
+	switch (type) {
+		case fd_type_listen:
+		case fd_type_pipe:
+		case fd_type_cli:
+			event.events = EPOLLIN | EPOLLET;
+			break;
+
+	}
 
 	int ret = epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, fd, &event);	
 	if (ret == -1) {
@@ -171,7 +171,7 @@ int add_fdinfo_to_epinfo(int fd, uint8_t type, int id, int ip, uint16_t port, in
 	fd_wrap_t *pfd = &epinfo.fds[fd];
 	++epinfo.seq;
 	pfd->type = type;
-	pfd->id = id;
+	pfd->idx = idx;
 	pfd->fd = fd;
 	pfd->addr.ip = ip;
 	pfd->addr.port = port;
