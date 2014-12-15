@@ -120,7 +120,7 @@ int master_dispatch()
 						return -1;
 					}
 				} else if (epinfo.fds[fd].type == fd_type_cli) { //read
-
+					//handle_read(fd);	
 				}
 			} else if (epinfo.evs[i].events && EPOLLOUT) { //write
 				
@@ -181,3 +181,8 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 	return 0;
 }
 
+int handle_read(int fd)
+{
+
+	return 0;
+}

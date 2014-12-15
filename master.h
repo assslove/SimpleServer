@@ -31,4 +31,8 @@ int master_fini();
  */
 int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port);
 
+/*  @brief 处理读取数据
+ */
+int handle_read(int fd);
+
 #endif
