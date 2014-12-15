@@ -43,10 +43,10 @@ typedef struct work_mgr {
 /* @brief 连接缓存区 用于读写
  */
 typedef struct fd_buff{
-	int sendlen;		//发送缓冲长度
-	int recvlen;		//接收缓冲区长度
-	char *sendbuf;		//发送缓冲区
-	char *recvbuf;		//接收缓冲区
+	int slen;		//发送缓冲长度
+	int rlen;		//接收缓冲区长度
+	char *sbf;			//发送缓冲区
+	char *rbf;			//接收缓冲区
 	int msglen;			//消息长度
 }__attribute__((packed)) fd_buff_t;
 

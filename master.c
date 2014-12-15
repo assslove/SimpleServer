@@ -25,6 +25,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <string.h>
+#include <sys/mman.h>
 
 #include "global.h"
 #include "master.h"
@@ -108,27 +109,36 @@ int master_dispatch()
 		for (i = 0; i < n; i++) {
 			fd = epinfo.evs[i].data.fd;
 			if (epinfo.evs[i].events && EPOLLIN) { // read
-				if (epinfo.fds[fd].type == fd_type_listen) { //listen
-					newfd = safe_tcp_accept(fd, &cliaddr, 1);	
-					if (newfd == -1) {
-						ERROR(0, "accept error: [%s]", strerror(errno));
-						continue;
-					}
+				switch (epinfo.fds[fd].type) {
+					case fd_type_listen:
+						//if (handle_accept(fd, &cli_addr) == -1) {
+						//continue;
+						//}
+						newfd = safe_tcp_accept(fd, &cliaddr, 1);	
+						if (newfd == -1) {
+							ERROR(0, "accept error: [%s]", strerror(errno));
+							continue;
+						}
 
-					if ((ret = add_fdinfo_to_epinfo(newfd, epinfo.fds[fd].idx, fd_type_cli, \
-									cliaddr.sin_addr.s_addr, cliaddr.sin_port)) == -1) {
-						return -1;
-					}
-				} else if (epinfo.fds[fd].type == fd_type_cli) { //read
-					//handle_read(fd);	
+						if ((ret = add_fdinfo_to_epinfo(newfd, epinfo.fds[fd].idx, fd_type_cli, \
+										cliaddr.sin_addr.s_addr, cliaddr.sin_port)) == -1) {
+							return -1;
+						}
+						break;
+					case fd_type_cli: //read cli;
+						//handle_cli(fd);
+						break; 
+					case fd_type_pipe: //read pipe;
+						//handle_pipe(fd);
+						break;
 				}
 			} else if (epinfo.evs[i].events && EPOLLOUT) { //write
-				
+
 			}
 		}
 	}
 
-	return 0;	
+	return 0;
 }
 
 int master_fini()
@@ -181,8 +191,24 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 	return 0;
 }
 
+int handle_cli(int fd)
+{
+	return 0;
+}
+
 int handle_read(int fd)
 {
-	
+	fd_buff_t *buff = &epinfo.fds[fd].buff;
+	if (!buff->rbf) {
+		buff->msglen = 0;
+		buff->rlen = 0;
+		buff->rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
+		if (buff->rbf == MAP_FAILED) {
+			ERROR(0, "mmap error");
+			return -1;
+		}
+	}
+
+	int recv_len = safe_tcp_recv_n(fd, buff->rbf + buff->rlen, setting.max_msg_len - buff->rlen);
 	return 0;
 }
