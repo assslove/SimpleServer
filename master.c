@@ -31,6 +31,8 @@
 #include "log.h"
 #include "list.h"
 #include "mem_queue.h"
+#include "net_util.h"
+#include "util.h"
 
 int master_init()
 {
@@ -160,7 +162,7 @@ int add_fdinfo_to_epinfo(int fd, uint8_t type, int id, int ip, uint16_t port, in
 	event.data.fd = fd;
 	event.events = events | EPOLLET;
 
-	int ret = epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &event);	
+	int ret = epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, fd, &event);	
 	if (ret == -1) {
 		ERROR(0, "err ctl add [%s]", strerror(errno));
 		return -1;
