@@ -77,7 +77,7 @@ int work_dispatch(int i)
 		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 100);
 		for (k = 0; k < nr; ++k) {
 			fd = epinfo.evs[k].data.fd;
-			switch (fds[fd].type) {
+			switch (epinfo.fds[fd].type) {
 				case fd_type_cli:
 					break;
 				case fd_type_pipe:

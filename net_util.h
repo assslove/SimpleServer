@@ -60,13 +60,12 @@ typedef struct fd_addr {
 /* @brief fd信息
  */
 typedef struct {
-	int idx;  //fds index
-	uint32_t id; //child ref
 	uint8_t type;
 	int fd;
+	int idx; //epinfo->fds index
+	int id;  //work id index
 	fd_buff_t buff;
 	fd_addr_t addr;
-
 	list_head_t closelist; //待关闭链表
 	list_head_t readlist;  //待读取链表
 } __attribute__((packed)) fd_wrap_t;
@@ -74,6 +73,7 @@ typedef struct {
 /* @brief 对epoll的封装
  */
 typedef struct {
+	uint32_t seq; 
 	int epfd;
 	struct epoll_event *evs;
 	fd_wrap_t *fds;

@@ -28,4 +28,8 @@ int	init_fds();
  */
 fdsess_t *get_fd(int fd);
 
+/* @brief remove fd
+ */
+void remove_fd(int fd);
+
 #endif 

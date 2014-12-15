@@ -210,7 +210,6 @@ int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblo
 	return sockfd;
 }
 
-
 int add_fd_to_epinfo(int epfd, int fd, int events)
 {
 	set_io_nonblock(fd, 1);

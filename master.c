@@ -77,7 +77,7 @@ int master_listen(int i)
 	//save fd
 	struct in_addr addr;
 	inet_aton(work->ip, &addr);
-	save_fd(listenfd, i, fd_type_listen, addr.s_addr, work->port);
+	//save_fd(listenfd, i, fd_type_listen, addr.s_addr, work->port);
 	
 	//mem_queue init
 	if ((ret = mq_init(&(work->rq), setting.mem_queue_len)) == -1) {
@@ -112,7 +112,7 @@ int master_dispatch()
 		for (i = 0; i < n; i++) {
 			fd = epinfo.evs[i].data.fd;
 			if (epinfo.evs[i].events && EPOLLIN) { // read
-				if (fds[fd].type == fd_type_listen) { //listen
+				if (epinfo.fds[fd].type == fd_type_listen) { //listen
 					newfd = safe_tcp_accept(fd, &cliaddr, 1);	
 					if (newfd == -1) {
 						ERROR(0, "accept error: [%s]", strerror(errno));
@@ -123,8 +123,8 @@ int master_dispatch()
 						ERROR(0, "add fd to epinfo error[fd=%d][%s]", newfd, strerror(errno));
 						return -1;
 					}
-					save_fd(newfd, fds[fd].id, fd_type_cli, cliaddr.sin_addr.s_addr, cliaddr.sin_port);
-				} else if (fds[fd].type == fd_type_cli) { //read
+				//	save_fd(newfd, epinfo.fds[fd].id, fd_type_cli, cliaddr.sin_addr.s_addr, cliaddr.sin_port);
+				} else if (epinfo.fds[fd].type == fd_type_cli) { //read
 
 				}
 			} else if (epinfo.evs[i].events && EPOLLOUT) { //write
@@ -151,3 +151,31 @@ int master_fini()
 	DEBUG(0, "serv have stopped!");
 	return 0;	
 }
+
+int add_fdinfo_to_epinfo(int fd, uint8_t type, int id, int ip, uint16_t port, int events)
+{
+	set_io_nonblock(fd, 1);
+
+	struct epoll_event event;
+	event.data.fd = fd;
+	event.events = events | EPOLLET;
+
+	int ret = epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &event);	
+	if (ret == -1) {
+		ERROR(0, "err ctl add [%s]", strerror(errno));
+		return -1;
+	}
+
+	fd_wrap_t *pfd = &epinfo.fds[fd];
+	++epinfo.seq;
+	pfd->type = type;
+	pfd->id = id;
+	pfd->fd = fd;
+	pfd->addr.ip = ip;
+	pfd->addr.port = port;
+
+	if (epinfo.max_fd < fd) epinfo.max_fd = fd;
+
+	return 0;
+}
+
