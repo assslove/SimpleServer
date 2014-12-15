@@ -49,7 +49,6 @@ int main(int argc, char* argv[])
 	}
 
 	printf("%d\n", list_empty(&readlist));;
-//	list_del(&readlist);
 
 	return 0;
 }

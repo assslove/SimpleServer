@@ -25,7 +25,7 @@ test_log: test_log.c log.c
 	gcc -g -o test_log test_log.c log.c
 test_load_conf: test_load_conf.c
 	gcc -g -o test_load_conf test_load_conf.c `pkg-config --cflags --libs glib-2.0` 
-test_linklist: test_linklist.c
+test_linklist: test_linklist.c list.h
 	gcc -g -o test_linklist test_linklist.c
 
 clean:
