@@ -101,6 +101,9 @@ int master_dispatch()
 		//handle readlist
 		//handle closelist
 		
+		//处理发送队列
+		handle_mq_send();
+
 		int i = 0;
 		int fd = 0, newfd = 0;
 		struct sockaddr_in cliaddr;
@@ -126,10 +129,10 @@ int master_dispatch()
 						}
 						break;
 					case fd_type_cli: //read cli;
-						//handle_cli(fd);
+						handle_cli(fd);
 						break; 
 					case fd_type_pipe: //read pipe;
-						//handle_pipe(fd);
+						handle_pipe(fd);
 						break;
 				}
 			} else if (epinfo.evs[i].events && EPOLLOUT) { //write
@@ -193,6 +196,40 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 
 int handle_cli(int fd)
 {
+	fd_buff_t *buff = &epinfo.fds[fd].buff;
+	uint8_t *tmp_ptr = buff->rbf;
+
+	if (handle_read(fd) == -1) {
+		return -1;
+	}
+
+push_agagin:
+	if (buff->msglen == 0) { //获取长度
+		buff->msglen = so.get_msg_len(fd, tmp_ptr, buff->rlen, SERV_MASTER);
+		TRACE(0, "recv [fd=%u][rlen=%u][msglen=%u]", fd, buff->rlen, buff->msglen);
+	}
+
+	//push
+	if (buff->rlen >= buff->msglen) {
+		struct mem_block_t blk;		
+		raw2blk(fd, &blk);
+		if (mq_push(workmgr.works[epinfo.fds[fd].idx].rq, &blk, tmp_ptr)) {
+			return -1;
+		}
+		//清空
+		tmp_ptr += buff->msglen;
+		buff->rlen -= buff->msglen;
+		buff->msglen = 0;
+
+		if (buff->rlen > 0) {//如果没有push完
+			goto push_again;
+		}
+	}
+
+	if (buff->rbuf != tmp_ptr && buff->rlen > 0) {  //还有剩余的在缓存区，不够一个消息，等读完了再去push
+		memmove(buff->rbuf, tmp_ptr, buff->rlen); //合并到缓冲区头
+	}
+
 	return 0;
 }
 
@@ -209,6 +246,65 @@ int handle_read(int fd)
 		}
 	}
 
+	//判断缓存区是否已满
+	if (setting.max_msg_len == buff->rlen) {
+		ERROR(0, "recv buff full [fd=%u]", fd);
+		return 0;
+	}
+
+	//接收消息
 	int recv_len = safe_tcp_recv_n(fd, buff->rbf + buff->rlen, setting.max_msg_len - buff->rlen);
+
+	if (recv_len > 0) { //有消息
+		buff->rlen += recv_len;
+	} else if (recv_len == 0) { //对端关闭
+		ERROR(0, "[fd=%u,ip=%s] has closed", fd, inet_ntoa(*((struct in_addr_t *)&epinfo.fds[fd].addr.ip)));
+		return -1;
+	} else { //
+		ERROR(0, "recv error[fd=%u,error=%u]", fd, strerror(errno));
+		recv_len = 0;
+	}
+
+	if (buff->rbuf == setting.max_msg_len) {
+		//增加到可读队列里面
+	} else if {
+		//从可读队列里面删除
+	}
+
+	return recv_len;
+}
+
+int handle_pipe(fd)
+{
+	//申请空间 TODO
+	read(fd, epinfo.fds[fd].buff->rbf, setting.max_msg_len);
+	retur 0;
+}
+
+
+void handle_mq_send()
+{
+	struct mem_queue_t *tmpq;	
+	struct mem_block_t *tmpblk;
+
+	int i = 0;
+	for ( ; i < workmgr.nr_used; ++i) {
+		tmpq = &workmgr.works[i].sendq;
+		while (tmpblk = mq_get(tmpq)) { //获取消息
+			do_blk_send(tmpblk);
+			mq_pop(tmpq);	
+		}
+	}
+}
+
+int do_blk_send(mem_block_t *blk)
+{
+	//合法性校验
+	return do_fd_send(blk->fd, blk->data, blk->len - setting.blk_len);	
+}
+
+int do_fd_send(int fd, void *data, int len)
+{
+	
 	return 0;
 }

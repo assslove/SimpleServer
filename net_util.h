@@ -10,6 +10,13 @@
 #include "mem_queue.h"
 #include "list.h"
 
+/* @brief 服务器类型
+ */
+enum SERV_TYPE {
+	SERV_MASTER = 0, 
+	SERV_WORK = 0
+};
+
 /* fd 类型
  */
 enum fd_type {
@@ -130,5 +137,9 @@ int add_pfd_to_epinfo(int epfd, void *pfd, int events);
 /* @brief 
  */
 int mod_pfd_to_epinfo(int epfd, void *pfd, int events);
+
+/* @brief 
+ */
+void raw2blk(int fd, mem_block_t &blk);
 
 #endif

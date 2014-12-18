@@ -39,4 +39,21 @@ int handle_cli(int fd);
  */
 int handle_read(int fd);
 
+/* @brief 处理管道的读取
+ * @note 直接就可以
+ */
+int handle_pipe(int fd);
+
+/* @brief 处理往客户端发送消息
+ */
+int handle_mq_send();
+
+/* @brief 发送消息块
+ */
+int do_blk_send(mem_block_t &blk);
+
+/* @brief 处理消息的发送
+ */
+int do_fd_send(int fd, void *data, int len);
+
 #endif

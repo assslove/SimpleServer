@@ -253,3 +253,7 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events)
 }
 
 
+void raw2blk(int fd, mem_block_t &blk)
+{
+
+}
