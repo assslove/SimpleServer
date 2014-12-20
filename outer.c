@@ -4,7 +4,7 @@
 
 #include "outer.h"
 
-serv_if_t serv_if;
+serv_if_t so;
 
 #define DLFUNC_NO_ERROR(h, v, name) \
 		do { \
@@ -16,28 +16,31 @@ serv_if_t serv_if;
 		do { \
 			v = dlsym (h, name); \
 			if ((error = dlerror ()) != NULL) { \
-				ERROR_LOG("dlsym error, %s", error); \
+				ERROR(0, "dlsym error, %s", error); \
 				dlclose(h); \
 				h = NULL; \
 				goto out; \
 			} \
 		} while (0)
 
-int register_data_plugin(const char* file_name)
+int reg_data_so(const char* name)
 {
 	char* error; 
 	int   ret_code = 0;
-	if (file_name == NULL)
+	if (name == NULL) {
 		return 0;
-	dll.data_handle = dlopen(file_name, RTLD_NOW | RTLD_GLOBAL);
+	}
+
+	so.data_handle = dlopen(file_name, RTLD_NOW | RTLD_GLOBAL);
 	if ((error = dlerror()) != NULL) {
-		ERROR_LOG("dlopen error, %s", error);
+		ERROR(0, "dlopen error, %s", error);
 		ret_code = 0;
 	}
-	BOOT_LOG(ret_code, "dlopen %s", file_name);
+
+	BOOT_LOG(ret_code, "dlopen %s", name);
 }
 			
-int register_plugin(const char* file_name, int flag)
+int reg_so(const char* name, int flag)
 {
 	char* error; 
 	int   ret_code = -1;

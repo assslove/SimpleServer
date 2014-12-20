@@ -56,7 +56,7 @@ typedef struct ServInterface {
 	int		(*get_msg_len)(int fd, const void *data, int len, int ismaster);
 } serv_if_t;
 
-extern serv_if_t serv_if;
+extern serv_if_t so;
 
 int  reg_data_so(const char* name);
 int  reg_so(const char* name, int flag);
