@@ -90,8 +90,11 @@ int work_dispatch(int i)
 		}
 
 		//handle memqueue read
-
+		handle_mq_recv();	
 		//handle timer callback
+		if (so.handle_timer) {
+			so.handle_timer();
+		}
 	}
 
 	return 0;	
@@ -109,4 +112,17 @@ int work_fini(int i)
 	DEBUG(0, "child serv[i] have stopped!", i);
 
 	return 0;	
+}
+
+int handle_mq_recv(int i)
+{
+	struct mem_queue_t *tmpq;	
+	struct mem_block_t *tmpblk;
+
+	tmpq = &workmgr.works[i].recvq;
+	while (tmpblk = mq_get(tmpq)) {
+		do_blk_exec(tmpblk);
+		mq_pop(tmpq);
+	}
+	return 0;
 }

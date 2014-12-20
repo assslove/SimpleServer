@@ -14,4 +14,8 @@ int work_dispatch(int i);
  */
 int work_fini(int i);
 
+/* @brief 读取共享队列读入
+ */
+int handle_mq_recv();
+
 #endif
