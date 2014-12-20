@@ -56,4 +56,7 @@ int do_blk_send(mem_block_t &blk);
  */
 int do_fd_send(int fd, void *data, int len);
 
+/* @brief 处理消息的写入
+ */
+int do_fd_write(int fd);
 #endif

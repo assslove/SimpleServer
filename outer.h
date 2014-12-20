@@ -19,7 +19,7 @@ typedef struct ServInterface {
 	  * Return non-zero if you want to close the client connection from which the `pkg` is sent,
 	  * otherwise returns 0. If non-zero is returned, `on_client_conn_closed` will be called too.
 	  */
-	int		(*proc_msg_from_client)(void* msg, int len, fdsess_t* fdsess);
+	int		(*proc_msg_from_cli)(void* msg, int len, fdsess_t* fdsess);
 	/*! Called to process packages from servers that the child connects to. Called once for each package. */
 	void	(*proc_msg_from_serv)(int fd, void* msg, int len);
 	/*! Called each time when a client close a connection, or when `proc_pkg_from_client` returns -1. */
@@ -36,7 +36,7 @@ typedef struct ServInterface {
 	  * You should initialize your service program (allocate memory, create objects, etc) here. \n
 	  * You must return 0 on success, -1 otherwise.
 	  */
-	int 	(*serv_init)(int isparent);
+	int 	(*serv_init)(int ismaster);
 	/*!
 	  * Called only once at server stop by both the parent and child process. Optional interface.\n
 	  * `isparent == 1` indicates this interface is called by the parent;
@@ -44,7 +44,7 @@ typedef struct ServInterface {
 	  * You should finalize your service program (release memory, destroy objects, etc) here. \n
 	  * You must return 0 if you have finished finalizing the service, -1 otherwise.
 	  */
-	int 	(*serv_fini)(int isparent);
+	int 	(*serv_fini)(int ismaster);
 	/*!
 	  * This interface will be called both by the parent and child process.\n
 	  * `isparent == 1` indicates this interface is called by the parent;
@@ -53,7 +53,7 @@ typedef struct ServInterface {
 	  * return -1 if you find that the incoming package is invalid and AsyncServ will close the connection,
 	  * otherwise, return the length of the incoming package. Note, the package should be no larger than 8192 bytes.
 	  */
-	int		(*get_msg_len)(int fd, const void *data, int len, int isparent);
+	int		(*get_msg_len)(int fd, const void *data, int len, int ismaster);
 } serv_if_t;
 
 extern serv_if_t serv_if;

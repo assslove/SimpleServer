@@ -27,6 +27,8 @@
 #include <string.h>
 #include <sys/mman.h>
 
+#include <glib.h>
+
 #include "global.h"
 #include "master.h"
 #include "log.h"
@@ -136,7 +138,16 @@ int master_dispatch()
 						break;
 				}
 			} else if (epinfo.evs[i].events && EPOLLOUT) { //write
+				if (epinfo.fds[fd].buff.sbf > 0) {
+					if (do_fd_write(fd) == -1) {
+						//do_fd_del(fd);
+					}
+				}
 
+				if (epinfo.fds[fd].buff.slen == 0) { //发送完毕
+					mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN);
+					
+				}
 			}
 		}
 	}
@@ -277,8 +288,18 @@ int handle_read(int fd)
 int handle_pipe(fd)
 {
 	//申请空间 TODO
+	if (!epinfo.fds[fd].buff->rbf) {
+		epinfo.fds[fd].buff->msglen = 0;
+		epinfo.fds[fd].buff->rlen = 0;
+		epinfo.fds[fd].buff->rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
+		if (epinfo.fds[fd].buff->rbf == MAP_FAILED) {
+			ERROR(0, "mmap error");
+			return -1;
+		}
+	
+	}
 	read(fd, epinfo.fds[fd].buff->rbf, setting.max_msg_len);
-	retur 0;
+	return 0;
 }
 
 
@@ -292,7 +313,7 @@ void handle_mq_send()
 		tmpq = &workmgr.works[i].sendq;
 		while (tmpblk = mq_get(tmpq)) { //获取消息
 			do_blk_send(tmpblk);
-			mq_pop(tmpq);	
+			mq_pop(tmpq); //删除	
 		}
 	}
 }
@@ -305,6 +326,80 @@ int do_blk_send(mem_block_t *blk)
 
 int do_fd_send(int fd, void *data, int len)
 {
+	fd_buff_t *buff = &epinfo.fds[fd].buff;	
+	int is_send = 0;
+	if (buff->slen > 0) {
+		if (do_fd_write(fd) == -1) { //fd断了
+			//do_fd_del(fd);
+			return -1;	
+		}
+		is_send = 1;
+	}
 	
+	int send_len = 0;
+	if (buff->slen == 0) { //发送缓冲区没有数据发送
+		send_len = safe_tcp_send_n(fd, data, len);
+		if (send_len == -1) {
+			ERROR(0, "write fd error[fd=%u, err=%s]", fd, strerror(errno));
+			//do_fd_del(fd);
+			return -1;
+		} 
+	}
+
+	if (len > send_len) { //如果没有发送完
+		int left_len = len - send_len;
+		if (!buff->sbf) { //没有空间
+			buff->sbf = (char *)malloc(left_len);
+			if (buff->sbf) {
+				ERROR(0, "malloc err, [err=%s]", strerror(errno));
+				return -1;
+			}
+			buff->sbf_size = left_len;
+		} else if (buff->sbf_size < buff->slen + left_len) {
+			buff->sbf = (char *)realloc(buff->rbf, buff->len + left_len);
+			if (!buff->sbf) {
+				ERROR(0, "realloc err, [err=%s]", strerror(errno));
+				return -1;
+			}
+			buff->sbf_size = left_len + buff->slen;
+		}
+
+		memcpy(buff->sbf + buff->slen, (char *)data + send_len, left_len);
+		buff->slen += left_len;
+
+		if (setting.max_sbf_len && setting.max_sbf_len < buff->slen) { //如果大于最大发送缓冲区
+			ERROR(0, "sendbuf is exceeded max[fd=%u, buflen=%u,slen=%u]", fd, setting.max_sbf_len, buff->slen);
+			//do_fd_del(fd);
+			return -1;
+
+		}
+	}
+
+	if (buff->slen > 0 && !is_send) { //没有写完 上次没有写过 如果写过 不修改原来事件
+		mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN | EPOLLOUT);	//当缓冲区不满时继续写
+	} else if (buff->slen == 0) { //写完 修改为可读事件
+		mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN);	
+	}
+
 	return 0;
+}
+
+int do_fd_write(int fd)
+{
+	int send_len;
+	fd_buff_t *buff = &epinfo.fds[fd].sbf;
+	send_len = safe_tcp_send_n(fd, buff->sbf, buff->slen);
+
+	if (send_len == 0) {
+		return 0;
+	} else if (send_len > 0) {
+		if (send_len < buff->slen) {
+			memmove(buff->sbf, buff->sbf + send_len, buff->slen - send_len);
+			buff->slen -= send_len;
+		}
+	} else {
+		ERROR(0, "write fd error[fd=%u, err=%s]", fd, strerror(errno));
+	}
+
+	return send_len;
 }
