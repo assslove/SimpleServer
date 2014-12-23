@@ -41,6 +41,9 @@ typedef struct mem_block {
 } __attribute__((packed)) mem_block_t;
 
 
+extern const int blk_head_len;
+extern const int mem_head_len;
+
 /* @brief b放在q的尾部
  * @param q 共享内存队列
  * @param b 队列块

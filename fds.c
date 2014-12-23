@@ -38,15 +38,9 @@ fdsess_t *get_fd(int fd)
 	return g_hash_table_lookup(fds, &fd);
 }
 
-int save_fd(int fd, int id, int type, uint32_t ip, uint16_t port)
+int save_fd(fdsess_t *sess)
 {
-	fdsess_t *pfd = g_slice_alloc0(sizeof(fdsess_t));
-	pfd->fd = fd;
-	pfd->id = id;
-	pfd->type = type;
-	pfd->port = port;
-	pfd->ip = ip;
-	return 0;
+	g_hash_table_insert(fds, &sess->fd, sess);
 }
 
 void remove_fd(int fd)

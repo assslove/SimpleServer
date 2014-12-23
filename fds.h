@@ -10,14 +10,13 @@
 typedef struct fdsess {
 	int fd;
 	int id; //work
-	int type;
 	int port;
 	int ip;
 } fdsess_t;
 
 /* @brief 保存fd
  */
-int save_fd(int fd, int id, int type, uint32_t ip, uint16_t port);
+int save_fd(fdsess_t *fdsess);
 
 /* @brief 初始化fds
  */

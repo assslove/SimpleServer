@@ -18,4 +18,20 @@ int work_fini(int i);
  */
 int handle_mq_recv();
 
+/* @brief 处理块读取
+ */
+int do_blk_msg(mem_block_t *blk);
+
+/* @brief 处理服务器端的数据处理
+ */
+int do_proc_svr(int fd);
+
+/* @brief 处理管道
+ */
+int do_proc_pipe(int fd);
+
+/* @brief 处理组播
+ */
+int do_proc_mcast(int fd);
+
 #endif

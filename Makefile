@@ -4,9 +4,9 @@ LIBS = `pkg-config --cflags --libs glib-2.0`
 
 all : simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf epoll_cli
 
-simple_svr: simple_svr.c net_util.c mem_queue.c conf.h log.c util.c master.c work.c global.c  fds.c
+simple_svr: simple_svr.c net_util.c mem_queue.c conf.h log.c util.c master.c work.c global.c  fds.c outer.c
 	gcc -g -Wall -DENABLE_TRACE \
-		 -o simple_svr  simple_svr.c global.c net_util.c log.c util.c mem_queue.c conf.c master.c work.c  fds.c\
+		 -o simple_svr  simple_svr.c global.c net_util.c log.c util.c mem_queue.c conf.c master.c work.c  fds.c outer.c\
 		 `pkg-config --cflags --libs glib-2.0` 
 
 simple_cli: simple_cli.c util.c

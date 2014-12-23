@@ -24,6 +24,8 @@
 #include "global.h"
 #include "work.h"
 #include "log.h"
+#include "outer.h"
+#include "fds.h"
 
 int work_init(int i)
 {
@@ -77,16 +79,21 @@ int work_dispatch(int i)
 		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 100);
 		for (k = 0; k < nr; ++k) {
 			fd = epinfo.evs[k].data.fd;
-			switch (epinfo.fds[fd].type) {
-				case fd_type_cli:
-					break;
-				case fd_type_pipe:
-					break;
-				case fd_type_svr:
-					break;
-				case fd_type_mcast:
-					break;
-			}
+			if (epinfo.evs[k].events & EPOLLIN) {
+				switch (epinfo.fds[fd].type) {
+					case fd_type_pipe:
+						do_proc_pipe(fd);
+						break;
+					case fd_type_svr:
+						do_proc_svr(fd);
+						break;
+					case fd_type_mcast:
+						do_proc_mcast(fd);
+						break;
+					default:
+						break;
+				}
+			} 
 		}
 
 		//handle memqueue read
@@ -116,13 +123,94 @@ int work_fini(int i)
 
 int handle_mq_recv(int i)
 {
-	struct mem_queue_t *tmpq;	
+	struct mem_queue_t *recvq = &workmgr.works[i].recvq;
+	struct mem_queue_t *sendq = &workmgr.works[i].sendq;
+
 	struct mem_block_t *tmpblk;
 
-	tmpq = &workmgr.works[i].recvq;
-	while (tmpblk = mq_get(tmpq)) {
-		do_blk_exec(tmpblk);
+	while (tmpblk = mq_get(recvq)) {
+		switch (tmpblk->type) {
+			case BLK_MSG: //对客户端消息处理
+				do_blk_msg(tmpblk);
+				break;
+			case BLK_OPEN:
+				if (do_blk_open(tmpblk) == -1) { //处理块打开，如果打不到，则关闭
+					tmpblk->type = BLK_CLOSE;	
+					tmpblk->len = sizeof(mem_block_t);
+					mq_push(sendq, tmpblk, NULL);
+				}
+				break;
+			case BLK_CLOSE:
+				do_blk_close(recvq->fd); //处理关闭
+				break;
+		}
 		mq_pop(tmpq);
 	}
+	return 0;
+}
+
+int do_blk_msg(mem_block_t *blk)
+{
+	if (blk->len <= blk_len) {
+		ERROR(0, "err blk len[total_len=%u,blk_len=%u]", blk->len, blk_len);
+		return 0;
+	}
+
+	fdsess_t *fdsess = get_fd(blk->fd);
+	if (fdsess) {
+		if (so.proc_msg_from_cli(blk->data, blk->len - blk_len, fdsess)) {
+			close_cli(blk->fd); //断开连接
+		}
+	}
+	return 0;
+}
+
+int do_blk_open(mem_block_t *blk)
+{
+	fdsess_t *fdsess = get_fd(blk->fd);
+	if (fdsess || (blk->len != blk_head_len + 6)) {
+		ERROR(0, "fd open error[fd=%u,len=%u]", blk->fd, blk->len);
+		return -1;
+	} else {
+		fdsess_t *sess = g_slice_alloc(sizeof(fdsess_t));
+		sess->fd = mb->fd;
+		sess->id = mb->id;
+		sess->ip = *((uint32_t*)mb->data);
+		sess->port = *((uint16_t *)mb->data[4]);
+		save_fd(sess);
+	}
+	return 0;
+}
+
+int do_blk_close(mem_block_t *blk)
+{
+	fdsess_t *sess = get_fd(blk->fd);
+	if (!sess) {
+		ERROR(0, "[fd=%u] have closed", blk->fd);
+		return -1;
+	}
+	//处理接口关闭回调
+	so.on_cli_closed(blk->fd);
+	
+	remove_fd(blk->fd);
+
+	return 0;
+}
+
+int do_proc_mcast(int fd)
+{
+	static char buf[MCAST_MSG_LEN];
+	return 0;
+}
+
+int do_proc_svr(int fd) 
+{
+	return 0;
+}
+
+int do_proc_pipe(int fd) 
+{
+	static char pipe_buf[PIPE_MSG_LEN];
+	while (read(fd, pipe_buf, PIPE_MSG_LEN) == PIPE_MSG_LEN) {}
 	return 0;
 }

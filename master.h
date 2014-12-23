@@ -8,6 +8,7 @@ typedef struct svr_setting {
 	int max_msg_len;	// 最大消息长度
 	int max_buf_len;	//发送(接收)缓冲区最大长度 超过报错
 	char svr_name[32];	//服务器名字
+	int mcast_msg_len;  //组播包长
 } svr_setting_t;
 
 /* @brief master init

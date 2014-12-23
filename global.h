@@ -12,6 +12,8 @@
  */
 enum CONST_DEF{
 	MAX_WORKS = 1024, 
+	MCAST_MSG_LEN = 4096, 
+	PIPE_MSG_LEN = 1024
 };
 
 /* @brief 返回类型
@@ -20,6 +22,7 @@ enum RTYPE {
 	SUCCESS = 0,
 	ERROR = -1 
 };
+
 
 extern int g_argc;
 extern char **g_argv;
@@ -36,4 +39,5 @@ extern GHashTable *fds;
 extern int stop;
 extern list_head_t readlist;
 extern list_head_t closelist;
+
 #endif

@@ -25,6 +25,9 @@
 #include "mem_queue.h"
 #include "util.h"
 
+const int blk_head_len = sizeof(mem_block_t);
+const int mem_head_len = sizeof(mem_head_t);
+
 int mq_init(mem_queue_t *q, int size)
 {
 	q->len = size;	

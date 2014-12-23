@@ -28,6 +28,14 @@ enum fd_type {
 	fd_type_svr,  //服务端fd
 };
 
+/* @brief 消息块的类型
+ */
+enum BLK_TYPE {
+	BLK_MSG = 0, 
+	BLK_CLOSE = 1, 
+	BLK_OPEN = 2
+};
+
 /* @brief 工作进程配置项
  */
 typedef struct work {

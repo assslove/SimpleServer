@@ -37,7 +37,7 @@ int reg_data_so(const char* name)
 		ret_code = 0;
 	}
 
-	BOOT_LOG(ret_code, "dlopen %s", name);
+	BOOT(ret_code, "dlopen %s", name);
 }
 			
 int reg_so(const char* name, int flag)
@@ -45,52 +45,47 @@ int reg_so(const char* name, int flag)
 	char* error; 
 	int   ret_code = -1;
 	
-	dll.handle = dlopen(file_name, RTLD_NOW);
+	so.handle = dlopen(file_name, RTLD_NOW);
 	if ((error = dlerror()) != NULL) {
-		ERROR_LOG("dlopen error, %s", error);
+		ERROR(0, "dlopen error, %s", error);
 		goto out;
 	}
 	
-	DLFUNC_NO_ERROR(dll.handle, dll.init_service, "init_service");
-	DLFUNC_NO_ERROR(dll.handle, dll.fini_service, "fini_service");
-	DLFUNC_NO_ERROR(dll.handle, dll.proc_events, "proc_events");
-	DLFUNC_NO_ERROR(dll.handle, dll.proc_mcast_pkg, "proc_mcast_pkg");
-	DLFUNC_NO_ERROR(dll.handle, dll.proc_udp_pkg, "proc_udp_pkg");
+	DLFUNC_NO_ERROR(so.handle, so.serv_init, "serv_init");
+	DLFUNC_NO_ERROR(so.handle, so.serv_fini, "serv_fini");
+	DLFUNC_NO_ERROR(so.handle, so.handle_timers, "handle_timers");
+	DLFUNC_NO_ERROR(so.handle,	so.proc_mcast_msg, "proc_mcast_msg");
 
-	DLFUNC(dll.handle, dll.get_pkg_len, "get_pkg_len");
-	DLFUNC(dll.handle, dll.proc_pkg_from_client, "proc_pkg_from_client");
-	DLFUNC(dll.handle, dll.proc_pkg_from_serv, "proc_pkg_from_serv");
-	DLFUNC(dll.handle, dll.on_client_conn_closed, "on_client_conn_closed");
-	DLFUNC(dll.handle, dll.on_fd_closed, "on_fd_closed");
-
-	DLFUNC_NO_ERROR(dll.handle, dll.before_reload, "before_reload");
-	DLFUNC_NO_ERROR(dll.handle, dll.reload_global_data, "reload_global_data");
-	DLFUNC_NO_ERROR(dll.handle, dll.sync_service_info, "sync_service_info");
+	DLFUNC(so.handle, so.get_msg_len, "get_msg_len");
+	DLFUNC(so.handle, so.proc_cli_msg, "proc_cli_msg");
+	DLFUNC(so.handle, so.proc_serv_msg, "proc_serv_msg");
+	DLFUNC(so.handle, so.on_cli_closed, "on_cli_closed");
+	DLFUNC(so.handle, so.on_serv_closed, "on_serv_closed");
 
 	ret_code = 0;
 
 out:
 	if (!flag) {
-		BOOT_LOG(ret_code, "dlopen %s", file_name);
+		BOOT(ret_code, "dlopen %s", file_name);
 	} else {
-		DEBUG_LOG("RELOAD %s\t[%s]", file_name, (ret_code ? "FAIL" : "OK"));
+		INFO(0, "RELOAD %s [%s]", file_name, (ret_code ? "FAIL" : "OK"));
 		return ret_code;
 	}
 }
 
-void unregister_data_plugin()
+void unreg_data_so()
 {
-	if (dll.data_handle != NULL){
-		dlclose(dll.data_handle);
-		dll.data_handle = NULL;
+	if (so.data_handle != NULL){
+		dlclose(so.data_handle);
+		so.data_handle = NULL;
 	}
 }
 
-void unregister_plugin()
+void unreg_so()
 {
-	if (dll.handle != NULL){
-		dlclose(dll.handle);
-		dll.handle = NULL;
+	if (so.handle != NULL){
+		dlclose(so.handle);
+		so.handle = NULL;
 	}
 }
 
