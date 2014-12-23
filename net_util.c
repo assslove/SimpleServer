@@ -257,3 +257,14 @@ void raw2blk(int fd, mem_block_t &blk)
 {
 
 }
+
+
+int send_to_cli(int fd, void *msg, int len)
+{
+	return 0;
+}
+
+int send_to_svr(int fd, void *msg, int len)
+{
+	return 0;
+}

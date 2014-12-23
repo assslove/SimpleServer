@@ -130,7 +130,7 @@ int handle_mq_recv(int i)
 
 	while (tmpblk = mq_get(recvq)) {
 		switch (tmpblk->type) {
-			case BLK_MSG: //对客户端消息处理
+			case BLK_DATA: //对客户端消息处理
 				do_blk_msg(tmpblk);
 				break;
 			case BLK_OPEN:

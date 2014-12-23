@@ -18,27 +18,38 @@
 
 
 #include <iostream>
+#include <string.h>
+
 #include "fds.h"
 #include "outer.h"
+#include "log.h"
+#include "net_util.h"
 
 /* @brief 定义包
 */
 typedef struct proto_pkg {
 	int len;
-	int uid;
+	int id;
 	int seq;
 	int cmd;
 	int ret;
+	uint8_t data[];
 } __attribute__((packed))proto_pkg_t;
 
 extern "C" void handle_timers()
 {
-
 }
 
 extern "C" int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 {
-	return 0;
+	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
+
+	DEBUG(pkg->id, "len=%u,id=%u,seq=%u,cmd=%u,ret=%u", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret);
+	
+	uint32_t  cli[1024];
+	memcpy(cli, msg, pkg->len);
+
+	return send_to_cli(sess->fd, cli, pkg->len);
 }
 
 extern "C" int proc_serv_msg(int fd, void *msg, int len)
@@ -48,6 +59,7 @@ extern "C" int proc_serv_msg(int fd, void *msg, int len)
 
 extern "C" int on_cli_closed(int fd) 
 {
+	INFO(0, "fd=%u closed", fd);
 	return 0;
 }
 
@@ -58,15 +70,17 @@ extern "C" int on_serv_closed(int fd)
 
 extern "C" int serv_init(int ismaster) 
 {
+	INFO(0, "%s init", ismaster ? "master" : "work");
 	return 0;
 }
 
-extern "C" int serv_fini(int master) 
+extern "C" int serv_fini(int ismaster) 
 {
+	INFO(0, "%s fini", ismaster ? "master" : "work");
 	return 0;
 }
 
 extern "C" int	get_msg_len(int fd, const void *data, int len, int ismaster)
 {
-	return 0;
+	return *(uint32_t *)((uint8_t*)data);
 }

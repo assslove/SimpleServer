@@ -28,14 +28,6 @@ enum fd_type {
 	fd_type_svr,  //服务端fd
 };
 
-/* @brief 消息块的类型
- */
-enum BLK_TYPE {
-	BLK_MSG = 0, 
-	BLK_CLOSE = 1, 
-	BLK_OPEN = 2
-};
-
 /* @brief 工作进程配置项
  */
 typedef struct work {
@@ -149,5 +141,13 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events);
 /* @brief 
  */
 void raw2blk(int fd, mem_block_t &blk);
+
+/* @brief work进程向客户端发送信息调用的接口
+ */
+int send_to_cli(int fd, void *msg, int len);
+
+/* @brief work进程向所连服务器发送调用
+ */
+int send_to_svr(int fd, void *msg, int len);
 
 #endif
