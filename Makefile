@@ -29,6 +29,8 @@ test_linklist: test_linklist.c list.h
 	gcc -g -o test_linklist test_linklist.c
 epoll_cli: epoll_cli.c
 	gcc -g -o epoll_cli epoll_cli.c
+test_serv.so: test_serv.cpp
+	g++ -g -shared -fPIC test_serv.cpp -o test_serv.so 
 
 clean:
 	rm -rf *.o simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf

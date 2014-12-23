@@ -1,6 +1,8 @@
 #ifndef OUT_H_
 #define OUT_H_
 
+#include "fds.h"
+
 /* @brief 提供对业务逻辑的接口
 */
 #ifdef __cplusplus
