@@ -17,6 +17,13 @@ enum SERV_TYPE {
 	SERV_WORK = 0
 };
 
+/* @brief 缓存队列的类型
+ */
+enum CACHE_TYPE {
+	CACHE_READ = 1, 	
+	CACHE_CLOSE = 2
+};
+
 /* fd 类型
  */
 enum fd_type {
@@ -71,10 +78,10 @@ typedef struct {
 	int fd;
 	int idx; //epinfo->fds index
 	int id;  //work id index
-	fd_buff_t buff;
-	fd_addr_t addr;
-	list_head_t closelist; //待关闭链表
-	list_head_t readlist;  //待读取链表
+	uint8_t flag; //标志 CACHE_TYPE
+	fd_buff_t buff; //缓存
+	fd_addr_t addr; //地址信息
+	list_head_t node;   //在可读或者关闭链表的位置
 } __attribute__((packed)) fd_wrap_t;
 
 /* @brief 对epoll的封装
@@ -86,6 +93,8 @@ typedef struct {
 	fd_wrap_t *fds;
 	int max_fd;
 	int max_ev;
+	list_head_t readlist; //待读取链表
+	list_head_t closelist; //待关闭链表
 }__attribute__((packed)) epoll_info_t;
 
 

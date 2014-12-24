@@ -49,5 +49,5 @@ GHashTable *fds;
 //stop flag
 int stop;
 
-list_head_t readlist;
-list_head_t closelist;
+list_head_t readlist; //可读队列
+list_head_t closelist; //待关闭队列

@@ -101,8 +101,9 @@ int master_dispatch()
 {
 	while (!stop) {
 		//handle readlist
+		handle_readlist();
 		//handle closelist
-		
+		handle_closelist();
 		//处理发送队列
 		handle_mq_send();
 
@@ -278,8 +279,10 @@ int handle_read(int fd)
 
 	if (buff->rbuf == setting.max_msg_len) {
 		//增加到可读队列里面
+		do_add_to_readlist(fd);	
 	} else if {
 		//从可读队列里面删除
+		do_del_from_readlist(fd);	
 	}
 
 	return recv_len;
@@ -402,4 +405,62 @@ int do_fd_write(int fd)
 	}
 
 	return send_len;
+}
+
+int handle_readlist()
+{
+	fd_wrap_t *pfd, *tmpfd;
+	list_for_each_entry_safe(pfd, tmpfd, &readlist, readlist) {
+		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
+		if (pfd->type == fd_type_listen) {
+			
+		} else if (handle_cli(pfd->fd) == -1) { //处理客户端的请求 读取
+			//do_del_fd();	
+		}
+		list_del(&pfd->readlist);
+	}
+
+	return 0;
+}
+
+int handle_closelist()
+{
+	return 0;
+}
+
+int do_add_to_readlist(int fd) 
+{
+	if (!epinfo.fds[fd].flag) {
+		list_add_tail(&epinfo.fds[fd].readlist, &epinfo.node);
+		epinfo.fds[fd].flag |= CACHE_READ;
+		TRACE(0, "add to readlist [fd=%u]", fd);
+	}
+}
+
+void do_del_from_readlist(int fd)
+{
+	if (epinfo.fds[fd].flag & CACHE_READ) {
+		epinfo.fds[fd].flag = 0;
+		list_del_init(&epinfo.fds[fd].node);
+		TRACE(0, "del from readlist [fd=%u]", fd);
+	}
+}
+
+int do_add_to_closelist(int fd) 
+{
+	do_del_from_readlist(fd);
+	if (!(epinfo.fds[fd].flag & CACHE_CLOSE)) {
+		list_add_tail(&epinfo.fds[fd].closelist, &epinfo.node);
+		epinfo.fds[fd].flag |= CACHE_CLOSE;
+		TRACE(0, "add to closelist[fd=%u]", fd);
+	}
+}
+
+void do_del_from_closelist(int fd)
+{
+	if (epinfo.fds[fd].flag & CACHE_CLOSE) {
+		epinfo.fds[fd].flag = 0;
+		list_del_init(&epinfo.fds[fd].node);
+		TRACE(0, "del from closelist[fd=%u]", fd);
+	}
 }
