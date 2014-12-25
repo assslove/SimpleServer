@@ -51,16 +51,17 @@ int reg_so(const char* name, int flag)
 		goto out;
 	}
 	
-	DLFUNC_NO_ERROR(so.handle, so.serv_init, "serv_init");
-	DLFUNC_NO_ERROR(so.handle, so.serv_fini, "serv_fini");
-	DLFUNC_NO_ERROR(so.handle, so.handle_timers, "handle_timers");
-	DLFUNC_NO_ERROR(so.handle,	so.proc_mcast_msg, "proc_mcast_msg");
+	DLFUNC(so.handle, so.serv_init, "serv_init");
+	DLFUNC(so.handle, so.serv_fini, "serv_fini");
+	DLFUNC(so.handle, so.handle_timers, "handle_timers");
 
 	DLFUNC(so.handle, so.get_msg_len, "get_msg_len");
 	DLFUNC(so.handle, so.proc_cli_msg, "proc_cli_msg");
 	DLFUNC(so.handle, so.proc_serv_msg, "proc_serv_msg");
 	DLFUNC(so.handle, so.on_cli_closed, "on_cli_closed");
 	DLFUNC(so.handle, so.on_serv_closed, "on_serv_closed");
+
+	DLFUNC_NO_ERROR(so.handle,	so.proc_mcast_msg, "proc_mcast_msg");
 
 	ret_code = 0;
 

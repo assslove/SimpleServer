@@ -55,12 +55,16 @@ int work_init(int i)
 	}
 	
 	//close mem_queue pipe
-
 	int k = 0;
 	for (; k < workmgr.nr_used; k++) {
-		if (k != i) {
+		if (k == i) {
 			close(work->rq.pipefd[1]);
 			close(work->wq.pipefd[0]);
+		} else { //其它都关闭
+			close(workmgr.works[k].rq.pipefd[0]);
+			close(workmgr.works[k].rq.pipefd[1]);
+			close(workmgr.works[k].sq.pipefd[0]);
+			close(workmgr.works[k].sq.pipefd[1]);
 		}
 	}
 
@@ -76,7 +80,7 @@ int work_dispatch(int i)
 	while (!stop) {
 		int k = 0;
 		int fd = 0;
-		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 100);
+		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
 		for (k = 0; k < nr; ++k) {
 			fd = epinfo.evs[k].data.fd;
 			if (epinfo.evs[k].events & EPOLLIN) {
@@ -123,8 +127,8 @@ int work_fini(int i)
 
 int handle_mq_recv(int i)
 {
-	struct mem_queue_t *recvq = &workmgr.works[i].recvq;
-	struct mem_queue_t *sendq = &workmgr.works[i].sendq;
+	struct mem_queue_t *recvq = &workmgr.works[i].rq;
+	struct mem_queue_t *sendq = &workmgr.works[i].sq;
 
 	struct mem_block_t *tmpblk;
 
@@ -213,4 +217,20 @@ int do_proc_pipe(int fd)
 	static char pipe_buf[PIPE_MSG_LEN];
 	while (read(fd, pipe_buf, PIPE_MSG_LEN) == PIPE_MSG_LEN) {}
 	return 0;
+}
+
+void close_cli(int fd)
+{
+	fdsess_t *sess = get_fd(fd);
+	if (!sess) {
+		return ;
+	}
+
+	mem_block_t blk;
+	blk.id = sess->id;
+	blk.len = blk_head_len;
+	blk.type = BLK_CLOSE;
+	blk.fd = fd;
+	shmq_push(workmgr.works[blk.id].sq, &blk, NULL);
+	//do_blk_close(&blk); 不要重复执行
 }

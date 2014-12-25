@@ -85,8 +85,7 @@ int main(int argc, char* argv[])
 			work_fini(i);
 			exit(0);
 		} else { //parent
-			master_init_for_work(i);
-			int ret = master_listen(i);
+			ret = master_listen(i);
 			if (ret == -1) {
 				ERROR(0, "%s", strerror(errno));
 				goto fail;

@@ -34,4 +34,8 @@ int do_proc_pipe(int fd);
  */
 int do_proc_mcast(int fd);
 
+/* @brief 关闭fd
+ */
+void close_cli(int fd);
+
 #endif

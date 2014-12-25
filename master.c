@@ -69,7 +69,7 @@ int master_init()
 int master_listen(int i)
 {
 	work_t *work = &workmgr.works[i];
-	int listenfd = safe_socket_listen(work->ip, work->port, SOCK_STREAM, 1024, 1024);
+	int listenfd = safe_socket_listen(work->ip, work->port, SOCK_STREAM, 1024, setting.raw_buf_len);
 	if (listenfd == -1) {
 		ERROR(0, "listen error[i][%s]", i, strerror(errno));
 		return -1;
@@ -90,11 +90,20 @@ int master_listen(int i)
 		return -1;
 	}
 
+	if ((ret = add_fdinfo_to_epinfo(work->rq.pipefd[1], i, fd_type_pipe, 0, 0)) == -1) {
+		return -1;
+	}
+
+	if ((ret = add_fdinfo_to_epinfo(work->sq.pipefd[0], i, fd_type_pipe, 0, 0)) == -1) { 
+		return -1;
+	} 
+
 	//close pipe
-	close(work->rq.pipefd[1]); //接收管道关闭写
-	close(work->wq.pipefd[0]); //发送管理关闭读
+	close(work->rq.pipefd[0]); //接收管道关闭读
+	close(work->wq.pipefd[1]); //发送管理关闭写
 
 	INFO(0, "serv [%d] have listened", i);
+
 	return 0;
 }
 
@@ -108,10 +117,7 @@ int master_dispatch()
 		//处理发送队列
 		handle_mq_send();
 
-		int i;
-		int fd, newfd = 0;
-		struct sockaddr_in cliaddr;
-		int ret = 0;
+		int i, fd, ret;
 		int n = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
 
 		if (n == -1 && errno != EINTR) {
@@ -141,7 +147,7 @@ int master_dispatch()
 						break;
 				}
 			} else if (epinfo.evs[i].events && EPOLLOUT) { //write
-				if (epinfo.fds[fd].buff.sbf > 0) {
+				if (epinfo.fds[fd].buff.slen > 0) {
 					if (do_fd_write(fd) == -1) {
 						do_fd_close(fd);
 					}
@@ -149,7 +155,6 @@ int master_dispatch()
 
 				if (epinfo.fds[fd].buff.slen == 0) { //发送完毕
 					mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN);
-					
 				}
 			}
 		}
@@ -191,7 +196,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 
 	int ret = epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, fd, &event);	
 	if (ret == -1) {
-		ERROR(0, "err ctl add [%s]", strerror(errno));
+		ERROR(0, "err ctl add [fd=%u][%s]", fd, strerror(errno));
 		return -1;
 	}
 
@@ -325,6 +330,10 @@ void handle_mq_send()
 
 int do_blk_send(mem_block_t *blk)
 {
+	if (blk->type == BLK_CLOSE) { //如果是待关闭的块 这个是由子进程通知的
+		do_add_to_closelist(blk->fd); //增加进去 有可能重复发给子进程，但是没有关系的
+		return 0;
+	}
 	//合法性校验
 	return do_fd_send(blk->fd, blk->data, blk->len - setting.blk_len);	
 }
@@ -552,21 +561,25 @@ int master_init_for_work(int id)
 	int i, ret;
 	ret = mq_init(workmgr.works[id].sq, setting.mem_queue_len);
 	if (ret == -1) {
+		ERROR(0, "map sendq failed[id=%d,err=%s]", id, strerror(errno));
 		return -1;
 	}
 
 	ret = mq_init(workmgr.works[id].rq, setting.mem_queue_len);
 	if (ret == -1) {
+		ERROR(0, "map recvq failed[id=%d,err=%s]", id, strerror(errno));
 		return -1;
 	}
 
-	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) {
+	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) { //发送队列关闭写管道
 		return -1;
-	}
+	} 
 
-	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) {
+	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].rq.pipefd[1], id, fd_type_pipe, 0, 0)) == -1) { //接收队列关闭读管道
 		return -1;
 	}
 
 	//close unused pipefd
+	close(workmgr.works[id].sq.pipefd[1]);
+	close(workmgr.works[id].rq.pipefd[0]);
 }
