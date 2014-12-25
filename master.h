@@ -85,4 +85,12 @@ int do_add_to_closelist(int fd);
  */
 void do_del_from_closelist(int fd);
 
+/* @brief 执行fd关闭
+ */
+int do_fd_close(int fd);
+
+/* @brief 执行fd打开
+ */
+int do_fd_open(int fd);
+
 #endif

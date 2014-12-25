@@ -33,6 +33,7 @@ enum fd_type {
 	fd_type_pipe, 
 	fd_type_cli,  //客户端fd
 	fd_type_svr,  //服务端fd
+	fd_type_null, //空类型
 };
 
 /* @brief 工作进程配置项
@@ -159,4 +160,7 @@ int send_to_cli(int fd, void *msg, int len);
  */
 int send_to_svr(int fd, void *msg, int len);
 
+/* @brief 释放缓存区
+ */
+void free_buff(fd_buff_t *buff);
 #endif

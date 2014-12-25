@@ -410,12 +410,12 @@ int do_fd_write(int fd)
 int handle_readlist()
 {
 	fd_wrap_t *pfd, *tmpfd;
-	list_for_each_entry_safe(pfd, tmpfd, &readlist, readlist) {
+	list_for_each_entry_safe(pfd, tmpfd, &readlist, node) {
 		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
-		if (pfd->type == fd_type_listen) {
+		if (pfd->type == fd_type_listen) { //打开连接
 			
 		} else if (handle_cli(pfd->fd) == -1) { //处理客户端的请求 读取
-			//do_del_fd();	
+			do_add_to_readlist(pfd->fd);
 		}
 		list_del(&pfd->readlist);
 	}
@@ -425,8 +425,21 @@ int handle_readlist()
 
 int handle_closelist()
 {
+	fd_wrap_t *pfd, *tmpfd;
+	list_for_each_entry_safe(pfd, tmpfd, &readlist, node) {
+		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
+		if (pfd->buff.slen > 0) { //不再接收
+			//写入缓存区
+		}
+
+		do_fd_close(fd);
+
+		list_del(&pfd->readlist);
+	}
+
 	return 0;
 }
+
 
 int do_add_to_readlist(int fd) 
 {
@@ -463,4 +476,50 @@ void do_del_from_closelist(int fd)
 		list_del_init(&epinfo.fds[fd].node);
 		TRACE(0, "del from closelist[fd=%u]", fd);
 	}
+}
+
+int do_fd_close(int fd)
+{
+	if (epinfo.fds[fd].type == fd_type_null) {
+		return 0;
+	}
+
+	mem_block_t blk;
+	blk.id = epinfo.fds[fd].id;
+	blk.fd = fd;
+	blk.type = BLK_CLOSE;
+	blk.len = blk_head_len;
+
+	mq_push(workmgr.works[blk.id].recvq, &blk, NULL);
+
+	//从可读队列中删除
+	do_del_from_readlist(fd);
+	//从待关闭队列中删除
+	do_del_from_closelist(fd);
+
+	//释放缓冲区
+	free_buff(&epinfo.fds[fd].buff);
+	epinfo.fds[fd].type = fd_type_null;
+
+	close(fd);
+	--epinfo.count;
+
+	//替换最大fd
+	if (epinfo.maxfd == fd) {
+		int i; 
+		for (i = fd - 1; i >= 0; --i) {
+			if (epinfo.fds[i].type == fd_type_null) {
+				break;
+			}
+		}
+		epinfo.maxfd = i;
+	}
+
+	INFO(0, "close [fd=%d]", fd);
+}
+
+
+int do_fd_open(int fd) 
+{
+	return 0;
 }
