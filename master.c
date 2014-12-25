@@ -141,7 +141,7 @@ int master_dispatch()
 			} else if (epinfo.evs[i].events && EPOLLOUT) { //write
 				if (epinfo.fds[fd].buff.sbf > 0) {
 					if (do_fd_write(fd) == -1) {
-						//do_fd_del(fd);
+						do_fd_close(fd);
 					}
 				}
 
@@ -428,13 +428,10 @@ int handle_closelist()
 	fd_wrap_t *pfd, *tmpfd;
 	list_for_each_entry_safe(pfd, tmpfd, &readlist, node) {
 		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
-		if (pfd->buff.slen > 0) { //不再接收
-			//写入缓存区
+		if (pfd->buff.slen > 0) {	//不再接收
+			do_fd_write(fd);		//写入缓存区
 		}
-
 		do_fd_close(fd);
-
-		list_del(&pfd->readlist);
 	}
 
 	return 0;
