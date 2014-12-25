@@ -3,10 +3,9 @@
 
 #include <glib.h>
 
-#include "net_util.h"
-#include "master.h"
-#include "fds.h"
-#include "list.h"
+struct work_mgr;
+struct epoll_info;
+struct svr_setting;
 
 /* 定义的一些常量
  */
@@ -31,9 +30,9 @@ extern char *argv_end;
 extern char *env_end;
 
 extern int chl_pids[MAX_WORKS];
-extern work_mgr_t workmgr;
-extern epoll_info_t epinfo;
-extern svr_setting_t setting;
+extern struct work_mgr workmgr;
+extern struct epoll_info  epinfo;
+extern struct svr_setting  setting;
 extern GHashTable *sim_data;
 extern GHashTable *fds;
 extern int stop;

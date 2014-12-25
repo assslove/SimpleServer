@@ -2,6 +2,7 @@
 #define _LOG_H_
 
 #include <stdint.h>
+#include <stdio.h>
 
 /* @brief log lv
  */

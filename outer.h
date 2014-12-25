@@ -14,7 +14,7 @@ extern "C" {
 		void*   data_handle; 
 		void*   handle;		
 
-		void	(*handle_timers)();
+		void	(*handle_timer)();
 
 		int		(*proc_cli_msg)(void* msg, int len, fdsess_t* fdsess);
 

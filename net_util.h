@@ -44,7 +44,7 @@ typedef struct work {
 	uint16_t port;
 	uint8_t proto_type; 
 	mem_queue_t rq;	 //接收队列
-	mem_queue_t wq;  //发送队列
+	mem_queue_t sq;  //发送队列
 }__attribute__((packed)) work_t;
 
 /* @brief work配置项
@@ -63,6 +63,7 @@ typedef struct fd_buff{
 	char *sbf;			//发送缓冲区
 	char *rbf;			//接收缓冲区
 	int msglen;			//消息长度
+	int sbf_size;		//大小
 }__attribute__((packed)) fd_buff_t;
 
 /* @brief 地址结构
@@ -74,7 +75,7 @@ typedef struct fd_addr {
 
 /* @brief fd信息
  */
-typedef struct {
+typedef struct fd_wrap {
 	uint8_t type;
 	int fd;
 	int idx; //epinfo->fds index
@@ -87,17 +88,28 @@ typedef struct {
 
 /* @brief 对epoll的封装
  */
-typedef struct {
-	uint32_t seq; 
+typedef struct epoll_info {
 	int epfd;
 	struct epoll_event *evs;
 	fd_wrap_t *fds;
-	int max_fd;
-	int max_ev;
+	int maxfd;
+	int maxev;
+	uint32_t seq; 
+	uint32_t count;
 	list_head_t readlist; //待读取链表
 	list_head_t closelist; //待关闭链表
 }__attribute__((packed)) epoll_info_t;
 
+typedef struct svr_setting {
+	int nr_max_event;	// 最大的事件类型 epoll_create ms不需要这个参数了
+	int nr_max_fd;		// fd max num
+	int mem_queue_len;	// 共享内存队列长度
+	int max_msg_len;	// 最大消息长度
+	int max_buf_len;	//发送(接收)缓冲区最大长度 超过报错
+	char svr_name[32];	//服务器名字
+	int mcast_msg_len;  //组播包长
+	int raw_buf_len;	//socket buf 长度
+} svr_setting_t;
 
 /*	
  *	@brief net util
@@ -150,7 +162,7 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events);
 
 /* @brief  将消息转化为blk
  */
-void raw2blk(int fd, mem_block_t &blk);
+void raw2blk(int fd, mem_block_t *blk);
 
 /* @brief work进程向客户端发送信息调用的接口
  */

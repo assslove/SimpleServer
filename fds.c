@@ -21,6 +21,7 @@
 #include <glib.h>
 
 #include "global.h"
+#include "fds.h"
 
 void do_free_fdsess(void *fdsess)
 {
@@ -38,9 +39,9 @@ fdsess_t *get_fd(int fd)
 	return g_hash_table_lookup(fds, &fd);
 }
 
-int save_fd(fdsess_t *sess)
+void save_fd(fdsess_t *sess)
 {
-	g_hash_table_insert(fds, &sess->fd, sess);
+	g_hash_table_insert(fds, &(sess->fd), sess);
 }
 
 void remove_fd(int fd)

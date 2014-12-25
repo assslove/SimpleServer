@@ -3,6 +3,7 @@
 #include <dlfcn.h>
 
 #include "outer.h"
+#include "log.h"
 
 serv_if_t so;
 
@@ -31,13 +32,15 @@ int reg_data_so(const char* name)
 		return 0;
 	}
 
-	so.data_handle = dlopen(file_name, RTLD_NOW | RTLD_GLOBAL);
+	so.data_handle = dlopen(name, RTLD_NOW | RTLD_GLOBAL);
 	if ((error = dlerror()) != NULL) {
 		ERROR(0, "dlopen error, %s", error);
 		ret_code = 0;
 	}
 
 	BOOT(ret_code, "dlopen %s", name);
+
+	return ret_code;
 }
 			
 int reg_so(const char* name, int flag)
@@ -45,7 +48,7 @@ int reg_so(const char* name, int flag)
 	char* error; 
 	int   ret_code = -1;
 	
-	so.handle = dlopen(file_name, RTLD_NOW);
+	so.handle = dlopen(name, RTLD_NOW);
 	if ((error = dlerror()) != NULL) {
 		ERROR(0, "dlopen error, %s", error);
 		goto out;
@@ -53,7 +56,7 @@ int reg_so(const char* name, int flag)
 	
 	DLFUNC(so.handle, so.serv_init, "serv_init");
 	DLFUNC(so.handle, so.serv_fini, "serv_fini");
-	DLFUNC(so.handle, so.handle_timers, "handle_timers");
+	DLFUNC(so.handle, so.handle_timer, "handle_timer");
 
 	DLFUNC(so.handle, so.get_msg_len, "get_msg_len");
 	DLFUNC(so.handle, so.proc_cli_msg, "proc_cli_msg");
@@ -61,17 +64,17 @@ int reg_so(const char* name, int flag)
 	DLFUNC(so.handle, so.on_cli_closed, "on_cli_closed");
 	DLFUNC(so.handle, so.on_serv_closed, "on_serv_closed");
 
-	DLFUNC_NO_ERROR(so.handle,	so.proc_mcast_msg, "proc_mcast_msg");
+	//DLFUNC_NO_ERROR(so.handle,	so.proc_mcast_msg, "proc_mcast_msg");
 
 	ret_code = 0;
 
 out:
 	if (!flag) {
-		BOOT(ret_code, "dlopen %s", file_name);
+		BOOT(ret_code, "dlopen %s", name);
 	} else {
-		INFO(0, "RELOAD %s [%s]", file_name, (ret_code ? "FAIL" : "OK"));
-		return ret_code;
+		INFO(0, "RELOAD %s [%s]", name, (ret_code ? "FAIL" : "OK"));
 	}
+	return ret_code;
 }
 
 void unreg_data_so()

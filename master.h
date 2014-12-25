@@ -1,17 +1,6 @@
 #ifndef MASTER_H_
 #define MASTER_H_
 
-typedef struct svr_setting {
-	int nr_max_event;	// 最大的事件类型 epoll_create ms不需要这个参数了
-	int nr_max_fd;		// fd max num
-	int mem_queue_len;	// 共享内存队列长度
-	int max_msg_len;	// 最大消息长度
-	int max_buf_len;	//发送(接收)缓冲区最大长度 超过报错
-	char svr_name[32];	//服务器名字
-	int mcast_msg_len;  //组播包长
-	int raw_buf_len;	//socket buf 长度
-} svr_setting_t;
-
 /* @brief master init
  * @note 
  */
@@ -48,11 +37,11 @@ int handle_pipe(int fd);
 
 /* @brief 处理往客户端发送消息
  */
-int handle_mq_send();
+void handle_mq_send();
 
 /* @brief 发送消息块
  */
-int do_blk_send(mem_block_t &blk);
+int do_blk_send(mem_block_t *blk);
 
 /* @brief 处理消息的发送
  */
@@ -72,15 +61,15 @@ int handle_closelist();
 
 /* @brif 将fd增加 可读队列里面
  */
-int do_add_to_readlist(int fd);
+void do_add_to_readlist(int fd);
 
 /* @brief fd从可读队列删除
  */
-void do_del_from_readlist(int fd)
+void do_del_from_readlist(int fd);
 
 /*  @brief 将fd增加到待关闭队列里面
 */
-int do_add_to_closelist(int fd);
+void do_add_to_closelist(int fd);
 
 /* @brief 将fd从关闭队列里面删除
  */

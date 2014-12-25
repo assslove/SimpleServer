@@ -9,19 +9,18 @@
  */
 typedef struct fdsess {
 	int fd;
-	int id; //work
-	int port;
+	int id; //work idx
 	int ip;
+	int port;
 } fdsess_t;
 
 /* @brief 保存fd
  */
-int save_fd(fdsess_t *fdsess);
+void save_fd(fdsess_t *fdsess);
 
 /* @brief 初始化fds
  */
 int	init_fds();
-
 
 /* @brief 获取fd
  */

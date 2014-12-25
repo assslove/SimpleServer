@@ -315,13 +315,13 @@ int handle_pipe(fd)
 
 void handle_mq_send()
 {
-	struct mem_queue_t *tmpq;	
-	struct mem_block_t *tmpblk;
+	mem_queue_t *tmpq;	
+	mem_block_t *tmpblk;
 
 	int i = 0;
 	for ( ; i < workmgr.nr_used; ++i) {
-		tmpq = &workmgr.works[i].sendq;
-		while (tmpblk = mq_get(tmpq)) { //获取消息
+		tmpq = &workmgr.works[i].sq;
+		while ((tmpblk = mq_get(tmpq)) != NULL) { //获取消息
 			do_blk_send(tmpblk);
 			mq_pop(tmpq); //删除	
 		}
@@ -335,7 +335,7 @@ int do_blk_send(mem_block_t *blk)
 		return 0;
 	}
 	//合法性校验
-	return do_fd_send(blk->fd, blk->data, blk->len - setting.blk_len);	
+	return do_fd_send(blk->fd, blk->data, blk->len - blk_head_len);	
 }
 
 int do_fd_send(int fd, void *data, int len)
@@ -370,7 +370,7 @@ int do_fd_send(int fd, void *data, int len)
 			}
 			buff->sbf_size = left_len;
 		} else if (buff->sbf_size < buff->slen + left_len) {
-			buff->sbf = (char *)realloc(buff->rbf, buff->len + left_len);
+			buff->sbf = (char *)realloc(buff->sbf, buff->slen + left_len);
 			if (!buff->sbf) {
 				ERROR(0, "realloc err, [err=%s]", strerror(errno));
 				return -1;
@@ -381,9 +381,9 @@ int do_fd_send(int fd, void *data, int len)
 		memcpy(buff->sbf + buff->slen, (char *)data + send_len, left_len);
 		buff->slen += left_len;
 
-		if (setting.max_sbf_len && setting.max_sbf_len < buff->slen) { //如果大于最大发送缓冲区
-			ERROR(0, "sendbuf is exceeded max[fd=%u, buflen=%u,slen=%u]", fd, setting.max_sbf_len, buff->slen);
-			//do_fd_del(fd);
+		if (setting.max_buf_len && setting.max_buf_len < buff->slen) { //如果大于最大发送缓冲区
+			ERROR(0, "sendbuf is exceeded max[fd=%d,buflen=%d,slen=%d]", fd, setting.max_buf_len, buff->slen);
+			do_fd_close(fd);
 			return -1;
 
 		}
@@ -401,7 +401,7 @@ int do_fd_send(int fd, void *data, int len)
 int do_fd_write(int fd)
 {
 	int send_len;
-	fd_buff_t *buff = &epinfo.fds[fd].sbf;
+	fd_buff_t *buff = &epinfo.fds[fd].buff;
 	send_len = safe_tcp_send_n(fd, buff->sbf, buff->slen);
 
 	if (send_len == 0) {
@@ -421,10 +421,10 @@ int do_fd_write(int fd)
 int handle_readlist()
 {
 	fd_wrap_t *pfd, *tmpfd;
-	list_for_each_entry_safe(pfd, tmpfd, &readlist, node) {
+	list_for_each_entry_safe(pfd, tmpfd, &epinfo.readlist, node) {
 		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
 		if (pfd->type == fd_type_listen) { //打开连接
-			while(do_fd_open(pdf->fd)) {}	 //应该不会执行
+			while(do_fd_open(pfd->fd)) {}	 //应该不会执行
 		} else if (handle_cli(pfd->fd) == -1) { //处理客户端的请求 读取
 			do_fd_close(pfd->fd); //接收失败 关闭
 		}
@@ -436,22 +436,22 @@ int handle_readlist()
 int handle_closelist()
 {
 	fd_wrap_t *pfd, *tmpfd;
-	list_for_each_entry_safe(pfd, tmpfd, &readlist, node) {
+	list_for_each_entry_safe(pfd, tmpfd, &epinfo.closelist, node) {
 		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
 		if (pfd->buff.slen > 0) {	//不再接收
-			do_fd_write(fd);		//写入缓存区
+			do_fd_write(pfd->fd);		//写入缓存区
 		}
-		do_fd_close(fd);
+		do_fd_close(pfd->fd);
 	}
 
 	return 0;
 }
 
 
-int do_add_to_readlist(int fd) 
+void do_add_to_readlist(int fd) 
 {
 	if (!epinfo.fds[fd].flag) {
-		list_add_tail(&epinfo.fds[fd].readlist, &epinfo.node);
+		list_add_tail(&epinfo.fds[fd].node, &epinfo.readlist);
 		epinfo.fds[fd].flag |= CACHE_READ;
 		TRACE(0, "add to readlist [fd=%u]", fd);
 	}
@@ -466,11 +466,11 @@ void do_del_from_readlist(int fd)
 	}
 }
 
-int do_add_to_closelist(int fd) 
+void do_add_to_closelist(int fd) 
 {
 	do_del_from_readlist(fd);
 	if (!(epinfo.fds[fd].flag & CACHE_CLOSE)) {
-		list_add_tail(&epinfo.fds[fd].closelist, &epinfo.node);
+		list_add_tail(&epinfo.fds[fd].node, &epinfo.readlist);
 		epinfo.fds[fd].flag |= CACHE_CLOSE;
 		TRACE(0, "add to closelist[fd=%u]", fd);
 	}
@@ -497,7 +497,7 @@ int do_fd_close(int fd)
 	blk.type = BLK_CLOSE;
 	blk.len = blk_head_len;
 
-	mq_push(workmgr.works[blk.id].recvq, &blk, NULL);
+	mq_push(&workmgr.works[blk.id].rq, &blk, NULL);
 
 	//从可读队列中删除
 	do_del_from_readlist(fd);
@@ -523,12 +523,15 @@ int do_fd_close(int fd)
 	}
 
 	INFO(0, "close [fd=%d]", fd);
+
+	return 0;
 }
 
 
 int do_fd_open(int fd) 
 {
 	struct sockaddr_in cliaddr;
+	int ret;
 	int newfd = safe_tcp_accept(fd, &cliaddr, 1);	
 	if (newfd > 0) {
 		if ((ret = add_fdinfo_to_epinfo(newfd, epinfo.fds[fd].idx, fd_type_cli, \
@@ -536,13 +539,13 @@ int do_fd_open(int fd)
 			return 0;
 		}
 
-		struct mem_block_t blk;
+		mem_block_t blk;
 		blk.id = epinfo.fds[newfd].id;
 		blk.fd = newfd;
 		blk.type = BLK_OPEN;
 		blk.len = blk_head_len + sizeof(fd_addr_t);
 
-		if ((mq_push(&workmgr.works[blk.id].rq, &blk, epinfo.fds[fd].addr)) == -1) {
+		if ((mq_push(&workmgr.works[blk.id].rq, &blk, &epinfo.fds[fd].addr)) == -1) {
 			do_fd_close(fd); //不需要通知客户端
 		}
 	}  
@@ -558,14 +561,14 @@ int init_setting()
 
 int master_init_for_work(int id) 
 {
-	int i, ret;
-	ret = mq_init(workmgr.works[id].sq, setting.mem_queue_len);
+	int ret;
+	ret = mq_init(&workmgr.works[id].sq, setting.mem_queue_len);
 	if (ret == -1) {
 		ERROR(0, "map sendq failed[id=%d,err=%s]", id, strerror(errno));
 		return -1;
 	}
 
-	ret = mq_init(workmgr.works[id].rq, setting.mem_queue_len);
+	ret = mq_init(&workmgr.works[id].rq, setting.mem_queue_len);
 	if (ret == -1) {
 		ERROR(0, "map recvq failed[id=%d,err=%s]", id, strerror(errno));
 		return -1;
@@ -582,4 +585,6 @@ int master_init_for_work(int id)
 	//close unused pipefd
 	close(workmgr.works[id].sq.pipefd[1]);
 	close(workmgr.works[id].rq.pipefd[0]);
+
+	return 0;
 }

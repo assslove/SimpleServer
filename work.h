@@ -22,6 +22,14 @@ int handle_mq_recv();
  */
 int do_blk_msg(mem_block_t *blk);
 
+/* @brief 处理块关闭
+ */
+int do_blk_close(mem_block_t *blk);
+
+/* @brief 处理块打开
+ */
+int do_blk_open(mem_block_t *blk);
+
 /* @brief 处理服务器端的数据处理
  */
 int do_proc_svr(int fd);

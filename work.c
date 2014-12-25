@@ -18,6 +18,7 @@
 
 #include <errno.h>
 #include <sys/epoll.h>
+#include <malloc.h>
 
 #include "net_util.h"
 #include "util.h"
@@ -26,6 +27,7 @@
 #include "log.h"
 #include "outer.h"
 #include "fds.h"
+#include "mem_queue.h"
 
 int work_init(int i)
 {
@@ -59,7 +61,7 @@ int work_init(int i)
 	for (; k < workmgr.nr_used; k++) {
 		if (k == i) {
 			close(work->rq.pipefd[1]);
-			close(work->wq.pipefd[0]);
+			close(work->sq.pipefd[0]);
 		} else { //其它都关闭
 			close(workmgr.works[k].rq.pipefd[0]);
 			close(workmgr.works[k].rq.pipefd[1]);
@@ -114,8 +116,8 @@ int work_dispatch(int i)
 int work_fini(int i)
 {
 	work_t *work = &workmgr.works[i];
-	mq_fini(&work->rq, setting.mem_queue_len);
-	mq_fini(&work->wq, setting.mem_queue_len);
+	mq_fini(&(work->rq), setting.mem_queue_len);
+	mq_fini(&(work->sq), setting.mem_queue_len);
 
 	close(epinfo.epfd);
 	free(epinfo.evs);
@@ -127,12 +129,11 @@ int work_fini(int i)
 
 int handle_mq_recv(int i)
 {
-	struct mem_queue_t *recvq = &workmgr.works[i].rq;
-	struct mem_queue_t *sendq = &workmgr.works[i].sq;
+	mem_queue_t *recvq = &workmgr.works[i].rq;
+	mem_queue_t *sendq = &workmgr.works[i].sq;
+	mem_block_t *tmpblk;
 
-	struct mem_block_t *tmpblk;
-
-	while (tmpblk = mq_get(recvq)) {
+	while ((tmpblk = mq_get(recvq))) {
 		switch (tmpblk->type) {
 			case BLK_DATA: //对客户端消息处理
 				do_blk_msg(tmpblk);
@@ -145,24 +146,24 @@ int handle_mq_recv(int i)
 				}
 				break;
 			case BLK_CLOSE:
-				do_blk_close(recvq->fd); //处理关闭
+				do_blk_close(tmpblk); //处理关闭
 				break;
 		}
-		mq_pop(tmpq);
+		mq_pop(recvq);
 	}
 	return 0;
 }
 
 int do_blk_msg(mem_block_t *blk)
 {
-	if (blk->len <= blk_len) {
-		ERROR(0, "err blk len[total_len=%u,blk_len=%u]", blk->len, blk_len);
+	if (blk->len <= blk_head_len) {
+		ERROR(0, "err blk len[total_len=%u,blk_len=%u]", blk->len, blk_head_len);
 		return 0;
 	}
 
 	fdsess_t *fdsess = get_fd(blk->fd);
 	if (fdsess) {
-		if (so.proc_msg_from_cli(blk->data, blk->len - blk_len, fdsess)) {
+		if (so.proc_cli_msg(blk->data, blk->len - blk_head_len, fdsess)) {
 			close_cli(blk->fd); //断开连接
 		}
 	}
@@ -177,10 +178,11 @@ int do_blk_open(mem_block_t *blk)
 		return -1;
 	} else {
 		fdsess_t *sess = g_slice_alloc(sizeof(fdsess_t));
-		sess->fd = mb->fd;
-		sess->id = mb->id;
-		sess->ip = *((uint32_t*)mb->data);
-		sess->port = *((uint16_t *)mb->data[4]);
+		sess->fd = blk->fd;
+		sess->id = blk->id;
+		fd_addr_t *addr = (fd_addr_t *)blk->data;
+		sess->ip = addr->ip;
+		sess->port = addr->port;
 		save_fd(sess);
 	}
 	return 0;
@@ -203,7 +205,7 @@ int do_blk_close(mem_block_t *blk)
 
 int do_proc_mcast(int fd)
 {
-	static char buf[MCAST_MSG_LEN];
+	//static char buf[MCAST_MSG_LEN];
 	return 0;
 }
 
@@ -231,6 +233,6 @@ void close_cli(int fd)
 	blk.len = blk_head_len;
 	blk.type = BLK_CLOSE;
 	blk.fd = fd;
-	shmq_push(workmgr.works[blk.id].sq, &blk, NULL);
+	mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
 	//do_blk_close(&blk); 不要重复执行
 }

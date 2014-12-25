@@ -18,6 +18,12 @@
 
 
 #include "global.h"
+#include "fds.h"
+#include "net_util.h"
+#include "master.h"
+#include "list.h"
+#include "outer.h"
+
 
 /* @brief 用于修改进进程名字用
  */
@@ -48,4 +54,3 @@ GHashTable *sim_data;
 GHashTable *fds;
 //stop flag
 int stop;
-
