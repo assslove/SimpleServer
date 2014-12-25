@@ -59,9 +59,10 @@ int master_init()
 
 	stop = 0;
 	//init list_head
-	INIT_LIST_HEAD(&readlist);				
-	INIT_LIST_HEAD(&closelist);				
-
+	INIT_LIST_HEAD(&epinfo.readlist);				
+	INIT_LIST_HEAD(&epinfo.closelist);				
+	
+	//mq init
 	return 0;
 }
 
@@ -100,36 +101,37 @@ int master_listen(int i)
 int master_dispatch()
 {
 	while (!stop) {
-		//handle readlist
-		handle_readlist();
 		//handle closelist
 		handle_closelist();
+		//handle readlist
+		handle_readlist();
 		//处理发送队列
 		handle_mq_send();
 
-		int i = 0;
-		int fd = 0, newfd = 0;
+		int i;
+		int fd, newfd = 0;
 		struct sockaddr_in cliaddr;
 		int ret = 0;
 		int n = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
+
+		if (n == -1 && errno != EINTR) {
+			ERROR(0, "master epoll wait error[err=%s]", strerror(errno));
+			return -1;
+		}
+
+		//刷新时间
 		for (i = 0; i < n; i++) {
 			fd = epinfo.evs[i].data.fd;
+			//判断异常状态
+			if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
+				ERROR(0, "error wait fd=%d", fd);
+				continue;
+			}
+
 			if (epinfo.evs[i].events && EPOLLIN) { // read
 				switch (epinfo.fds[fd].type) {
-					case fd_type_listen:
-						//if (handle_accept(fd, &cli_addr) == -1) {
-						//continue;
-						//}
-						newfd = safe_tcp_accept(fd, &cliaddr, 1);	
-						if (newfd == -1) {
-							ERROR(0, "accept error: [%s]", strerror(errno));
-							continue;
-						}
-
-						if ((ret = add_fdinfo_to_epinfo(newfd, epinfo.fds[fd].idx, fd_type_cli, \
-										cliaddr.sin_addr.s_addr, cliaddr.sin_port)) == -1) {
-							return -1;
-						}
+					case fd_type_listen: //监听 一直打开
+						while (do_fd_open(fd)) ;
 						break;
 					case fd_type_cli: //read cli;
 						handle_cli(fd);
@@ -196,7 +198,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 	fd_wrap_t *pfd = &epinfo.fds[fd];
 	++epinfo.seq;
 	pfd->type = type;
-	pfd->idx = idx;
+	pfd->id = idx;
 	pfd->fd = fd;
 	pfd->addr.ip = ip;
 	pfd->addr.port = port;
@@ -413,11 +415,10 @@ int handle_readlist()
 	list_for_each_entry_safe(pfd, tmpfd, &readlist, node) {
 		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
 		if (pfd->type == fd_type_listen) { //打开连接
-			
+			while(do_fd_open(pdf->fd)) {}	 //应该不会执行
 		} else if (handle_cli(pfd->fd) == -1) { //处理客户端的请求 读取
-			do_add_to_readlist(pfd->fd);
+			do_fd_close(pfd->fd); //接收失败 关闭
 		}
-		list_del(&pfd->readlist);
 	}
 
 	return 0;
@@ -518,5 +519,54 @@ int do_fd_close(int fd)
 
 int do_fd_open(int fd) 
 {
+	struct sockaddr_in cliaddr;
+	int newfd = safe_tcp_accept(fd, &cliaddr, 1);	
+	if (newfd > 0) {
+		if ((ret = add_fdinfo_to_epinfo(newfd, epinfo.fds[fd].idx, fd_type_cli, \
+						cliaddr.sin_addr.s_addr, cliaddr.sin_port)) == -1) {
+			return 0;
+		}
+
+		struct mem_block_t blk;
+		blk.id = epinfo.fds[newfd].id;
+		blk.fd = newfd;
+		blk.type = BLK_OPEN;
+		blk.len = blk_head_len + sizeof(fd_addr_t);
+
+		if ((mq_push(&workmgr.works[blk.id].rq, &blk, epinfo.fds[fd].addr)) == -1) {
+			do_fd_close(fd); //不需要通知客户端
+		}
+	}  
+
+	return newfd;
+}
+
+int init_setting()
+{
 	return 0;
+}
+
+
+int master_init_for_work(int id) 
+{
+	int i, ret;
+	ret = mq_init(workmgr.works[id].sq, setting.mem_queue_len);
+	if (ret == -1) {
+		return -1;
+	}
+
+	ret = mq_init(workmgr.works[id].rq, setting.mem_queue_len);
+	if (ret == -1) {
+		return -1;
+	}
+
+	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) {
+		return -1;
+	}
+
+	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) {
+		return -1;
+	}
+
+	//close unused pipefd
 }

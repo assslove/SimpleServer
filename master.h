@@ -93,4 +93,12 @@ int do_fd_close(int fd);
  */
 int do_fd_open(int fd);
 
+/* @brief 初始化配置信息
+ */
+int init_setting();
+
+/* @brief master为work进程初始化 用于通信
+ */
+int master_init_for_work(int id);
+
 #endif

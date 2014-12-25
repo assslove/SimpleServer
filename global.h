@@ -37,7 +37,5 @@ extern svr_setting_t setting;
 extern GHashTable *sim_data;
 extern GHashTable *fds;
 extern int stop;
-extern list_head_t readlist;
-extern list_head_t closelist;
 
 #endif

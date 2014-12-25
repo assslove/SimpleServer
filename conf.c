@@ -217,8 +217,9 @@ int conf_get_int(char *key)
 
 int load_conf()
 {
-	load_simple_data();
-	load_work_data();
+	if (load_simple_data() || load_work_data()) {
+		return -1;
+	}
 
 #ifdef ENABLE_TRACE
 	print_simple_conf();

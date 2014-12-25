@@ -42,8 +42,11 @@
 
 int main(int argc, char* argv[]) 
 {	
+	int ret;
 	//load conf
-	load_conf();	
+	if ((ret = load_conf()) == -1) {
+		return 0;
+	}
 	//chg limit
 	init_rlimit();
 	//save args
@@ -53,6 +56,8 @@ int main(int argc, char* argv[])
 	//daemon mode
 	daemon(1, 0);
 
+	//初始化配置信息
+	init_setting();
 	//handle signal
 		
 	//handle pipe
@@ -80,19 +85,20 @@ int main(int argc, char* argv[])
 			work_fini(i);
 			exit(0);
 		} else { //parent
-			chl_pids[i] = pid;
+			master_init_for_work(i);
 			int ret = master_listen(i);
 			if (ret == -1) {
 				ERROR(0, "%s", strerror(errno));
 				goto fail;
 			}
+			chl_pids[i] = pid;
 		}
 	}
 
 	//master loop
 	master_dispatch();
 fail:
-	//master fini();
+	//master fini
 	master_fini();
 
 	return 0;

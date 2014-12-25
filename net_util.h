@@ -148,7 +148,7 @@ int add_pfd_to_epinfo(int epfd, void *pfd, int events);
  */
 int mod_pfd_to_epinfo(int epfd, void *pfd, int events);
 
-/* @brief 
+/* @brief  将消息转化为blk
  */
 void raw2blk(int fd, mem_block_t &blk);
 
@@ -163,4 +163,5 @@ int send_to_svr(int fd, void *msg, int len);
 /* @brief 释放缓存区
  */
 void free_buff(fd_buff_t *buff);
+
 #endif
