@@ -87,9 +87,7 @@ int main(int argc, char* argv[])
 				ERROR(0, "err work init [%s]", strerror(errno));
 				exit(0);
 			}
-			ERROR(0, "before dispatch");
 			work_dispatch(i);
-			ERROR(0, "after dispatch");
 			work_fini(i);
 			exit(0);
 		} else { //parent

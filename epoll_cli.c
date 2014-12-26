@@ -29,6 +29,15 @@
 #include <fcntl.h>
 #include <malloc.h>
 
+typedef struct proto_pkg {
+	int len;
+	int id;
+	int seq;
+	int cmd;
+	int ret;
+	uint8_t data[];
+} __attribute__((packed))proto_pkg_t;
+
 int main(int argc, char* argv[]) 
 {
 	int fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -38,7 +47,7 @@ int main(int argc, char* argv[])
 
 	struct sockaddr_in servaddr;
 	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = 8000;
+	servaddr.sin_port = 9000;
 	inet_pton(AF_INET, "127.0.0.1", &servaddr.sin_addr);
 
 	int ret = connect(fd, (struct sockaddr *)&servaddr, sizeof(struct sockaddr));
@@ -63,6 +72,11 @@ int main(int argc, char* argv[])
 	while (!done) {
 		int i;
 		int n = epoll_wait(epfd, evs, 1024, 10);
+		if (n == -1 && errno != EINTR) {
+			printf("%s", strerror(errno));
+			return 0;
+		}
+
 		for (i = 0; i < n; ++i) {
 			int fd = evs[i].data.fd;
 			printf("fd=%u type=%u\n", fd, evs[i].events);
