@@ -54,8 +54,7 @@ int main(int argc, char* argv[])
 	//chg serv name
 	chg_proc_title("SimpleServer");
 	//daemon mode
-	//daemon(1, 0);
-
+	//daemon(0, 0);
 	//初始化配置信息
 	init_setting();
 	//handle signal
