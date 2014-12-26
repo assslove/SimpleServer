@@ -562,7 +562,7 @@ int do_fd_open(int fd)
 		blk.type = BLK_OPEN;
 		blk.len = blk_head_len + sizeof(fd_addr_t);
 
-		if ((mq_push(&workmgr.works[blk.id].rq, &blk, &epinfo.fds[fd].addr)) == -1) {
+		if ((mq_push(&workmgr.works[blk.id].rq, &blk, &epinfo.fds[newfd].addr)) == -1) {
 			do_fd_close(fd); //不需要通知客户端
 		}
 	}  
