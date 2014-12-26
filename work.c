@@ -78,11 +78,15 @@ int work_init(int i)
 
 int work_dispatch(int i)
 {
-	stop = 0;
+	int stop = 0;
 	int k = 0;
 	int fd = 0;
 	while (!stop) {
 		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
+		if (nr == -1) {
+			ERROR(0, "epoll wait [id=%d,err=%s]", i, strerror(errno));
+			return 0;
+		}
 		for (k = 0; k < nr; ++k) {
 			fd = epinfo.evs[k].data.fd;
 			if (epinfo.evs[k].events & EPOLLIN) {

@@ -73,7 +73,10 @@ int main(int argc, char* argv[])
 
 	int i = 0;
 	for (; i < workmgr.nr_used; i++) {
-		master_mq_create(i);
+		ret = master_mq_create(i);
+		if (ret == -1) {
+			return 0;
+		}
 		int pid = fork();
 		if (pid < 0) {
 			ERROR(0, "create work fail[%d][%s]", i, strerror(errno));
@@ -84,7 +87,9 @@ int main(int argc, char* argv[])
 				ERROR(0, "err work init [%s]", strerror(errno));
 				exit(0);
 			}
+			ERROR(0, "before dispatch");
 			work_dispatch(i);
+			ERROR(0, "after dispatch");
 			work_fini(i);
 			exit(0);
 		} else { //parent

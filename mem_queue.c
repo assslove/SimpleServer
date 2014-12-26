@@ -41,11 +41,8 @@ int mq_init(mem_queue_t *q, int size)
 		return -1;
 	}
 
-	q->blk_head_len = sizeof(mem_block_t);
-	q->mem_head_len = sizeof(mem_head_t);
-
-	q->ptr->head = q->mem_head_len;
-	q->ptr->tail = q->mem_head_len;
+	q->ptr->head = mem_head_len;
+	q->ptr->tail = mem_head_len;
 
 	return 0;
 }
@@ -64,17 +61,17 @@ mem_block_t *mq_get(mem_queue_t *q)
 	mem_head_t *ptr = q->ptr;		
 get_again:
 	if (ptr->head > ptr->tail) { 
-		if (ptr->head > ptr->tail + q->blk_head_len) { 
+		if (ptr->head > ptr->tail + blk_head_len) { 
 			return blk_tail(q);
 		}
 	} else if (ptr->head < ptr->tail) {
-		if (q->len < ptr->tail + q->blk_head_len) { //如果容纳不下一个块
-			ptr->tail = q->mem_head_len;
+		if (q->len < ptr->tail + blk_head_len) { //如果容纳不下一个块
+			ptr->tail = mem_head_len;
 			goto get_again;
 		} else { //如果可以容纳一个块
 			mem_block_t *blk = blk_tail(q);
 			if (blk->type == BLK_ALIGN) { //如果是填充块 则调整位置
-				ptr->tail = q->mem_head_len;
+				ptr->tail = mem_head_len;
 				goto get_again;
 			} else {
 				return blk;
@@ -96,19 +93,19 @@ push_again:
 			return -1;
 		} 
 		if (ptr->head + b->len > q->len) { //如果大于最大长度
-			if (ptr->head + q->blk_head_len <= q->len) { //如果容下一个块头
+			if (ptr->head + blk_head_len <= q->len) { //如果容下一个块头
 				//填充
 				mem_block_t *blk = blk_head(q);
 				blk->type = BLK_ALIGN;
 				blk->len = q->len; 
 			}
 
-			ptr->head = q->mem_head_len;		//调整到头部
+			ptr->head = mem_head_len;		//调整到头部
 			goto push_again;
 		} else {
 			mem_block_t *blk = blk_head(q);
-			memcpy(blk, b, q->blk_head_len);
-			memcpy(blk->data, data, b->len - q->blk_head_len);
+			memcpy(blk, b, blk_head_len);
+			memcpy(blk->data, data, b->len - blk_head_len);
 			ptr->head += b->len;
 			++ptr->blk_cnt;
 			write(q->pipefd[1], q, 1);
@@ -118,8 +115,8 @@ push_again:
 			return -1;	
 		} else {
 			mem_block_t *blk = blk_head(q);
-			memcpy(blk, b, q->blk_head_len);
-			memcpy(blk->data, data, b->len - q->blk_head_len);
+			memcpy(blk, b, blk_head_len);
+			memcpy(blk->data, data, b->len - blk_head_len);
 			ptr->head += b->len;
 			++ptr->blk_cnt;
 			write(q->pipefd[1], q, 1);
@@ -150,5 +147,5 @@ mem_block_t* blk_tail(mem_queue_t *q)
 void mq_display(mem_queue_t *q)
 {
 	printf("blk_len=%d, head_len=%u, blk_cnt=%d, head=%d, tail=%d, len=%u\n", \
-			q->blk_head_len, q->mem_head_len, q->ptr->blk_cnt, q->ptr->head, q->ptr->tail, q->len);
+			blk_head_len, mem_head_len, q->ptr->blk_cnt, q->ptr->head, q->ptr->tail, q->len);
 }

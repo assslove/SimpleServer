@@ -26,8 +26,6 @@ typedef struct mem_queue {
 	mem_head_t *ptr;
 	int len;				//总长
 	int pipefd[2];			//通知
-	int blk_head_len;		//
-	int mem_head_len;		
 } __attribute__((packed)) mem_queue_t;
 
 /* @brief 内存块信息
