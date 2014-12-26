@@ -70,6 +70,9 @@ int work_init(int i)
 		}
 	}
 
+	//初始化fd-map
+	init_fds();
+
 	stop = 0;
 
 	INFO(0, "child serv[%d] have started", i);

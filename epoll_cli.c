@@ -73,15 +73,16 @@ int main(int argc, char* argv[])
 	while (!done) {
 		int i;
 		char buf[1024];
-		char input[100];
+		char input[100] = {'\0'};
 		scanf("%s", input);
 		proto_pkg_t *pkg = (proto_pkg_t *)buf;	
 		pkg->id = 1;
 		pkg->seq  = 2;
 		pkg->cmd = 3;
 		pkg->ret = 4;
-		pkg->len = sizeof(proto_pkg_t) + sizeof(input);
-		memcpy(pkg->data, input, sizeof(input));
+		pkg->len = sizeof(proto_pkg_t) + strlen(input) + 1;
+		input[strlen(input)] = '\0';
+		memcpy(pkg->data, input, strlen(input) + 1);
 		send(fd, buf, pkg->len, 0);
 
 		//int n = epoll_wait(epfd, evs, 1024, 100);
