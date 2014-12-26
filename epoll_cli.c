@@ -35,7 +35,7 @@ typedef struct proto_pkg {
 	int seq;
 	int cmd;
 	int ret;
-	uint8_t data[];
+	char data[];
 } __attribute__((packed))proto_pkg_t;
 
 int main(int argc, char* argv[]) 
@@ -80,9 +80,16 @@ int main(int argc, char* argv[])
 		pkg->seq  = 2;
 		pkg->cmd = 3;
 		pkg->ret = 4;
-		pkg->len = sizeof(proto_pkg_t) + strlen(input) + 1;
-		input[strlen(input)] = '\0';
-		memcpy(pkg->data, input, strlen(input) + 1);
+		struct node {
+			int val;
+		};
+
+		struct node node;
+		node.val = 3;
+		pkg->len = sizeof(proto_pkg_t) + sizeof(struct node);
+		//input[strlen(input)] = '\0';
+	//	memcpy(pkg->data, &node, sizeof(node));
+		memcpy(buf + sizeof(proto_pkg_t), "hel", sizeof(node));
 		send(fd, buf, pkg->len, 0);
 
 		//int n = epoll_wait(epfd, evs, 1024, 100);
