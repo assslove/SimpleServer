@@ -34,8 +34,8 @@ int main(int argc, char* argv[])
 	for (i = 0; i < 12; i++) {
 		mem_block_t blk;
 		char *str = (char *)malloc(30); 
-		memcpy(str, "hello, world", 30);
-		blk.len = 100;
+		memcpy(str, "hellohellohellohellohellohell", 30);
+		blk.len = sizeof(blk) + 30;
 		mq_push(&q, &blk, str);
 		mq_display(&q);
 	}

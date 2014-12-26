@@ -15,8 +15,8 @@ simple_cli: simple_cli.c util.c
 test_hashtb: test_hashmap.c
 	gcc test_hashmap.c -o test_hashmap `pkg-config --cflags --libs glib-2.0` 
 
-test_mq: 	test_mem_queue.c mem_queue.c
-	gcc -g test_mem_queue.c mem_queue.c -o test_mq
+test_mq: 	test_mem_queue.c mem_queue.c util.c
+	gcc -g test_mem_queue.c mem_queue.c util.c -o test_mq 
 
 test_mq2: 	test_mem_queue_fork.c mem_queue.c
 	gcc -g test_mem_queue_fork.c mem_queue.c -o test_mq2
