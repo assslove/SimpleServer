@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 
 	struct sockaddr_in servaddr;
 	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = htons(8000);
+	servaddr.sin_port = htons(9000);
 	inet_pton(AF_INET, "127.0.0.1", &servaddr.sin_addr);
 
 	int ret = connect(fd, (struct sockaddr *)&servaddr, sizeof(struct sockaddr));
@@ -67,11 +67,23 @@ int main(int argc, char* argv[])
 	event.data.fd = fd;
 	event.events = EPOLLIN | EPOLLET;
 	ret = epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &event);
-	struct epoll_event *evs = (struct epoll_event *)malloc(sizeof(struct epoll_event) * 1024);	
+	struct epoll_event *evs = (struct epoll_event *)malloc(sizeof(struct epoll_event) * 10);	
 	int done = 0;
+
+	char buf[1024];
+	proto_pkg_t *pkg = (proto_pkg_t *)buf;	
+	pkg->id = 1;
+	pkg->seq  = 2;
+	pkg->cmd = 3;
+	pkg->ret = 4;
+	char *body = "hello, world";
+	pkg->len = sizeof(proto_pkg_t) + sizeof(body);
+	memcpy(pkg->data, body, sizeof(body));
+
+	send(fd, buf, pkg->len, 0);
 	while (!done) {
 		int i;
-		int n = epoll_wait(epfd, evs, 1024, 10);
+		int n = epoll_wait(epfd, evs, 1024, 100);
 		if (n == -1 && errno != EINTR) {
 			printf("%s", strerror(errno));
 			return 0;
@@ -80,11 +92,10 @@ int main(int argc, char* argv[])
 		for (i = 0; i < n; ++i) {
 			int fd = evs[i].data.fd;
 			printf("fd=%u type=%u\n", fd, evs[i].events);
-			switch (evs[i].events) {
-				case EPOLLIN:
-					break;
-				case EPOLLOUT:
-					break;
+			if (evs[i].events && EPOLLIN) {
+
+			} else if (evs[i].events && EPOLLOUT) {
+
 			}
 		}
 	}
