@@ -37,6 +37,7 @@
 #include "net_util.h"
 #include "util.h"
 #include "outer.h"
+#include "conf.h"
 
 int master_init()
 {
@@ -63,7 +64,14 @@ int master_init()
 	INIT_LIST_HEAD(&epinfo.readlist);				
 	INIT_LIST_HEAD(&epinfo.closelist);				
 	
-	//mq init
+	//load so
+	int ret = reg_so(setting.text_so, 0);
+	if (ret == -1) {
+		return -1;
+	}
+
+	reg_data_so(setting.data_so);
+
 	return 0;
 }
 
@@ -556,6 +564,30 @@ int do_fd_open(int fd)
 
 int init_setting()
 {
+	setting.nr_max_event = conf_get_int("nr_max_event");
+	setting.nr_max_fd = conf_get_int("nr_max_fd");
+	setting.mem_queue_len = conf_get_int("mem_queue_len");
+	setting.max_msg_len = conf_get_int("max_msg_len");
+	setting.max_buf_len = conf_get_int("max_buf_len");
+	
+	char *srv_name = conf_get_str("srv_name");
+	if (srv_name != NULL) {
+		memcpy(setting.srv_name, srv_name, sizeof(setting.srv_name));
+	}
+	setting.raw_buf_len = conf_get_int("raw_buf_len");
+
+	char *data_so = conf_get_str("data_so");
+	if (data_so != NULL) {
+		memcpy(setting.data_so, data_so, sizeof(setting.data_so));
+	}
+
+	char *text_so = conf_get_str("text_so");
+	if (text_so == NULL) {
+		ERROR(0, "load text_so error");
+		return -1;
+	}
+
+	memcpy(setting.text_so, text_so, sizeof(setting.text_so));
 	return 0;
 }
 

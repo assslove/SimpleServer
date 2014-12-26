@@ -106,9 +106,11 @@ typedef struct svr_setting {
 	int mem_queue_len;	// 共享内存队列长度
 	int max_msg_len;	// 最大消息长度
 	int max_buf_len;	//发送(接收)缓冲区最大长度 超过报错
-	char svr_name[32];	//服务器名字
+	char srv_name[32];	//服务器名字
 	int mcast_msg_len;  //组播包长
 	int raw_buf_len;	//socket buf 长度
+	char text_so[32];	//text_so
+	char data_so[32];	//data_so;
 } svr_setting_t;
 
 /*	
