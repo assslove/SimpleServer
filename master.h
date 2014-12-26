@@ -1,6 +1,8 @@
 #ifndef MASTER_H_
 #define MASTER_H_
 
+struct mem_block;
+
 /* @brief master init
  * @note 
  */
@@ -41,7 +43,7 @@ void handle_mq_send();
 
 /* @brief 发送消息块
  */
-int do_blk_send(mem_block_t *blk);
+int do_blk_send(struct mem_block *blk);
 
 /* @brief 处理消息的发送
  */

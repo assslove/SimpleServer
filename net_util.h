@@ -57,7 +57,7 @@ typedef struct work_mgr {
 
 /* @brief 连接缓存区 用于读写
  */
-typedef struct fd_buff{
+typedef struct fd_buff {
 	int slen;		//发送缓冲长度
 	int rlen;		//接收缓冲区长度
 	char *sbf;			//发送缓冲区

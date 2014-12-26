@@ -36,6 +36,7 @@
 #include "mem_queue.h"
 #include "net_util.h"
 #include "util.h"
+#include "outer.h"
 
 int master_init()
 {
@@ -85,7 +86,7 @@ int master_listen(int i)
 		return -1;
 	}
 
-	if ((ret = mq_init(&(work->wq), setting.mem_queue_len)) == -1) {
+	if ((ret = mq_init(&(work->sq), setting.mem_queue_len)) == -1) {
 		ERROR(0, "init wq fail");
 		return -1;
 	}
@@ -100,7 +101,7 @@ int master_listen(int i)
 
 	//close pipe
 	close(work->rq.pipefd[0]); //接收管道关闭读
-	close(work->wq.pipefd[1]); //发送管理关闭写
+	close(work->sq.pipefd[1]); //发送管理关闭写
 
 	INFO(0, "serv [%d] have listened", i);
 
@@ -117,7 +118,7 @@ int master_dispatch()
 		//处理发送队列
 		handle_mq_send();
 
-		int i, fd, ret;
+		int i, fd;
 		int n = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
 
 		if (n == -1 && errno != EINTR) {
@@ -169,7 +170,7 @@ int master_fini()
 	for (; i < workmgr.nr_used; i++) {
 		work_t *work = &workmgr.works[i];
 		mq_fini(&work->rq, setting.mem_queue_len);
-		mq_fini(&work->wq, setting.mem_queue_len);
+		mq_fini(&work->sq, setting.mem_queue_len);
 	}
 
 	close(epinfo.epfd);
@@ -208,7 +209,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 	pfd->addr.ip = ip;
 	pfd->addr.port = port;
 
-	if (epinfo.max_fd < fd) epinfo.max_fd = fd;
+	if (epinfo.maxfd < fd) epinfo.maxfd = fd;
 
 	return 0;
 }
@@ -216,13 +217,13 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 int handle_cli(int fd)
 {
 	fd_buff_t *buff = &epinfo.fds[fd].buff;
-	uint8_t *tmp_ptr = buff->rbf;
+	char *tmp_ptr = buff->rbf;
 
 	if (handle_read(fd) == -1) {
 		return -1;
 	}
 
-push_agagin:
+push_again:
 	if (buff->msglen == 0) { //获取长度
 		buff->msglen = so.get_msg_len(fd, tmp_ptr, buff->rlen, SERV_MASTER);
 		TRACE(0, "recv [fd=%u][rlen=%u][msglen=%u]", fd, buff->rlen, buff->msglen);
@@ -230,9 +231,9 @@ push_agagin:
 
 	//push
 	if (buff->rlen >= buff->msglen) {
-		struct mem_block_t blk;		
+		mem_block_t blk;		
 		raw2blk(fd, &blk);
-		if (mq_push(workmgr.works[epinfo.fds[fd].idx].rq, &blk, tmp_ptr)) {
+		if (mq_push(&workmgr.works[epinfo.fds[fd].idx].rq, &blk, tmp_ptr)) {
 			return -1;
 		}
 		//清空
@@ -245,8 +246,8 @@ push_agagin:
 		}
 	}
 
-	if (buff->rbuf != tmp_ptr && buff->rlen > 0) {  //还有剩余的在缓存区，不够一个消息，等读完了再去push
-		memmove(buff->rbuf, tmp_ptr, buff->rlen); //合并到缓冲区头
+	if (buff->rbf != tmp_ptr && buff->rlen > 0) {  //还有剩余的在缓存区，不够一个消息，等读完了再去push
+		memmove(buff->rbf, tmp_ptr, buff->rlen); //合并到缓冲区头
 	}
 
 	return 0;
@@ -277,17 +278,17 @@ int handle_read(int fd)
 	if (recv_len > 0) { //有消息
 		buff->rlen += recv_len;
 	} else if (recv_len == 0) { //对端关闭
-		ERROR(0, "[fd=%u,ip=%s] has closed", fd, inet_ntoa(*((struct in_addr_t *)&epinfo.fds[fd].addr.ip)));
+		ERROR(0, "[fd=%u,ip=%s] has closed", fd, inet_ntoa(*((struct in_addr *)&epinfo.fds[fd].addr.ip)));
 		return -1;
 	} else { //
 		ERROR(0, "recv error[fd=%u,error=%u]", fd, strerror(errno));
 		recv_len = 0;
 	}
 
-	if (buff->rbuf == setting.max_msg_len) {
+	if (buff->rlen == setting.max_msg_len) {
 		//增加到可读队列里面
 		do_add_to_readlist(fd);	
-	} else if {
+	} else {
 		//从可读队列里面删除
 		do_del_from_readlist(fd);	
 	}
@@ -298,17 +299,17 @@ int handle_read(int fd)
 int handle_pipe(fd)
 {
 	//申请空间 TODO
-	if (!epinfo.fds[fd].buff->rbf) {
-		epinfo.fds[fd].buff->msglen = 0;
-		epinfo.fds[fd].buff->rlen = 0;
-		epinfo.fds[fd].buff->rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
-		if (epinfo.fds[fd].buff->rbf == MAP_FAILED) {
+	if (!epinfo.fds[fd].buff.rbf) {
+		epinfo.fds[fd].buff.msglen = 0;
+		epinfo.fds[fd].buff.rlen = 0;
+		epinfo.fds[fd].buff.rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
+		if (epinfo.fds[fd].buff.rbf == MAP_FAILED) {
 			ERROR(0, "mmap error");
 			return -1;
 		}
 	
 	}
-	read(fd, epinfo.fds[fd].buff->rbf, setting.max_msg_len);
+	read(fd, epinfo.fds[fd].buff.rbf, setting.max_msg_len);
 	return 0;
 }
 

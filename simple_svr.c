@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	//handle pipe
 	
 	//master_init
-	int ret = master_init();
+	ret = master_init();
 	if (ret == -1) {
 		ERROR(0, "err master init [%s]", strerror(errno));
 		return 0;

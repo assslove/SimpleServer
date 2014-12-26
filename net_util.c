@@ -271,13 +271,13 @@ int send_to_svr(int fd, void *msg, int len)
 
 void free_buff(fd_buff_t *buff)
 {
-	if (buff->sendq) {
-		free(buff->sendq);
-		buff->sendq = NULL;
+	if (buff->sbf) {
+		free(buff->sbf);
+		buff->sbf = NULL;
 	}
-	if (buff->recvq) {
-		free(buff->recvq);
-		buff->recvq = NULL;
+	if (buff->rbf) {
+		free(buff->rbf);
+		buff->rbf = NULL;
 	}
 
 	buff->slen = 0;
