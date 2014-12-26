@@ -255,11 +255,6 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events)
 }
 
 
-void raw2blk(int fd, mem_block_t *blk)
-{
-
-}
-
 
 int send_to_cli(int fd, void *msg, int len)
 {
