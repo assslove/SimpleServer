@@ -95,4 +95,9 @@ int init_setting();
  */
 int master_init_for_work(int id);
 
+/* @brief  将消息转化为blk
+ */
+void raw2blk(int fd, mem_block_t *blk);
+
+
 #endif

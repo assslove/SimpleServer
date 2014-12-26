@@ -629,3 +629,13 @@ int master_init_for_work(int id)
 
 	return 0;
 }
+
+void raw2blk(int fd, mem_block_t *blk)
+{
+	blk->id = epinfo.fds[fd].idx;
+	blk->len = epinfo.fds[fd].buff.msglen;
+	blk->fd = fd;
+	blk->type = BLK_DATA;
+}
+
+
