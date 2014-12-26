@@ -100,6 +100,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	BOOT(0, "%s have started", setting.srv_name);
 	//master loop
 	master_dispatch();
 fail:

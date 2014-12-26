@@ -71,7 +71,7 @@ typedef struct fd_buff {
 typedef struct fd_addr {
 	uint32_t ip;
 	uint16_t port;
-} fd_addr_t;
+} __attribute__((packed)) fd_addr_t;
 
 /* @brief fd信息
  */

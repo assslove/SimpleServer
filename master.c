@@ -65,12 +65,12 @@ int master_init()
 	INIT_LIST_HEAD(&epinfo.closelist);				
 	
 	//load so
-	//int ret = reg_so(setting.text_so, 0);
-	//if (ret == -1) {
-		//return -1;
-	//}
+	int ret = reg_so(setting.text_so, 0);
+	if (ret == -1) {
+		return -1;
+	}
 
-	//reg_data_so(setting.data_so);
+	reg_data_so(setting.data_so);
 
 	//初始化mem
 	return 0;

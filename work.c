@@ -177,7 +177,7 @@ int do_blk_msg(mem_block_t *blk)
 int do_blk_open(mem_block_t *blk)
 {
 	fdsess_t *fdsess = get_fd(blk->fd);
-	if (fdsess || (blk->len != blk_head_len + 6)) {
+	if (fdsess || (blk->len != blk_head_len + sizeof(fd_addr_t))) {
 		ERROR(0, "fd open error[fd=%u,len=%u]", blk->fd, blk->len);
 		return -1;
 	} else {
