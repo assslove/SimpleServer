@@ -83,7 +83,7 @@ int work_dispatch(int i)
 	int fd = 0;
 	while (!stop) {
 		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
-		if (nr == -1) {
+		if (nr == -1 && errno != EINTR) {
 			ERROR(0, "epoll wait [id=%d,err=%s]", i, strerror(errno));
 			return 0;
 		}
@@ -107,7 +107,7 @@ int work_dispatch(int i)
 		}
 
 		//handle memqueue read
-		handle_mq_recv();	
+		handle_mq_recv(i);	
 		//handle timer callback
 		if (so.handle_timer) {
 			so.handle_timer();
