@@ -20,10 +20,12 @@
 #include <iostream>
 #include <string.h>
 
+extern "C" {
 #include "fds.h"
 #include "outer.h"
 #include "log.h"
 #include "net_util.h"
+}
 
 /* @brief 定义包
 */
@@ -49,7 +51,8 @@ extern "C" int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
 
-	return send_to_cli(sess->fd, cli, pkg->len);
+	return 0;
+//	return send_to_cli(sess->fd, cli, pkg->len);
 }
 
 extern "C" int proc_serv_msg(int fd, void *msg, int len)

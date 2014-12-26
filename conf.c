@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <malloc.h>
+#include <stdlib.h>
 
 #include <glib.h>
 
@@ -208,12 +209,12 @@ char* conf_get_str(char *key)
 
 int conf_get_int(char *key)
 {
-	int *value = g_hash_table_lookup(sim_data, key);
+	char *value = g_hash_table_lookup(sim_data, key);
 	if (value == NULL) {
 		return 0;
 	}
 
-	return *value;
+	return atoi(value);
 }
 
 int load_conf()

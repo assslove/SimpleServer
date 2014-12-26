@@ -79,9 +79,9 @@ int work_init(int i)
 int work_dispatch(int i)
 {
 	stop = 0;
+	int k = 0;
+	int fd = 0;
 	while (!stop) {
-		int k = 0;
-		int fd = 0;
 		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
 		for (k = 0; k < nr; ++k) {
 			fd = epinfo.evs[k].data.fd;

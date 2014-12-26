@@ -65,13 +65,14 @@ int master_init()
 	INIT_LIST_HEAD(&epinfo.closelist);				
 	
 	//load so
-	int ret = reg_so(setting.text_so, 0);
-	if (ret == -1) {
-		return -1;
-	}
+	//int ret = reg_so(setting.text_so, 0);
+	//if (ret == -1) {
+		//return -1;
+	//}
 
-	reg_data_so(setting.data_so);
+	//reg_data_so(setting.data_so);
 
+	//初始化mem
 	return 0;
 }
 
@@ -88,6 +89,20 @@ int master_listen(int i)
 	if ((ret = add_fdinfo_to_epinfo(listenfd, i, fd_type_listen, inet_addr(work->ip), work->port)) == -1) {
 		return -1;
 	}
+	//close pipe
+	close(work->rq.pipefd[0]); //接收管道关闭读
+	close(work->sq.pipefd[1]); //发送管理关闭写
+
+	INFO(0, "serv [%d] have listened", i);
+
+	return 0;
+}
+
+
+int master_mq_create(int i) 
+{
+	work_t *work = &workmgr.works[i];
+	int ret;
 	//mem_queue init
 	if ((ret = mq_init(&(work->rq), setting.mem_queue_len)) == -1) {
 		ERROR(0, "init rq fail");
@@ -106,13 +121,6 @@ int master_listen(int i)
 	if ((ret = add_fdinfo_to_epinfo(work->sq.pipefd[0], i, fd_type_pipe, 0, 0)) == -1) { 
 		return -1;
 	} 
-
-	//close pipe
-	close(work->rq.pipefd[0]); //接收管道关闭读
-	close(work->sq.pipefd[1]); //发送管理关闭写
-
-	INFO(0, "serv [%d] have listened", i);
-
 	return 0;
 }
 

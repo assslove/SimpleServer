@@ -12,6 +12,8 @@ int master_init();
  */
 int master_listen(int i);
 
+int master_mq_create(int i); 
+
 /* @brief 
  */
 int master_dispatch();

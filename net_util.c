@@ -29,6 +29,7 @@
 #include "net_util.h"
 #include "util.h"
 #include "fds.h"
+#include "log.h"
 
 int set_sock_snd_timeo(int sockfd, int millisec)
 {
@@ -98,6 +99,7 @@ int safe_tcp_send_n(int sockfd, const void* buf, int total)
 
 int safe_socket_listen(const char* ipaddr, in_port_t port, int type, int backlog, int bufsize)
 {
+	TRACE(0, "backlog=%d,bufsize=%u", backlog, bufsize);
 	assert((backlog > 0) && (bufsize > 0) && (bufsize <= (10 * 1024 * 1024)));
 
 	struct sockaddr_in servaddr;

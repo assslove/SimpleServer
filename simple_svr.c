@@ -56,7 +56,10 @@ int main(int argc, char* argv[])
 	//daemon mode
 	//daemon(0, 0);
 	//初始化配置信息
-	init_setting();
+	ret = init_setting();
+	if (ret == -1) {
+		return 0;
+	}
 	//handle signal
 		
 	//handle pipe
@@ -70,6 +73,7 @@ int main(int argc, char* argv[])
 
 	int i = 0;
 	for (; i < workmgr.nr_used; i++) {
+		master_mq_create(i);
 		int pid = fork();
 		if (pid < 0) {
 			ERROR(0, "create work fail[%d][%s]", i, strerror(errno));
