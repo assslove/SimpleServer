@@ -24,6 +24,7 @@
 
 #include "mem_queue.h"
 #include "util.h"
+#include "log.h"
 
 const int blk_head_len = sizeof(mem_block_t);
 const int mem_head_len = sizeof(mem_head_t);
@@ -44,6 +45,9 @@ int mq_init(mem_queue_t *q, int size)
 	q->ptr->head = mem_head_len;
 	q->ptr->tail = mem_head_len;
 
+#ifdef ENABLE_TRACE
+	mq_display(q);
+#endif
 	return 0;
 }
 
@@ -123,6 +127,9 @@ push_again:
 		}
 	} 
 
+#ifdef ENABLE_TRACE
+	mq_display(q);
+#endif
 	return 0;
 }
 
@@ -132,6 +139,9 @@ void mq_pop(mem_queue_t *q)
 	mem_block_t *b = blk_tail(q);
 	ptr->tail += b->len;
 	--ptr->blk_cnt;
+#ifdef ENABLE_TRACE
+	mq_display(q);
+#endif
 }
 
 mem_block_t* blk_head(mem_queue_t *q)
@@ -146,6 +156,6 @@ mem_block_t* blk_tail(mem_queue_t *q)
 
 void mq_display(mem_queue_t *q)
 {
-	printf("blk_len=%d, head_len=%u, blk_cnt=%d, head=%d, tail=%d, len=%u\n", \
+	TRACE(0, "blk_len=%d, head_len=%u, blk_cnt=%d, head=%d, tail=%d, len=%u\n", \
 			blk_head_len, mem_head_len, q->ptr->blk_cnt, q->ptr->head, q->ptr->tail, q->len);
 }
