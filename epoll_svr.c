@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	bzero(&servaddr, sizeof(struct sockaddr_in));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	servaddr.sin_port = htons(8000);
+	servaddr.sin_port = htons(10000);
 
 	int reuse_addr = 1;
 	setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &reuse_addr, sizeof(reuse_addr));
