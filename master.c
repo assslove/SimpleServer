@@ -154,7 +154,7 @@ int master_dispatch()
 			if (epinfo.evs[i].events && EPOLLIN) { // read
 				switch (epinfo.fds[fd].type) {
 					case fd_type_listen: //监听 一直打开
-						while (do_fd_open(fd)) ;
+						while (do_fd_open(fd) != -1) ;
 						break;
 					case fd_type_cli: //read cli;
 						handle_cli(fd);
@@ -220,7 +220,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 	fd_wrap_t *pfd = &epinfo.fds[fd];
 	++epinfo.seq;
 	pfd->type = type;
-	pfd->id = idx;
+	pfd->idx = idx;
 	pfd->fd = fd;
 	pfd->addr.ip = ip;
 	pfd->addr.port = port;
@@ -509,7 +509,7 @@ int do_fd_close(int fd)
 	}
 
 	mem_block_t blk;
-	blk.id = epinfo.fds[fd].id;
+	blk.id = epinfo.fds[fd].idx;
 	blk.fd = fd;
 	blk.type = BLK_CLOSE;
 	blk.len = blk_head_len;
@@ -557,7 +557,7 @@ int do_fd_open(int fd)
 		}
 
 		mem_block_t blk;
-		blk.id = epinfo.fds[newfd].id;
+		blk.id = epinfo.fds[newfd].idx;
 		blk.fd = newfd;
 		blk.type = BLK_OPEN;
 		blk.len = blk_head_len + sizeof(fd_addr_t);

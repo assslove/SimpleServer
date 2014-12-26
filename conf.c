@@ -166,6 +166,7 @@ int load_work_data()
 					workmgr.nr_work += nr_work;
 				} else {
 					workmgr.works[workmgr.nr_used].id = id;	
+					workmgr.works[workmgr.nr_used].idx = i;	
 					memcpy(workmgr.works[workmgr.nr_used].ip, ip, 32);
 					workmgr.works[workmgr.nr_used].port = port;
 					++workmgr.nr_used;

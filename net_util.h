@@ -40,6 +40,7 @@ enum fd_type {
  */
 typedef struct work {
 	uint32_t id;
+	uint16_t idx;
 	char ip[32];
 	uint16_t port;
 	uint8_t proto_type; 
@@ -79,7 +80,7 @@ typedef struct fd_wrap {
 	uint8_t type;
 	int fd;
 	int idx; //epinfo->fds index
-	int id;  //work id index
+	//int id;  //work id index
 	uint8_t flag; //标志 CACHE_TYPE
 	fd_buff_t buff; //缓存
 	fd_addr_t addr; //地址信息
