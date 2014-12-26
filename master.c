@@ -233,12 +233,12 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 int handle_cli(int fd)
 {
 	fd_buff_t *buff = &epinfo.fds[fd].buff;
-	char *tmp_ptr = buff->rbf;
 
 	if (handle_read(fd) == -1) {
 		return -1;
 	}
 
+	char *tmp_ptr = buff->rbf;
 push_again:
 	if (buff->msglen == 0) { //获取长度
 		buff->msglen = so.get_msg_len(fd, tmp_ptr, buff->rlen, SERV_MASTER);

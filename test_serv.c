@@ -99,5 +99,5 @@ OUTER_FUNC int serv_fini(int ismaster)
 
 OUTER_FUNC int	get_msg_len(int fd, const void *data, int len, int ismaster)
 {
-	return *(uint32_t *)((uint8_t*)data);
+	return *(int *)((uint8_t*)data);
 }
