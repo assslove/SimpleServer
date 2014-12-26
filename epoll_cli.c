@@ -70,34 +70,36 @@ int main(int argc, char* argv[])
 	struct epoll_event *evs = (struct epoll_event *)malloc(sizeof(struct epoll_event) * 10);	
 	int done = 0;
 
-	char buf[1024];
-	proto_pkg_t *pkg = (proto_pkg_t *)buf;	
-	pkg->id = 1;
-	pkg->seq  = 2;
-	pkg->cmd = 3;
-	pkg->ret = 4;
-	char *body = "hello, world";
-	pkg->len = sizeof(proto_pkg_t) + sizeof(body);
-	memcpy(pkg->data, body, sizeof(body));
-
-	send(fd, buf, pkg->len, 0);
 	while (!done) {
 		int i;
-		int n = epoll_wait(epfd, evs, 1024, 100);
-		if (n == -1 && errno != EINTR) {
-			printf("%s", strerror(errno));
-			return 0;
-		}
+		char buf[1024];
+		char input[100];
+		scanf("%s", input);
+		proto_pkg_t *pkg = (proto_pkg_t *)buf;	
+		pkg->id = 1;
+		pkg->seq  = 2;
+		pkg->cmd = 3;
+		pkg->ret = 4;
+		pkg->len = sizeof(proto_pkg_t) + sizeof(input);
+		memcpy(pkg->data, input, sizeof(input));
+		send(fd, buf, pkg->len, 0);
 
-		for (i = 0; i < n; ++i) {
-			int fd = evs[i].data.fd;
-			printf("fd=%u type=%u\n", fd, evs[i].events);
-			if (evs[i].events && EPOLLIN) {
+		//int n = epoll_wait(epfd, evs, 1024, 100);
+		//if (n == -1 && errno != EINTR) {
+		//printf("%s", strerror(errno));
+		//return 0;
+		//}
 
-			} else if (evs[i].events && EPOLLOUT) {
 
-			}
-		}
+		//for (i = 0; i < n; ++i) {
+		//int fd = evs[i].data.fd;
+		//printf("fd=%u type=%u\n", fd, evs[i].events);
+		//if (evs[i].events && EPOLLIN) {
+
+		//} else if (evs[i].events && EPOLLOUT) {
+
+		//}
+		//}
 	}
 
 	free(evs);

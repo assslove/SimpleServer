@@ -31,6 +31,8 @@ epoll_cli: epoll_cli.c
 	gcc -g -o epoll_cli epoll_cli.c
 test_serv.so: test_serv.c log.c 
 	gcc -g -shared -fPIC test_serv.c log.c -o test_serv.so `pkg-config --cflags --libs glib-2.0`
+data.so: data.c
+	gcc -g -shared -fPIC data.c -o data.so
 
 clean:
 	rm -rf *.o simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf test_serv.so
