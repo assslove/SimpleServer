@@ -99,5 +99,8 @@ int master_init_for_work(int id);
  */
 void raw2blk(int fd, struct mem_block *blk);
 
-
+/* @brief 处理信号
+ * @return 0-success -1-error
+ */
+int handle_signal();
 #endif

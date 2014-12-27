@@ -639,3 +639,7 @@ void raw2blk(int fd, mem_block_t *blk)
 }
 
 
+int handle_signal()
+{
+	return 0;
+}
