@@ -80,16 +80,11 @@ int main(int argc, char* argv[])
 		pkg->seq  = 2;
 		pkg->cmd = 3;
 		pkg->ret = 4;
-		struct node {
-			int val;
-		};
 
-		struct node node;
-		node.val = 3;
-		pkg->len = sizeof(proto_pkg_t) + sizeof(struct node);
-		//input[strlen(input)] = '\0';
+		pkg->len = sizeof(proto_pkg_t) + strlen(input) + 1;
+		input[strlen(input)] = '\0';
 	//	memcpy(pkg->data, &node, sizeof(node));
-		memcpy(buf + sizeof(proto_pkg_t), "hel", sizeof(node));
+		memcpy(pkg->data, input, strlen(input) + 1);
 		send(fd, buf, pkg->len, 0);
 
 		//int n = epoll_wait(epfd, evs, 1024, 100);

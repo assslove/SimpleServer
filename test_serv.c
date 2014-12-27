@@ -34,6 +34,7 @@ extern "C" {
 #else
 #define OUTER_FUNC 
 #endif 
+
 typedef struct fdsess {
 	int fd;
 	int id; //work idx
