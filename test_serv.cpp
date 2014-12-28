@@ -25,6 +25,7 @@
 extern "C" {
 #endif
 #include "log.h"
+#include "net_util.h"
 #ifdef __cplusplus
 }
 #endif
@@ -66,8 +67,7 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
 
-	return 0;
-//	return send_to_cli(sess->fd, cli, pkg->len);
+	return send_to_cli(sess, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)

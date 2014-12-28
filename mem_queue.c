@@ -88,7 +88,7 @@ get_again:
 	return NULL;
 }
 
-int mq_push(mem_queue_t *q, mem_block_t *b, void *data)
+int mq_push(mem_queue_t *q, mem_block_t *b, const void *data)
 {
 	mem_head_t *ptr = q->ptr;
 push_again:

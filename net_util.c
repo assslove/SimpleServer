@@ -30,6 +30,7 @@
 #include "util.h"
 #include "fds.h"
 #include "log.h"
+#include "global.h"
 
 int set_sock_snd_timeo(int sockfd, int millisec)
 {
@@ -255,9 +256,20 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events)
 }
 
 
-
-int send_to_cli(int fd, void *msg, int len)
+int send_to_cli(struct fdsess *sess, const void *msg, int const len)
 {
+	mem_block_t blk;
+
+	blk.id = sess->id;
+	blk.fd = sess->fd;
+	blk.type = BLK_DATA;
+	blk.len = len + blk_head_len;
+
+	if (mq_push(&workmgr.works[blk.id].sq, &blk, msg) == -1) {
+		ERROR(0, "%s error", __func__);
+		return -1;
+	}
+
 	return 0;
 }
 

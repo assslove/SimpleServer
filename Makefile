@@ -29,8 +29,8 @@ test_linklist: test_linklist.c list.h
 	gcc -g -o test_linklist test_linklist.c
 epoll_cli: epoll_cli.c
 	gcc -g -o epoll_cli epoll_cli.c
-test_serv.so: test_serv.cpp log.c 
-	gcc -g -shared -fPIC test_serv.cpp log.c -o test_serv.so `pkg-config --cflags --libs glib-2.0`
+test_serv.so: test_serv.cpp log.c
+	gcc -g -shared -fPIC test_serv.cpp log.c -o test_serv.so `pkg-config --cflags --libs glib-2.0` -I./
 data.so: data.c
 	gcc -g -shared -fPIC data.c -o data.so
 

@@ -196,8 +196,9 @@ int master_fini()
 		mq_fini(&work->sq, setting.mem_queue_len);
 	}
 
-	close(epinfo.epfd);
 	free(epinfo.evs);
+	free(epinfo.fds);
+	close(epinfo.epfd);
 
 	DEBUG(0, "serv have stopped!");
 	return 0;	
@@ -674,6 +675,14 @@ void handle_term(int signo)
 			break;
 	}
 	stop = 1;
+	//终止子进程
+	int i;	
+	for (i = 0; i < workmgr.nr_used; i++) {
+		if (chl_pids[i]) {
+			chl_pids[i] = 0;
+			kill(chl_pids[i], signo);
+		}
+	}
 }
 
 void handle_hup(int fd)
@@ -729,10 +738,16 @@ int handle_signal()
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGTERM, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
-	
+	//删除某些信号 这部分需要了解 TODO	
 	sigset_t sset;
 	sigemptyset(&sset);
 	sigaddset(&sset, SIGSEGV);
+	sigaddset(&sset, SIGBUS);
+	sigaddset(&sset, SIGABRT);
+	sigaddset(&sset, SIGILL);
+	sigaddset(&sset, SIGCHLD);
+	sigaddset(&sset, SIGFPE);
+	sigprocmask(SIG_UNBLOCK, &sset, &sset); //删除
 
 	return 0;
 }

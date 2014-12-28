@@ -46,7 +46,7 @@ extern const int mem_head_len;
  * @param q 共享内存队列
  * @param b 队列块
  */
-int mq_push(mem_queue_t *q, mem_block_t *b, void *data);
+int mq_push(mem_queue_t *q, mem_block_t *b, const void *data);
 
 /* @brief q从尾部出来
  */

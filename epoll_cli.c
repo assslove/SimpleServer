@@ -70,8 +70,41 @@ int main(int argc, char* argv[])
 	struct epoll_event *evs = (struct epoll_event *)malloc(sizeof(struct epoll_event) * 10);	
 	int done = 0;
 
+	
 	while (!done) {
 		int i;
+
+		int n = epoll_wait(epfd, evs, 1024, 100);
+		if (n == -1 && errno != EINTR) {
+			printf("%s", strerror(errno));
+			return 0;
+		}
+
+
+		for (i = 0; i < n; ++i) {
+			int fd = evs[i].data.fd;
+			printf("fd=%u type=%u\n", fd, evs[i].events);
+			if (evs[i].events && EPOLLIN) {
+				char recvbuf[1024];
+				int ret = recv(fd, recvbuf, 1024, 0);
+				if (ret == 0) {
+					printf("fd closed");
+					return 0;
+				} else {
+					proto_pkg_t *msg = (proto_pkg_t *)recvbuf;
+					printf("%d,%d,%d,%d,%d,%s", 
+							msg->id, 
+							msg->seq,
+							msg->cmd, 
+							msg->ret, 
+							msg->len,
+							msg->data
+							);
+				}
+			} else if (evs[i].events && EPOLLOUT) {
+
+			}
+		}
 		char buf[1024];
 		char input[100] = {'\0'};
 		scanf("%s", input);
@@ -83,26 +116,9 @@ int main(int argc, char* argv[])
 
 		pkg->len = sizeof(proto_pkg_t) + strlen(input) + 1;
 		input[strlen(input)] = '\0';
-	//	memcpy(pkg->data, &node, sizeof(node));
 		memcpy(pkg->data, input, strlen(input) + 1);
 		send(fd, buf, pkg->len, 0);
 
-		//int n = epoll_wait(epfd, evs, 1024, 100);
-		//if (n == -1 && errno != EINTR) {
-		//printf("%s", strerror(errno));
-		//return 0;
-		//}
-
-
-		//for (i = 0; i < n; ++i) {
-		//int fd = evs[i].data.fd;
-		//printf("fd=%u type=%u\n", fd, evs[i].events);
-		//if (evs[i].events && EPOLLIN) {
-
-		//} else if (evs[i].events && EPOLLOUT) {
-
-		//}
-		//}
 	}
 
 	free(evs);

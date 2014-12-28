@@ -74,6 +74,8 @@ int work_init(int i)
 	init_fds();
 
 	stop = 0;
+	//清楚chl_pids;
+	memset(chl_pids, 0, sizeof(chl_pids));
 
 	INFO(0, "child serv[%d] have started", i);
 	return 0;
@@ -81,7 +83,7 @@ int work_init(int i)
 
 int work_dispatch(int i)
 {
-	int stop = 0;
+	stop = 0;
 	int k = 0;
 	int fd = 0;
 	while (!stop) {
@@ -126,8 +128,9 @@ int work_fini(int i)
 	mq_fini(&(work->rq), setting.mem_queue_len);
 	mq_fini(&(work->sq), setting.mem_queue_len);
 
-	close(epinfo.epfd);
 	free(epinfo.evs);
+	free(epinfo.fds);
+	close(epinfo.epfd);
 
 	DEBUG(0, "child serv[i] have stopped!", i);
 
