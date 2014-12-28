@@ -17,15 +17,30 @@
  */
 
 
-#include <iostream>
+#include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
+#ifdef __cplusplus
 extern "C" {
-#include "fds.h"
-#include "outer.h"
+#endif
 #include "log.h"
-#include "net_util.h"
+#ifdef __cplusplus
 }
+#endif
+
+#ifdef __cplusplus 
+#define OUTER_FUNC extern "C"
+#else
+#define OUTER_FUNC 
+#endif 
+
+typedef struct fdsess {
+	int fd;
+	int id; //work idx
+	int ip;
+	int port;
+} fdsess_t;
 
 /* @brief 定义包
 */
@@ -38,15 +53,15 @@ typedef struct proto_pkg {
 	uint8_t data[];
 } __attribute__((packed))proto_pkg_t;
 
-extern "C" void handle_timers()
+OUTER_FUNC void handle_timer()
 {
 }
 
-extern "C" int proc_cli_msg(void *msg, int len, fdsess_t *sess)
+OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 {
 	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
 
-	DEBUG(pkg->id, "len=%u,id=%u,seq=%u,cmd=%u,ret=%u", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret);
+	DEBUG(pkg->id, "len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
 	
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
@@ -55,35 +70,35 @@ extern "C" int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 //	return send_to_cli(sess->fd, cli, pkg->len);
 }
 
-extern "C" int proc_serv_msg(int fd, void *msg, int len)
+OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 {
 	return 0;
 }
 
-extern "C" int on_cli_closed(int fd) 
+OUTER_FUNC int on_cli_closed(int fd) 
 {
 	INFO(0, "fd=%u closed", fd);
 	return 0;
 }
 
-extern "C" int on_serv_closed(int fd)
+OUTER_FUNC int on_serv_closed(int fd)
 {
 	return 0;
 }
 
-extern "C" int serv_init(int ismaster) 
+OUTER_FUNC int serv_init(int ismaster) 
 {
 	INFO(0, "%s init", ismaster ? "master" : "work");
 	return 0;
 }
 
-extern "C" int serv_fini(int ismaster) 
+OUTER_FUNC int serv_fini(int ismaster) 
 {
 	INFO(0, "%s fini", ismaster ? "master" : "work");
 	return 0;
 }
 
-extern "C" int	get_msg_len(int fd, const void *data, int len, int ismaster)
+OUTER_FUNC int	get_msg_len(int fd, const void *data, int len, int ismaster)
 {
-	return *(uint32_t *)((uint8_t*)data);
+	return *(int *)((uint8_t*)data);
 }
