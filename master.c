@@ -648,21 +648,42 @@ void raw2blk(int fd, mem_block_t *blk)
 void handle_sigchld(int signo) 
 {
 	int pid, status;
-	while ((pid = waitpid(-1, &status, 0)) > 0) { //回收僵尸进程
-		//child_pids[] = 0; //设置子进程id
+	while ((pid = waitpid(-1, &status, WNOHANG)) > 0) { //回收僵尸进程, 如果没有hang 立即返回
 		ERROR(0, "%d have stop", pid);
+		int i;
+		for (i = 0; i < workmgr.nr_used; i++) { //清零
+			if (chl_pids[i] == pid) {
+				chl_pids[i] = 0;
+				break;
+			}
+		}
 	}
+}
+
+void handle_term(int signo)
+{
+	switch (signo) {
+		case SIGQUIT:
+			INFO(0, "receive SIGQUIT");
+			break;
+		case SIGTERM:
+			INFO(0, "receive SIGTEAM");
+			break;
+		case SIGINT:
+			INFO(0, "receive SIGINT");
+			break;
+	}
+	stop = 1;
 }
 
 void handle_hup(int fd)
 {
+	//相应管道被关闭
 	int idx = epinfo.fds[fd].idx;
 	ERROR(0, "fd have closed [fd=%d,servid=%d]", fd, workmgr.works[idx].id);
 
 	//释放资源
 	work_t *work = &workmgr.works[idx];
-	close(work->sq.pipefd[0]);
-	close(work->rq.pipefd[1]);
 	mq_fini(&work->rq, setting.mem_queue_len);
 	mq_fini(&work->sq, setting.mem_queue_len);
 
@@ -689,7 +710,10 @@ void handle_hup(int fd)
 	}
 
 	chl_pids[idx] = pid;
+
+	INFO(0, "serv [%d] restart success", work->id);
 }
+
 
 int handle_signal()
 {
@@ -699,5 +723,16 @@ int handle_signal()
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = handle_sigchld;
 	sigaction(SIGCHLD, &sa, NULL);
+
+	//处理其他异常信号
+	sa.sa_handler = handle_term;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGTERM, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	
+	sigset_t sset;
+	sigemptyset(&sset);
+	sigaddset(&sset, SIGSEGV);
+
 	return 0;
 }

@@ -64,7 +64,6 @@ int main(int argc, char* argv[])
 	if (handle_signal()) {
 		return 0;
 	}
-	//handle pipe
 	
 	//master_init
 	ret = master_init();
