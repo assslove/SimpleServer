@@ -654,6 +654,8 @@ void handle_sigchld(int signo)
 void handle_hup(int fd)
 {
 	ERROR(0, "fd have closed [fd=%u]", fd);
+
+	//重启子进程
 }
 
 int handle_signal()
