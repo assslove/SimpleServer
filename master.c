@@ -190,10 +190,17 @@ int master_dispatch()
 int master_fini()
 {
 	int i = 0;
-	for (; i < workmgr.nr_used; i++) {
+	for (; i < workmgr.nr_used; ++i) {
 		work_t *work = &workmgr.works[i];
 		mq_fini(&work->rq, setting.mem_queue_len);
 		mq_fini(&work->sq, setting.mem_queue_len);
+	}
+
+	for (i = 0; i < epinfo.maxfd; ++i) {
+		if (epinfo.fds[i].fd == 0) continue;
+		fd_buff_t *buff = &epinfo.fds[i].buff;
+		if (buff->rbf) free(buff->rbf);
+		if (buff->sbf) free(buff->sbf);
 	}
 
 	free(epinfo.evs);
