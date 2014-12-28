@@ -172,7 +172,7 @@ int send_to_cli(struct fdsess *sess, const void *msg, int const len);
 
 /* @brief work进程向所连服务器发送调用
  */
-int send_to_svr(int fd, void *msg, int len);
+int send_to_sevr(int fd, void *msg, int len);
 
 /* @brief 释放缓存区
  */

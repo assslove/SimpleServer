@@ -273,7 +273,7 @@ int send_to_cli(struct fdsess *sess, const void *msg, int const len)
 	return 0;
 }
 
-int send_to_svr(int fd, void *msg, int len)
+int send_to_sevr(int fd, void *msg, int len)
 {
 	return 0;
 }
