@@ -103,4 +103,10 @@ void raw2blk(int fd, struct mem_block *blk);
  * @return 0-success -1-error
  */
 int handle_signal();
+
+/* @brief 对应描述符被挂断 实现子进程重启
+ * @note 由于父进程与子进程共享资源，所以不能在收到信号的时候处理
+ *  信号收到时只处理僵尸进程
+ */
+void handle_hup(int fd);
 #endif

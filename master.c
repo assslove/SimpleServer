@@ -26,6 +26,8 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <sys/mman.h>
+#include <signal.h>
+#include <sys/wait.h>
 
 #include <glib.h>
 
@@ -151,7 +153,7 @@ int master_dispatch()
 				continue;
 			}
 
-			if (epinfo.evs[i].events && EPOLLIN) { // read
+			if (epinfo.evs[i].events & EPOLLIN) { // read
 				switch (epinfo.fds[fd].type) {
 					case fd_type_listen: //监听 一直打开
 						while (do_fd_open(fd) != -1) ;
@@ -163,7 +165,7 @@ int master_dispatch()
 						handle_pipe(fd);
 						break;
 				}
-			} else if (epinfo.evs[i].events && EPOLLOUT) { //write
+			} else if (epinfo.evs[i].events & EPOLLOUT) { //write
 				if (epinfo.fds[fd].buff.slen > 0) {
 					if (do_fd_write(fd) == -1) {
 						do_fd_close(fd);
@@ -173,6 +175,8 @@ int master_dispatch()
 				if (epinfo.fds[fd].buff.slen == 0) { //发送完毕
 					mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN);
 				}
+			} else if (epinfo.evs[i].events & EPOLLHUP) {
+				handle_hup(fd);
 			}
 		}
 	}
@@ -638,8 +642,27 @@ void raw2blk(int fd, mem_block_t *blk)
 	blk->type = BLK_DATA;
 }
 
+void handle_sigchld(int signo) 
+{
+	int pid, status;
+	while ((pid = waitpid(-1, &status, 0)) > 0) { //回收僵尸进程
+		//child_pids[] = 0; //设置子进程id
+		ERROR(0, "%d have stop", pid);
+	}
+}
+
+void handle_hup(int fd)
+{
+	ERROR(0, "fd have closed [fd=%u]", fd);
+}
 
 int handle_signal()
 {
+	//设置子进程结束信号
+	struct sigaction sa;
+	sa.sa_flags = SA_RESTART | SA_SIGINFO;	
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = handle_sigchld;
+	sigaction(SIGCHLD, &sa, NULL);
 	return 0;
 }
