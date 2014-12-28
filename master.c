@@ -18,6 +18,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/epoll.h>
 #include <errno.h>
 #include <malloc.h>
@@ -40,6 +41,8 @@
 #include "util.h"
 #include "outer.h"
 #include "conf.h"
+#include "work.h"
+
 
 int master_init()
 {
@@ -653,9 +656,26 @@ void handle_sigchld(int signo)
 
 void handle_hup(int fd)
 {
-	ERROR(0, "fd have closed [fd=%u]", fd);
+	int idx = epinfo.fds[fd].idx;
+	ERROR(0, "fd have closed [fd=%d,servid=%d]", fd, workmgr.works[idx].id);
 
 	//重启子进程
+	int pid = fork();
+	if (pid < 0) { //
+		ERROR(0, "serv [%d] restart failed", idx);
+		return ;
+	} else if (pid == 0) { //child
+		int ret = work_init(idx);
+		if (ret == -1) {
+			ERROR(0, "err work init [%s]", strerror(errno));
+			exit(0);
+		}
+		work_dispatch(idx);
+		work_fini(idx);
+		exit(0);
+	}
+
+	chl_pids[idx] = pid;
 }
 
 int handle_signal()
