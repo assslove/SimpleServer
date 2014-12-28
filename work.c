@@ -77,7 +77,7 @@ int work_init(int i)
 	//清楚chl_pids;
 	memset(chl_pids, 0, sizeof(chl_pids));
 
-	INFO(0, "child serv[%d] have started", i);
+	INFO(0, "child serv[id=%d] have started", workmgr.works[i].id);
 	return 0;
 }
 
