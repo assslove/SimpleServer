@@ -659,10 +659,23 @@ void handle_hup(int fd)
 	int idx = epinfo.fds[fd].idx;
 	ERROR(0, "fd have closed [fd=%d,servid=%d]", fd, workmgr.works[idx].id);
 
+	//释放资源
+	work_t *work = &workmgr.works[idx];
+	close(work->sq.pipefd[0]);
+	close(work->rq.pipefd[1]);
+	mq_fini(&work->rq, setting.mem_queue_len);
+	mq_fini(&work->sq, setting.mem_queue_len);
+
+	//创建共享内存
+	int ret = master_mq_create(idx);
+	if (ret == -1) {
+		ERROR(0, "err create mq");
+		return ;
+	}
 	//重启子进程
 	int pid = fork();
 	if (pid < 0) { //
-		ERROR(0, "serv [%d] restart failed", idx);
+		ERROR(0, "serv [%d] restart failed", work->id);
 		return ;
 	} else if (pid == 0) { //child
 		int ret = work_init(idx);
