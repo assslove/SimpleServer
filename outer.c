@@ -1,3 +1,21 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  out.c
+ *
+ *    Description:  用于动态调用so中函数，使业务逻辑能够嵌入到本网络框架中
+ *
+ *        Version:  1.0
+ *        Created:  2014年12月29日 16时30分55秒
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:	houbin, houbin-12@163.com
+ *   Organization:  Houbin, Inc. ShangHai CN. All rights reserved.
+ *
+ * =====================================================================================
+ */
+
 #include <stdlib.h>
 #include <string.h>
 #include <dlfcn.h>
