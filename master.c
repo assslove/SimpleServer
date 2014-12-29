@@ -510,6 +510,8 @@ void handle_sigchld(int signo)
 	}
 }
 
+/* @brief 结束主进程
+ */
 void handle_term(int signo)
 {
 	switch (signo) {
@@ -523,13 +525,24 @@ void handle_term(int signo)
 			INFO(0, "receive SIGINT");
 			break;
 	}
-	stop = 1;
-	//终止子进程
+
+	int ppid = getpid();
+	int isparent = 1;
 	int i;	
 	for (i = 0; i < workmgr.nr_used; i++) {
-		if (chl_pids[i]) {
-			chl_pids[i] = 0;
-			kill(chl_pids[i], signo);
+		if (chl_pids[i] == ppid) {
+			isparent = 0;
+			break;
+		}
+	}
+	
+	if (isparent) {
+		stop = 1; //终止主进程
+		for (i = 0; i < workmgr.nr_used; i++) { //终止子进程
+			if (chl_pids[i]) {
+				chl_pids[i] = 0;
+				kill(chl_pids[i], signo);
+			}
 		}
 	}
 }
