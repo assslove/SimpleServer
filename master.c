@@ -77,7 +77,8 @@ int master_init()
 
 	reg_data_so(setting.data_so);
 
-	//初始化mem
+	//初始化log
+	sprintf(log_file, "log/%s.log", setting.srv_name);
 	return 0;
 }
 
@@ -109,12 +110,12 @@ int master_mq_create(int i)
 	work_t *work = &workmgr.works[i];
 	int ret;
 	//mem_queue init
-	if ((ret = mq_init(&(work->rq), setting.mem_queue_len)) == -1) {
+	if ((ret = mq_init(&(work->rq), setting.mem_queue_len, MEM_TYPE_RECV)) == -1) {
 		ERROR(0, "init rq fail");
 		return -1;
 	}
 
-	if ((ret = mq_init(&(work->sq), setting.mem_queue_len)) == -1) {
+	if ((ret = mq_init(&(work->sq), setting.mem_queue_len, MEM_TYPE_SEND)) == -1) {
 		ERROR(0, "init wq fail");
 		return -1;
 	}
@@ -418,13 +419,13 @@ int init_setting()
 int master_init_for_work(int id) 
 {
 	int ret;
-	ret = mq_init(&workmgr.works[id].sq, setting.mem_queue_len);
+	ret = mq_init(&workmgr.works[id].sq, setting.mem_queue_len, MEM_TYPE_RECV);
 	if (ret == -1) {
 		ERROR(0, "map sendq failed[id=%d,err=%s]", id, strerror(errno));
 		return -1;
 	}
 
-	ret = mq_init(&workmgr.works[id].rq, setting.mem_queue_len);
+	ret = mq_init(&workmgr.works[id].rq, setting.mem_queue_len, MEM_TYPE_SEND);
 	if (ret == -1) {
 		ERROR(0, "map recvq failed[id=%d,err=%s]", id, strerror(errno));
 		return -1;

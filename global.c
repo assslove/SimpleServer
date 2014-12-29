@@ -54,3 +54,5 @@ GHashTable *sim_data;
 GHashTable *fds;
 //stop flag
 int stop;
+//log filename
+char log_file[64] = "temp.log";

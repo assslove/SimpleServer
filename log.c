@@ -20,8 +20,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 #include "log.h"
+
+extern char log_file[64];
 
 void slog(int llv, uint32_t key, const char* fmt, ...)
 {
@@ -31,7 +34,7 @@ void slog(int llv, uint32_t key, const char* fmt, ...)
 	
 	
 	va_list ap;
-	FILE* file = fopen("test.log", "a+");
+	FILE* file = fopen(log_file, "a+");
 	va_start(ap, fmt);
 	fprintf(file, "[%02u:%02u:%02u] %u ", tm.tm_hour, tm.tm_min, tm.tm_sec, key);
 	vfprintf(file, fmt, ap);

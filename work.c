@@ -76,6 +76,8 @@ int work_init(int i)
 	stop = 0;
 	//清楚chl_pids;
 	memset(chl_pids, 0, sizeof(chl_pids));
+	//初始化log
+	sprintf(log_file, "log/%s_%d.log", setting.srv_name, work->id);
 
 	INFO(0, "child serv[id=%d] have started", workmgr.works[i].id);
 	return 0;
