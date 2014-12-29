@@ -55,4 +55,4 @@ GHashTable *fds;
 //stop flag
 int stop;
 //log filename
-char log_file[64] = "temp.log";
+char log_file[64] = "log/temp.log";
