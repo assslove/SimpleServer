@@ -43,7 +43,7 @@ static void do_free_item(void* item)
 int load_simple_data()
 {
 	sim_data = g_hash_table_new_full(g_str_hash, g_str_equal, do_free_item, do_free_item);
-	int fd = open("simple.conf", O_RDWR);
+	int fd = open("etc/simple.conf", O_RDWR);
 	if (fd == -1) {
 		ERROR(0, "simple.conf not existed : %s", strerror(errno));
 		return -1;
@@ -122,7 +122,7 @@ int load_work_data()
 	workmgr.works = (work_t *)malloc(sizeof(work_t) * nr_work);
 	workmgr.nr_work = nr_work;
 	
-	int fd = open("work.conf", O_RDWR);
+	int fd = open("etc/work.conf", O_RDWR);
 	if (fd == -1) {
 		ERROR(0, "work.conf not existed: %s", strerror(errno));
 		return -1;

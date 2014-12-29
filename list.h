@@ -1,19 +1,5 @@
-/**
- *============================================================
- *  @file      list.h
- *  @brief     从内核代码里抽取出来的侵入式链表操作函数/宏。\n
- *             Simple doubly linked list implementation.\n
- * 
- *  compiler   gcc4.1.2
- *  platform   Linux
- *
- *  copyright:  TaoMee, Inc. ShangHai CN. All rights reserved.
- *
- *============================================================
- */
-
-#ifndef TAOMEE_H_LIST_H_
-#define TAOMEE_H_LIST_H_
+#ifndef LIST_H_
+#define LIST_H_
 
 #define __builtin_prefetch(x,y,z) 1
 
@@ -283,4 +269,4 @@ list_splice_init (struct list_head *list, struct list_head *head)
 	     pos = n, n = list_entry(n->member.next, typeof(*n), member))
 
 
-#endif // TAOMEE_H_LIST_H_
+#endif

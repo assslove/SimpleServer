@@ -29,9 +29,10 @@
 const int blk_head_len = sizeof(mem_block_t);
 const int mem_head_len = sizeof(mem_head_t);
 
-int mq_init(mem_queue_t *q, int size)
+int mq_init(mem_queue_t *q, int size, int type)
 {
 	q->len = size;	
+	q->type = type;
 	pipe(q->pipefd);
 
 	set_io_nonblock(q->pipefd[0], 1);
@@ -156,6 +157,6 @@ mem_block_t* blk_tail(mem_queue_t *q)
 
 void mq_display(mem_queue_t *q)
 {
-	TRACE(0, "blk_len=%d, head_len=%u, blk_cnt=%d, head=%d, tail=%d, len=%u\n", \
+	TRACE(q->type, "blk_len=%d, head_len=%u, blk_cnt=%d, head=%d, tail=%d, len=%u", \
 			blk_head_len, mem_head_len, q->ptr->blk_cnt, q->ptr->head, q->ptr->tail, q->len);
 }

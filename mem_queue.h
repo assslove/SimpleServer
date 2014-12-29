@@ -12,6 +12,13 @@ enum MEM_BLOCK_TYPE {
 	BLK_OPEN	= 3,
 };
 
+/* @brief 共享内存类型
+ */
+enum MEM_TYPE {
+	MEM_TYPE_RECV = 0, 
+	MEM_TYPE_SEND = 1
+};
+
 /* @brief 共享内存首部,用于记录队列信息
  */
 typedef struct mem_head {
@@ -26,6 +33,7 @@ typedef struct mem_queue {
 	mem_head_t *ptr;
 	int len;				//总长
 	int pipefd[2];			//通知
+	int8_t type;			//类型
 } __attribute__((packed)) mem_queue_t;
 
 /* @brief 内存块信息
@@ -58,7 +66,7 @@ mem_block_t *mq_get(mem_queue_t *q);
 
 /* @biref 创建共享队列
  */
-int mq_init(mem_queue_t *q, int size);
+int mq_init(mem_queue_t *q, int size, int type);
 
 /* @brief 释放共享队列
  */

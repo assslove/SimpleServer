@@ -76,6 +76,8 @@ int work_init(int i)
 	stop = 0;
 	//清楚chl_pids;
 	memset(chl_pids, 0, sizeof(chl_pids));
+	//初始化log
+	sprintf(log_file, "log/%s_%d.log", setting.srv_name, work->id);
 
 	INFO(0, "child serv[id=%d] have started", workmgr.works[i].id);
 	return 0;
@@ -132,7 +134,7 @@ int work_fini(int i)
 	free(epinfo.fds);
 	close(epinfo.epfd);
 
-	DEBUG(0, "child serv[i] have stopped!", i);
+	DEBUG(0, "work serv [id=%d] have stopped!", work->id);
 
 	return 0;	
 }
@@ -221,6 +223,36 @@ int do_proc_mcast(int fd)
 
 int do_proc_svr(int fd) 
 {
+	fd_buff_t *buff = &epinfo.fds[fd].buff;
+	
+	if (handle_read(fd) == -1) {
+		return -1;
+	}
+
+	char *tmp_ptr = buff->rbf;
+push_again:
+	if (buff->msglen == 0) { //获取长度
+		buff->msglen = so.get_msg_len(fd, tmp_ptr, buff->rlen, SERV_WORK);
+		TRACE(0, "recv [fd=%u][rlen=%u][msglen=%u]", fd, buff->rlen, buff->msglen);
+	}
+
+	//push
+	if (buff->rlen >= buff->msglen) {
+		so.proc_serv_msg(fd, tmp_ptr, buff->msglen);
+		//清空
+		tmp_ptr += buff->msglen;
+		buff->rlen -= buff->msglen;
+		buff->msglen = 0;
+
+		if (buff->rlen > 0) {//如果没有处理完继续处理
+			goto push_again;
+		}
+	}
+
+	if (buff->rbf != tmp_ptr && buff->rlen > 0) {  //还有剩余的在缓存区，不够一个消息，等读完了再去push
+		memmove(buff->rbf, tmp_ptr, buff->rlen); //合并到缓冲区头
+	}
+
 	return 0;
 }
 

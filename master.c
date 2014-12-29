@@ -77,7 +77,8 @@ int master_init()
 
 	reg_data_so(setting.data_so);
 
-	//初始化mem
+	//初始化log
+	sprintf(log_file, "log/%s.log", setting.srv_name);
 	return 0;
 }
 
@@ -109,12 +110,12 @@ int master_mq_create(int i)
 	work_t *work = &workmgr.works[i];
 	int ret;
 	//mem_queue init
-	if ((ret = mq_init(&(work->rq), setting.mem_queue_len)) == -1) {
+	if ((ret = mq_init(&(work->rq), setting.mem_queue_len, MEM_TYPE_RECV)) == -1) {
 		ERROR(0, "init rq fail");
 		return -1;
 	}
 
-	if ((ret = mq_init(&(work->sq), setting.mem_queue_len)) == -1) {
+	if ((ret = mq_init(&(work->sq), setting.mem_queue_len, MEM_TYPE_SEND)) == -1) {
 		ERROR(0, "init wq fail");
 		return -1;
 	}
@@ -180,7 +181,7 @@ int master_dispatch()
 				}
 			} else if (epinfo.evs[i].events & EPOLLHUP) {
 				handle_hup(fd);
-			}
+			} 
 		}
 	}
 
@@ -207,7 +208,8 @@ int master_fini()
 	free(epinfo.fds);
 	close(epinfo.epfd);
 
-	DEBUG(0, "serv have stopped!");
+	DEBUG(0, "master serv have stopped!");
+
 	return 0;	
 }
 
@@ -284,48 +286,6 @@ push_again:
 	return 0;
 }
 
-int handle_read(int fd)
-{
-	fd_buff_t *buff = &epinfo.fds[fd].buff;
-	if (!buff->rbf) {
-		buff->msglen = 0;
-		buff->rlen = 0;
-		buff->rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
-		if (buff->rbf == MAP_FAILED) {
-			ERROR(0, "mmap error");
-			return -1;
-		}
-	}
-
-	//判断缓存区是否已满
-	if (setting.max_msg_len == buff->rlen) {
-		ERROR(0, "recv buff full [fd=%u]", fd);
-		return 0;
-	}
-
-	//接收消息
-	int recv_len = safe_tcp_recv_n(fd, buff->rbf + buff->rlen, setting.max_msg_len - buff->rlen);
-
-	if (recv_len > 0) { //有消息
-		buff->rlen += recv_len;
-	} else if (recv_len == 0) { //对端关闭
-		ERROR(0, "[fd=%u,ip=%s] has closed", fd, inet_ntoa(*((struct in_addr *)&epinfo.fds[fd].addr.ip)));
-		return -1;
-	} else { //
-		ERROR(0, "recv error[fd=%u,error=%u]", fd, strerror(errno));
-		recv_len = 0;
-	}
-
-	if (buff->rlen == setting.max_msg_len) {
-		//增加到可读队列里面
-		do_add_to_readlist(fd);	
-	} else {
-		//从可读队列里面删除
-		do_del_from_readlist(fd);	
-	}
-
-	return recv_len;
-}
 
 int handle_pipe(fd)
 {
@@ -370,86 +330,6 @@ int do_blk_send(mem_block_t *blk)
 	return do_fd_send(blk->fd, blk->data, blk->len - blk_head_len);	
 }
 
-int do_fd_send(int fd, void *data, int len)
-{
-	fd_buff_t *buff = &epinfo.fds[fd].buff;	
-	int is_send = 0;
-	if (buff->slen > 0) {
-		if (do_fd_write(fd) == -1) { //fd断了
-			//do_fd_del(fd);
-			return -1;	
-		}
-		is_send = 1;
-	}
-	
-	int send_len = 0;
-	if (buff->slen == 0) { //发送缓冲区没有数据发送
-		send_len = safe_tcp_send_n(fd, data, len);
-		if (send_len == -1) {
-			ERROR(0, "write fd error[fd=%u, err=%s]", fd, strerror(errno));
-			//do_fd_del(fd);
-			return -1;
-		} 
-	}
-
-	if (len > send_len) { //如果没有发送完
-		int left_len = len - send_len;
-		if (!buff->sbf) { //没有空间
-			buff->sbf = (char *)malloc(left_len);
-			if (buff->sbf) {
-				ERROR(0, "malloc err, [err=%s]", strerror(errno));
-				return -1;
-			}
-			buff->sbf_size = left_len;
-		} else if (buff->sbf_size < buff->slen + left_len) {
-			buff->sbf = (char *)realloc(buff->sbf, buff->slen + left_len);
-			if (!buff->sbf) {
-				ERROR(0, "realloc err, [err=%s]", strerror(errno));
-				return -1;
-			}
-			buff->sbf_size = left_len + buff->slen;
-		}
-
-		memcpy(buff->sbf + buff->slen, (char *)data + send_len, left_len);
-		buff->slen += left_len;
-
-		if (setting.max_buf_len && setting.max_buf_len < buff->slen) { //如果大于最大发送缓冲区
-			ERROR(0, "sendbuf is exceeded max[fd=%d,buflen=%d,slen=%d]", fd, setting.max_buf_len, buff->slen);
-			do_fd_close(fd);
-			return -1;
-
-		}
-	}
-
-	if (buff->slen > 0 && !is_send) { //没有写完 上次没有写过 如果写过 不修改原来事件
-		mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN | EPOLLOUT);	//当缓冲区不满时继续写
-	} else if (buff->slen == 0) { //写完 修改为可读事件
-		mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN);	
-	}
-
-	return 0;
-}
-
-int do_fd_write(int fd)
-{
-	int send_len;
-	fd_buff_t *buff = &epinfo.fds[fd].buff;
-	send_len = safe_tcp_send_n(fd, buff->sbf, buff->slen);
-
-	if (send_len == 0) {
-		return 0;
-	} else if (send_len > 0) {
-		if (send_len < buff->slen) {
-			memmove(buff->sbf, buff->sbf + send_len, buff->slen - send_len);
-			buff->slen -= send_len;
-		}
-	} else {
-		ERROR(0, "write fd error[fd=%u, err=%s]", fd, strerror(errno));
-	}
-
-	return send_len;
-}
-
 int handle_readlist()
 {
 	fd_wrap_t *pfd, *tmpfd;
@@ -479,85 +359,6 @@ int handle_closelist()
 	return 0;
 }
 
-
-void do_add_to_readlist(int fd) 
-{
-	if (!epinfo.fds[fd].flag) {
-		list_add_tail(&epinfo.fds[fd].node, &epinfo.readlist);
-		epinfo.fds[fd].flag |= CACHE_READ;
-		TRACE(0, "add to readlist [fd=%u]", fd);
-	}
-}
-
-void do_del_from_readlist(int fd)
-{
-	if (epinfo.fds[fd].flag & CACHE_READ) {
-		epinfo.fds[fd].flag = 0;
-		list_del_init(&epinfo.fds[fd].node);
-		TRACE(0, "del from readlist [fd=%u]", fd);
-	}
-}
-
-void do_add_to_closelist(int fd) 
-{
-	do_del_from_readlist(fd);
-	if (!(epinfo.fds[fd].flag & CACHE_CLOSE)) {
-		list_add_tail(&epinfo.fds[fd].node, &epinfo.readlist);
-		epinfo.fds[fd].flag |= CACHE_CLOSE;
-		TRACE(0, "add to closelist[fd=%u]", fd);
-	}
-}
-
-void do_del_from_closelist(int fd)
-{
-	if (epinfo.fds[fd].flag & CACHE_CLOSE) {
-		epinfo.fds[fd].flag = 0;
-		list_del_init(&epinfo.fds[fd].node);
-		TRACE(0, "del from closelist[fd=%u]", fd);
-	}
-}
-
-int do_fd_close(int fd)
-{
-	if (epinfo.fds[fd].type == fd_type_null) {
-		return 0;
-	}
-
-	mem_block_t blk;
-	blk.id = epinfo.fds[fd].idx;
-	blk.fd = fd;
-	blk.type = BLK_CLOSE;
-	blk.len = blk_head_len;
-
-	mq_push(&workmgr.works[blk.id].rq, &blk, NULL);
-
-	//从可读队列中删除
-	do_del_from_readlist(fd);
-	//从待关闭队列中删除
-	do_del_from_closelist(fd);
-
-	//释放缓冲区
-	free_buff(&epinfo.fds[fd].buff);
-	epinfo.fds[fd].type = fd_type_null;
-
-	close(fd);
-	--epinfo.count;
-
-	//替换最大fd
-	if (epinfo.maxfd == fd) {
-		int i; 
-		for (i = fd - 1; i >= 0; --i) {
-			if (epinfo.fds[i].type == fd_type_null) {
-				break;
-			}
-		}
-		epinfo.maxfd = i;
-	}
-
-	INFO(0, "close [fd=%d]", fd);
-
-	return 0;
-}
 
 
 int do_fd_open(int fd) 
@@ -618,13 +419,13 @@ int init_setting()
 int master_init_for_work(int id) 
 {
 	int ret;
-	ret = mq_init(&workmgr.works[id].sq, setting.mem_queue_len);
+	ret = mq_init(&workmgr.works[id].sq, setting.mem_queue_len, MEM_TYPE_RECV);
 	if (ret == -1) {
 		ERROR(0, "map sendq failed[id=%d,err=%s]", id, strerror(errno));
 		return -1;
 	}
 
-	ret = mq_init(&workmgr.works[id].rq, setting.mem_queue_len);
+	ret = mq_init(&workmgr.works[id].rq, setting.mem_queue_len, MEM_TYPE_SEND);
 	if (ret == -1) {
 		ERROR(0, "map recvq failed[id=%d,err=%s]", id, strerror(errno));
 		return -1;
@@ -668,6 +469,8 @@ void handle_sigchld(int signo)
 	}
 }
 
+/* @brief 结束主进程
+ */
 void handle_term(int signo)
 {
 	switch (signo) {
@@ -681,13 +484,24 @@ void handle_term(int signo)
 			INFO(0, "receive SIGINT");
 			break;
 	}
-	stop = 1;
-	//终止子进程
+
+	int ppid = getpid();
+	int isparent = 1;
 	int i;	
 	for (i = 0; i < workmgr.nr_used; i++) {
-		if (chl_pids[i]) {
-			chl_pids[i] = 0;
-			kill(chl_pids[i], signo);
+		if (chl_pids[i] == ppid) {
+			isparent = 0;
+			break;
+		}
+	}
+	
+	if (isparent) {
+		stop = 1; //终止主进程
+		for (i = 0; i < workmgr.nr_used; i++) { //终止子进程
+			if (chl_pids[i]) {
+				chl_pids[i] = 0;
+				kill(chl_pids[i], signo);
+			}
 		}
 	}
 }

@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
 					return 0;
 				} else {
 					proto_pkg_t *msg = (proto_pkg_t *)recvbuf;
-					printf("%d,%d,%d,%d,%d,%s", 
+					printf("%d,%d,%d,%d,%d,%s\n", 
 							msg->id, 
 							msg->seq,
 							msg->cmd, 
