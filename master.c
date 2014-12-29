@@ -180,7 +180,7 @@ int master_dispatch()
 				}
 			} else if (epinfo.evs[i].events & EPOLLHUP) {
 				handle_hup(fd);
-			}
+			} 
 		}
 	}
 
