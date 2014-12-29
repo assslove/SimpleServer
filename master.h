@@ -47,14 +47,6 @@ void handle_mq_send();
  */
 int do_blk_send(struct mem_block *blk);
 
-/* @brief 处理消息的发送
- */
-int do_fd_send(int fd, void *data, int len);
-
-/* @brief 处理消息的写入
- */
-int do_fd_write(int fd);
-
 /* @brief 处理可读队列
  */
 int handle_readlist();
@@ -63,25 +55,6 @@ int handle_readlist();
  */
 int handle_closelist();
 
-/* @brif 将fd增加 可读队列里面
- */
-void do_add_to_readlist(int fd);
-
-/* @brief fd从可读队列删除
- */
-void do_del_from_readlist(int fd);
-
-/*  @brief 将fd增加到待关闭队列里面
-*/
-void do_add_to_closelist(int fd);
-
-/* @brief 将fd从关闭队列里面删除
- */
-void do_del_from_closelist(int fd);
-
-/* @brief 执行fd关闭
- */
-int do_fd_close(int fd);
 
 /* @brief 执行fd打开
  */

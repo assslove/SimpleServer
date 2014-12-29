@@ -266,16 +266,16 @@ int send_to_cli(struct fdsess *sess, const void *msg, int const len)
 	blk.len = len + blk_head_len;
 
 	if (mq_push(&workmgr.works[blk.id].sq, &blk, msg) == -1) {
-		ERROR(0, "%s error", __func__);
+		ERROR(0, "%s error [len=%d]", __func__, len);
 		return -1;
 	}
 
 	return 0;
 }
 
-int send_to_sevr(int fd, void *msg, int len)
+int send_to_serv(int fd, void *msg, int len)
 {
-	return 0;
+	return do_fd_send(fd, msg, len);
 }
 
 void free_buff(fd_buff_t *buff)
@@ -284,6 +284,7 @@ void free_buff(fd_buff_t *buff)
 		free(buff->sbf);
 		buff->sbf = NULL;
 	}
+
 	if (buff->rbf) {
 		free(buff->rbf);
 		buff->rbf = NULL;
@@ -292,3 +293,165 @@ void free_buff(fd_buff_t *buff)
 	buff->slen = 0;
 	buff->rlen = 0;
 }
+
+int do_fd_send(int fd, void *data, int len)
+{
+	fd_buff_t *buff = &epinfo.fds[fd].buff;	
+	int is_send = 0;
+	if (buff->slen > 0) {
+		if (do_fd_write(fd) == -1) { //fd断了
+			do_fd_close(fd);
+			return -1;	
+		}
+		is_send = 1;
+	}
+	
+	int send_len = 0;
+	if (buff->slen == 0) { //发送缓冲区没有数据发送
+		send_len = safe_tcp_send_n(fd, data, len);
+		if (send_len == -1) {
+			ERROR(0, "write fd error[fd=%u, err=%s]", fd, strerror(errno));
+			do_fd_close(fd);
+			return -1;
+		} 
+	}
+
+	if (len > send_len) { //如果没有发送完
+		int left_len = len - send_len;
+		if (!buff->sbf) { //没有空间
+			buff->sbf = (char *)malloc(left_len);
+			if (buff->sbf) {
+				ERROR(0, "malloc err, [err=%s]", strerror(errno));
+				return -1;
+			}
+			buff->sbf_size = left_len;
+		} else if (buff->sbf_size < buff->slen + left_len) {
+			buff->sbf = (char *)realloc(buff->sbf, buff->slen + left_len);
+			if (!buff->sbf) {
+				ERROR(0, "realloc err, [err=%s]", strerror(errno));
+				return -1;
+			}
+			buff->sbf_size = left_len + buff->slen;
+		}
+
+		memcpy(buff->sbf + buff->slen, (char *)data + send_len, left_len);
+		buff->slen += left_len;
+
+		if (setting.max_buf_len && setting.max_buf_len < buff->slen) { //如果大于最大发送缓冲区
+			ERROR(0, "sendbuf is exceeded max[fd=%d,buflen=%d,slen=%d]", fd, setting.max_buf_len, buff->slen);
+			do_fd_close(fd);
+			return -1;
+
+		}
+	}
+
+	if (buff->slen > 0 && !is_send) { //没有写完 上次没有写过 如果写过 不修改原来事件
+		mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN | EPOLLOUT);	//当缓冲区不满时继续写
+	} else if (buff->slen == 0) { //写完 修改为可读事件
+		mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN);	
+	}
+
+	return 0;
+}
+
+int do_fd_write(int fd)
+{
+	int send_len;
+	fd_buff_t *buff = &epinfo.fds[fd].buff;
+	send_len = safe_tcp_send_n(fd, buff->sbf, buff->slen);
+
+	if (send_len == 0) {
+		return 0;
+	} else if (send_len > 0) {
+		if (send_len < buff->slen) {
+			memmove(buff->sbf, buff->sbf + send_len, buff->slen - send_len);
+			buff->slen -= send_len;
+		}
+	} else {
+		ERROR(0, "write fd error[fd=%u, err=%s]", fd, strerror(errno));
+	}
+
+	return send_len;
+}
+
+
+int do_fd_close(int fd)
+{
+	if (epinfo.fds[fd].type == fd_type_null) {
+		return 0;
+	}
+
+	mem_block_t blk;
+	blk.id = epinfo.fds[fd].idx;
+	blk.fd = fd;
+	blk.type = BLK_CLOSE;
+	blk.len = blk_head_len;
+
+	mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
+
+	//从可读队列中删除
+	do_del_from_readlist(fd);
+	//从待关闭队列中删除
+	do_del_from_closelist(fd);
+
+	//释放缓冲区
+	free_buff(&epinfo.fds[fd].buff);
+	epinfo.fds[fd].type = fd_type_null;
+
+	close(fd);
+	--epinfo.count;
+
+	//替换最大fd
+	if (epinfo.maxfd == fd) {
+		int i; 
+		for (i = fd - 1; i >= 0; --i) {
+			if (epinfo.fds[i].type == fd_type_null) {
+				break;
+			}
+		}
+		epinfo.maxfd = i;
+	}
+
+	INFO(0, "close [fd=%d]", fd);
+
+	return 0;
+}
+
+void do_add_to_readlist(int fd) 
+{
+	if (!epinfo.fds[fd].flag) {
+		list_add_tail(&epinfo.fds[fd].node, &epinfo.readlist);
+		epinfo.fds[fd].flag |= CACHE_READ;
+		TRACE(0, "add to readlist [fd=%u]", fd);
+	}
+}
+
+void do_del_from_readlist(int fd)
+{
+	if (epinfo.fds[fd].flag & CACHE_READ) {
+		epinfo.fds[fd].flag = 0;
+		list_del_init(&epinfo.fds[fd].node);
+		TRACE(0, "del from readlist [fd=%u]", fd);
+	}
+}
+
+void do_add_to_closelist(int fd) 
+{
+	do_del_from_readlist(fd);
+	if (!(epinfo.fds[fd].flag & CACHE_CLOSE)) {
+		list_add_tail(&epinfo.fds[fd].node, &epinfo.readlist);
+		epinfo.fds[fd].flag |= CACHE_CLOSE;
+		TRACE(0, "add to closelist[fd=%u]", fd);
+	}
+}
+
+void do_del_from_closelist(int fd)
+{
+	if (epinfo.fds[fd].flag & CACHE_CLOSE) {
+		epinfo.fds[fd].flag = 0;
+		list_del_init(&epinfo.fds[fd].node);
+		TRACE(0, "del from closelist[fd=%u]", fd);
+	}
+}
+
+

@@ -132,7 +132,7 @@ int work_fini(int i)
 	free(epinfo.fds);
 	close(epinfo.epfd);
 
-	DEBUG(0, "child serv[i] have stopped!", i);
+	DEBUG(0, "work serv [id=%d] have stopped!", work->id);
 
 	return 0;	
 }

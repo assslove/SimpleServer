@@ -171,11 +171,40 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events);
 int send_to_cli(struct fdsess *sess, const void *msg, int const len);
 
 /* @brief work进程向所连服务器发送调用
+ * @note 保证发送缓冲区满时进行缓冲
  */
-int send_to_sevr(int fd, void *msg, int len);
+int send_to_serv(int fd, void *msg, int len);
 
 /* @brief 释放缓存区
  */
 void free_buff(fd_buff_t *buff);
+
+/* @brief 向fd发送消息
+ */
+int do_fd_send(int fd, void *data, int len);
+
+/* @brief 从缓存区向fd发送消息
+ */
+int do_fd_write(int fd);
+
+/* @brief 把fd关掉 释放资源
+ */
+int do_fd_close(int fd);
+
+/* @brif 将fd增加 可读队列里面
+ */
+void do_add_to_readlist(int fd);
+
+/* @brief fd从可读队列删除
+ */
+void do_del_from_readlist(int fd);
+
+/*  @brief 将fd增加到待关闭队列里面
+*/
+void do_add_to_closelist(int fd);
+
+/* @brief 将fd从关闭队列里面删除
+ */
+void do_del_from_closelist(int fd);
 
 #endif
