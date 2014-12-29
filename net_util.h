@@ -207,4 +207,8 @@ void do_add_to_closelist(int fd);
  */
 void do_del_from_closelist(int fd);
 
+/*  @brief 连接某个服务器 用于work进程
+ */
+int connect_to_serv(const char *ip, int port, int bufsize);
+
 #endif

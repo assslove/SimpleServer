@@ -278,6 +278,12 @@ int send_to_serv(int fd, void *msg, int len)
 	return do_fd_send(fd, msg, len);
 }
 
+
+int connect_to_serv(const char *ip, int port, int bufsize)
+{
+	return 0;
+}
+
 void free_buff(fd_buff_t *buff)
 {
 	if (buff->sbf) {
