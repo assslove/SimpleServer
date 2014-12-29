@@ -147,7 +147,7 @@ int safe_tcp_accept(int sockfd, struct sockaddr_in* peer, int nonblock);
 
 /* @brief 连接指定的sock
  */
-int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblock);
+int safe_tcp_connect(const char* ipaddr, in_port_t port, int bufsize, int timeout);
 
 /* @brief 加入epoll
  */
@@ -209,6 +209,10 @@ void do_del_from_closelist(int fd);
 
 /*  @brief 连接某个服务器 用于work进程
  */
-int connect_to_serv(const char *ip, int port, int bufsize);
+int connect_to_serv(const char *ip, int port, int bufsize, int timeout);
+
+/* @brief  handle read
+ */
+int handle_read(int fd);
 
 #endif

@@ -285,48 +285,6 @@ push_again:
 	return 0;
 }
 
-int handle_read(int fd)
-{
-	fd_buff_t *buff = &epinfo.fds[fd].buff;
-	if (!buff->rbf) {
-		buff->msglen = 0;
-		buff->rlen = 0;
-		buff->rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
-		if (buff->rbf == MAP_FAILED) {
-			ERROR(0, "mmap error");
-			return -1;
-		}
-	}
-
-	//判断缓存区是否已满
-	if (setting.max_msg_len == buff->rlen) {
-		ERROR(0, "recv buff full [fd=%u]", fd);
-		return 0;
-	}
-
-	//接收消息
-	int recv_len = safe_tcp_recv_n(fd, buff->rbf + buff->rlen, setting.max_msg_len - buff->rlen);
-
-	if (recv_len > 0) { //有消息
-		buff->rlen += recv_len;
-	} else if (recv_len == 0) { //对端关闭
-		ERROR(0, "[fd=%u,ip=%s] has closed", fd, inet_ntoa(*((struct in_addr *)&epinfo.fds[fd].addr.ip)));
-		return -1;
-	} else { //
-		ERROR(0, "recv error[fd=%u,error=%u]", fd, strerror(errno));
-		recv_len = 0;
-	}
-
-	if (buff->rlen == setting.max_msg_len) {
-		//增加到可读队列里面
-		do_add_to_readlist(fd);	
-	} else {
-		//从可读队列里面删除
-		do_del_from_readlist(fd);	
-	}
-
-	return recv_len;
-}
 
 int handle_pipe(fd)
 {

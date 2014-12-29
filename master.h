@@ -30,9 +30,6 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port);
  */
 int handle_cli(int fd);
 
-/* @brief  handle read
- */
-int handle_read(int fd);
 
 /* @brief 处理管道的读取
  * @note 直接就可以

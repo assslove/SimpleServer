@@ -25,6 +25,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <sys/mman.h>
+#include <sys/socket.h>
 
 #include "net_util.h"
 #include "util.h"
@@ -182,7 +184,7 @@ int safe_tcp_accept(int sockfd, struct sockaddr_in* peer, int nonblock)
 	return newfd;
 }
 
-int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblock)
+int safe_tcp_connect(const char* ipaddr, in_port_t port, int bufsize, int timeout)
 {
 	struct sockaddr_in peer;
 
@@ -199,16 +201,18 @@ int safe_tcp_connect(const char* ipaddr, in_port_t port, int timeout, int nonblo
 	}
 
 	if (timeout > 0) {
-		set_sock_snd_timeo(sockfd, timeout * 1000);
+		set_sock_snd_timeo(sockfd, timeout);
+		set_sock_rcv_timeo(sockfd, timeout);
 	}
+
 	if (connect(sockfd, (void*)&peer, sizeof(peer)) == -1) {
 		close(sockfd);
 		return -1;
 	}
-	if (timeout > 0) {
-		set_sock_snd_timeo(sockfd, 0);
+
+	if (bufsize) {
+		
 	}
-	set_io_nonblock(sockfd, nonblock);
 
 	return sockfd;
 }
@@ -279,9 +283,27 @@ int send_to_serv(int fd, void *msg, int len)
 }
 
 
-int connect_to_serv(const char *ip, int port, int bufsize)
+int connect_to_serv(const char *ip, int port, int bufsize, int timeout)
 {
-	return 0;
+	struct sockaddr_in sockaddr;
+	memset(&sockaddr, 0, sizeof(struct sockaddr_in));
+	sockaddr.sin_family = AF_INET;
+	sockaddr.sin_port = htons(port);
+	if (inet_pton(AF_INET, ip, &sockaddr.sin_addr)) {
+		ERROR(0, "inet_pton error [ip=%s]", ip);
+		return -1;
+	}
+
+	int fd = safe_tcp_connect(ip, port, bufsize, timeout);
+	if (fd > 0) {
+		INFO(0, "connect to [%s:%d]", ip, port);
+		add_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN);
+	} else {
+		ERROR(0, "connect to [%s:%d] failed", ip, port);
+		return -1;
+	}
+
+	return fd;
 }
 
 void free_buff(fd_buff_t *buff)
@@ -460,4 +482,46 @@ void do_del_from_closelist(int fd)
 	}
 }
 
+int handle_read(int fd)
+{
+	fd_buff_t *buff = &epinfo.fds[fd].buff;
+	if (!buff->rbf) {
+		buff->msglen = 0;
+		buff->rlen = 0;
+		buff->rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
+		if (buff->rbf == MAP_FAILED) {
+			ERROR(0, "mmap error");
+			return -1;
+		}
+	}
+
+	//判断缓存区是否已满
+	if (setting.max_msg_len == buff->rlen) {
+		ERROR(0, "recv buff full [fd=%u]", fd);
+		return 0;
+	}
+
+	//接收消息
+	int recv_len = safe_tcp_recv_n(fd, buff->rbf + buff->rlen, setting.max_msg_len - buff->rlen);
+
+	if (recv_len > 0) { //有消息
+		buff->rlen += recv_len;
+	} else if (recv_len == 0) { //对端关闭
+		ERROR(0, "[fd=%u,ip=%s] has closed", fd, inet_ntoa(*((struct in_addr *)&epinfo.fds[fd].addr.ip)));
+		return -1;
+	} else { //
+		ERROR(0, "recv error[fd=%u,error=%u]", fd, strerror(errno));
+		recv_len = 0;
+	}
+
+	if (buff->rlen == setting.max_msg_len) {
+		//增加到可读队列里面
+		do_add_to_readlist(fd);	
+	} else {
+		//从可读队列里面删除
+		do_del_from_readlist(fd);	
+	}
+
+	return recv_len;
+}
 
