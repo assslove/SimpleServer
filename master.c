@@ -376,18 +376,18 @@ int init_setting()
 	setting.max_msg_len = conf_get_int("max_msg_len");
 	setting.max_buf_len = conf_get_int("max_buf_len");
 	
-	char *srv_name = conf_get_str("srv_name");
+	const char *srv_name = conf_get_str("srv_name");
 	if (srv_name != NULL) {
 		memcpy(setting.srv_name, srv_name, sizeof(setting.srv_name));
 	}
 	setting.raw_buf_len = conf_get_int("raw_buf_len");
 
-	char *data_so = conf_get_str("data_so");
+	const char *data_so = conf_get_str("data_so");
 	if (data_so != NULL) {
 		memcpy(setting.data_so, data_so, sizeof(setting.data_so));
 	}
 
-	char *text_so = conf_get_str("text_so");
+	const char *text_so = conf_get_str("text_so");
 	if (text_so == NULL) {
 		ERROR(0, "load text_so error");
 		return -1;

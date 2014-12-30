@@ -26,6 +26,7 @@ extern "C" {
 #endif
 #include "log.h"
 #include "net_util.h"
+#include "conf.h"
 #ifdef __cplusplus
 }
 #endif
@@ -54,6 +55,9 @@ typedef struct proto_pkg {
 	uint8_t data[];
 } __attribute__((packed))proto_pkg_t;
 
+
+int switch_fd = -1;
+
 OUTER_FUNC void handle_timer()
 {
 }
@@ -62,12 +66,20 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 {
 	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
 
-	DEBUG(pkg->id, "len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
+	DEBUG(pkg->id, "online len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
+
+	if (switch_fd == -1) {
+		switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
+	}
+
+	if (switch_fd == -1) {
+		return 0;
+	}
 	
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
 
-	return send_to_cli(sess, cli, pkg->len);
+	return send_to_serv(switch_fd, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)

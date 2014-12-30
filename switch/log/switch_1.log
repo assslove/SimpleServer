@@ -1,0 +1,9 @@
+[15:21:58] 0 work init
+[15:21:58] 0 child serv[id=1] have started
+[15:22:06] 0 work init
+[15:22:06] 0 child serv[id=1] have started
+[15:23:17] 0 receive SIGTEAM
+[15:23:17] 0 work fini
+[15:23:17] 0 work serv [id=1] have stopped!
+[15:23:27] 0 work init
+[15:23:27] 0 child serv[id=1] have started

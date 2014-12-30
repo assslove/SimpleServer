@@ -51,15 +51,15 @@ int main(int argc, char* argv[])
 	init_rlimit();
 	//save args
 	save_args(argc, argv);
-	//chg serv name
-	chg_proc_title("SimpleServer");
-	//daemon mode
-	daemon(1, 0);
 	//初始化配置信息
 	ret = init_setting();
 	if (ret == -1) {
 		return 0;
 	}
+	//chg serv name
+	chg_proc_title(setting.srv_name);
+	//daemon mode
+	daemon(1, 0);
 	//handle signal
 	if (handle_signal()) {
 		return 0;

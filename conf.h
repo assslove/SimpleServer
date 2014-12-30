@@ -27,7 +27,7 @@ void free_work_data();
 
 /* @brief 获取字符串
  */
-char* conf_get_str(char *key);
+const char* conf_get_str(const char *key);
 
 /* @brief 获取整型
  */

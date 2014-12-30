@@ -25,6 +25,7 @@
 extern "C" {
 #endif
 #include "log.h"
+#include "net_util.h"
 #ifdef __cplusplus
 }
 #endif
@@ -53,21 +54,23 @@ typedef struct proto_pkg {
 	uint8_t data[];
 } __attribute__((packed))proto_pkg_t;
 
+
+int switch_fd = -1;
+
 OUTER_FUNC void handle_timer()
 {
 }
 
 OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 {
-	proto_pkg_t *pkg = (msg);
+	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
 
 	DEBUG(pkg->id, "len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
 	
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
 
-	return 0;
-//	return send_to_cli(sess->fd, cli, pkg->len);
+	return send_to_cli(sess, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)

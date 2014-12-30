@@ -33,7 +33,7 @@ int work_init(int i)
 {
 	work_t *work = &workmgr.works[i];
 	//chg title
-	chg_proc_title("SimpleServer-%d", work->id);
+	chg_proc_title("%s-%d", setting.srv_name, work->id);
 	//release master resource
 	close(epinfo.epfd);
 	free(epinfo.evs);

@@ -1,0 +1,22 @@
+[15:21:58] 0 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[15:21:58] 1 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[15:21:58] 0 backlog=1024,bufsize=512
+[15:21:58] 0 master init
+[15:21:58] 0 serv [1] have listened
+[15:21:58] 0 SimpleServer-1
+[15:22:06] 0 3373 have stop
+[15:22:06] 0 fd have closed [fd=10,servid=1]
+[15:22:06] 0 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[15:22:06] 1 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[15:22:06] 0 serv [1] restart success
+[15:22:06] 0 SimpleServer-1
+[15:23:17] 0 receive SIGTEAM
+[15:23:17] 0 receive SIGTEAM
+[15:23:17] 0 master fini
+[15:23:17] 0 master serv have stopped!
+[15:23:27] 0 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[15:23:27] 1 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[15:23:27] 0 backlog=1024,bufsize=512
+[15:23:27] 0 master init
+[15:23:27] 0 serv [1] have listened
+[15:23:27] 0 switch-1
