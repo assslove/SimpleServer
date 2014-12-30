@@ -269,13 +269,13 @@ int do_proc_svr(int fd)
 	}
 
 	char *tmp_ptr = buff->rbf;
-push_again:
-	if (buff->msglen == 0) { //获取长度
+proc_again:
+	if (buff->msglen == 0 && buff->rlen > 0) { //获取长度
 		buff->msglen = so.get_msg_len(fd, tmp_ptr, buff->rlen, SERV_WORK);
 		TRACE(0, "recv [fd=%u][rlen=%u][msglen=%u]", fd, buff->rlen, buff->msglen);
 	}
 
-	//push
+	//proc
 	if (buff->rlen >= buff->msglen) {
 		so.proc_serv_msg(fd, tmp_ptr, buff->msglen);
 		//清空
@@ -284,7 +284,7 @@ push_again:
 		buff->msglen = 0;
 
 		if (buff->rlen > 0) {//如果没有处理完继续处理
-			goto push_again;
+			goto proc_again;
 		}
 	}
 

@@ -42,4 +42,5 @@ void slog(int llv, uint32_t key, const char* fmt, ...)
 	fflush(file);
 
 	va_end(ap);
+	fclose(file);
 }

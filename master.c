@@ -235,7 +235,7 @@ int handle_cli(int fd)
 
 	char *tmp_ptr = buff->rbf;
 push_again:
-	if (buff->msglen == 0) { //获取长度
+	if (buff->msglen == 0 &&; buff->rlen > 0) { //获取长度
 		buff->msglen = so.get_msg_len(fd, tmp_ptr, buff->rlen, SERV_MASTER);
 		TRACE(0, "recv [fd=%u][rlen=%u][msglen=%u]", fd, buff->rlen, buff->msglen);
 	}
