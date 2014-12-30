@@ -223,4 +223,8 @@ int handle_readlist(int ismaster);
  */
 int handle_closelist(int ismaster);
 
+/* @brief 增加fd到epinfo
+ */
+int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port);
+
 #endif

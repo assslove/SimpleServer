@@ -224,39 +224,6 @@ int master_fini()
 	return 0;	
 }
 
-int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
-{
-	set_io_nonblock(fd, 1);
-
-	struct epoll_event event;
-	event.data.fd = fd;
-	switch (type) {
-		case fd_type_listen:
-		case fd_type_pipe:
-		case fd_type_cli:
-			event.events = EPOLLIN | EPOLLET;
-			break;
-
-	}
-
-	int ret = epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, fd, &event);	
-	if (ret == -1) {
-		ERROR(0, "err ctl add [fd=%u][%s]", fd, strerror(errno));
-		return -1;
-	}
-
-	fd_wrap_t *pfd = &epinfo.fds[fd];
-	++epinfo.seq;
-	pfd->type = type;
-	pfd->idx = idx;
-	pfd->fd = fd;
-	pfd->addr.ip = ip;
-	pfd->addr.port = port;
-
-	if (epinfo.maxfd < fd) epinfo.maxfd = fd;
-
-	return 0;
-}
 
 int handle_cli(int fd)
 {

@@ -38,8 +38,17 @@ typedef struct proto_pkg {
 	char data[];
 } __attribute__((packed))proto_pkg_t;
 
+void gen_str(char buf[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++) {
+		buf[i] = (char)('a' + rand() % 26);
+	}
+}
+
 int main(int argc, char* argv[]) 
 {
+	srand(time(NULL));
 	int fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (fd == -1) {
 		printf("%s\n", strerror(errno));
@@ -92,7 +101,7 @@ int main(int argc, char* argv[])
 					return 0;
 				} else {
 					proto_pkg_t *msg = (proto_pkg_t *)recvbuf;
-					printf("%d,%d,%d,%d,%d,%s\n", 
+					printf("recv: %d,%d,%d,%d,%d,%s\n", 
 							msg->id, 
 							msg->seq,
 							msg->cmd, 
@@ -106,8 +115,11 @@ int main(int argc, char* argv[])
 			}
 		}
 		char buf[1024];
-		char input[100] = {'\0'};
-		scanf("%s", input);
+		char input[200] = {'\0'};
+		int num = rand() % 50;
+		gen_str(input, num);
+		printf("send: %s:%lu\n", input, strlen(input));
+//		scanf("%s", input);
 		proto_pkg_t *pkg = (proto_pkg_t *)buf;	
 		pkg->id = 1;
 		pkg->seq  = 2;
@@ -118,7 +130,7 @@ int main(int argc, char* argv[])
 		input[strlen(input)] = '\0';
 		memcpy(pkg->data, input, strlen(input) + 1);
 		send(fd, buf, pkg->len, 0);
-
+		sleep(1);
 	}
 
 	free(evs);

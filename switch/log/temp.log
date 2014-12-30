@@ -1,30 +1,8 @@
-[10:50:43] 0 id=1, ip=127.0.0.1, port=9000
-[10:50:43] 0 SimpleServer
-[14:35:43] 0 id=1, ip=127.0.0.1, port=9000
-[14:35:43] 0 SimpleServer
-[15:18:52] 0 id=1, ip=127.0.0.1, port=9000
-[15:18:52] 0 SimpleServer
-[15:18:52] 0 dlopen error, ./test_serv.so: cannot open shared object file: No such file or directory
-[15:18:52] 0 err master init [Success]
-[15:19:59] 0 id=1, ip=127.0.0.1, port=10000
-[15:19:59] 0 SimpleServer
-[15:19:59] 0 dlopen error, ./test_serv.so: cannot open shared object file: No such file or directory
-[15:19:59] 0 err master init [Success]
-[15:20:27] 0 id=1, ip=127.0.0.1, port=10000
-[15:20:27] 0 SimpleServer
-[15:20:27] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
-[15:21:58] 0 id=1, ip=127.0.0.1, port=10000
-[15:21:58] 0 switch
-[15:21:58] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
-[15:23:27] 0 id=1, ip=127.0.0.1, port=10000
-[15:23:27] 0 switch
-[15:23:27] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
-[16:09:15] 0 id=1, ip=127.0.0.1, port=7000
-[16:09:15] 0 switch
-[16:09:15] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
-[16:13:13] 0 id=1, ip=127.0.0.1, port=7000
-[16:13:13] 0 switch
-[16:13:13] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
-[16:15:43] 0 id=1, ip=127.0.0.1, port=7000
-[16:15:43] 0 switch
-[16:15:43] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
+[16:42:48] 0 id=1, ip=127.0.0.1, port=7000
+[16:42:48] 0 switch
+[16:48:10] 0 id=1, ip=127.0.0.1, port=7000
+[16:48:10] 0 switch
+[16:57:28] 0 id=1, ip=127.0.0.1, port=7000
+[16:57:28] 0 switch
+[17:03:01] 0 id=1, ip=127.0.0.1, port=7000
+[17:03:01] 0 switch
