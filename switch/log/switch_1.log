@@ -10,3 +10,121 @@
 [15:59:57] 0 receive SIGTEAM
 [15:59:57] 0 work fini
 [15:59:57] 0 work serv [id=1] have stopped!
+[16:09:15] 0 work init
+[16:09:15] 0 child serv[id=1] have started
+[16:13:13] 0 work init
+[16:13:13] 0 child serv[id=1] have started
+[16:13:17] 0 blk_len=13, head_len=12, blk_cnt=1, head=50, tail=31, len=2048
+[16:13:17] 0 blk_len=13, head_len=12, blk_cnt=0, head=50, tail=50, len=2048
+[16:13:23] 1 len=25,id=1,seq=16,cmd=3,ret=4, msg=hell
+[16:13:23] 1 blk_len=13, head_len=12, blk_cnt=1, head=50, tail=12, len=2048
+[16:13:23] 0 blk_len=13, head_len=12, blk_cnt=0, head=88, tail=88, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=179, tail=101, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=205, tail=114, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=218, tail=127, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=231, tail=140, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=244, tail=153, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=257, tail=166, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=270, tail=179, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=270, tail=192, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=283, tail=205, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=296, tail=218, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=309, tail=231, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=322, tail=244, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=335, tail=257, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=348, tail=270, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=361, tail=283, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=374, tail=296, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=400, tail=309, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=413, tail=322, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=426, tail=335, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=439, tail=348, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=439, tail=361, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=452, tail=374, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=465, tail=387, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=478, tail=400, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=491, tail=413, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=504, tail=426, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=530, tail=439, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=530, tail=452, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=543, tail=465, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=556, tail=478, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=582, tail=491, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=621, tail=504, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=634, tail=517, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=634, tail=530, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=647, tail=543, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=660, tail=556, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=686, tail=569, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=686, tail=582, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=712, tail=595, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=725, tail=608, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=738, tail=621, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=751, tail=634, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=764, tail=647, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=764, tail=660, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=764, tail=673, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=764, tail=686, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=5, head=764, tail=699, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=4, head=764, tail=712, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=3, head=764, tail=725, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=2, head=764, tail=738, len=2048
+[16:14:10] 0 err blk len[total_len=13,blk_len=13]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=1, head=764, tail=751, len=2048
+[16:15:43] 0 work init
+[16:15:43] 0 child serv[id=1] have started
+[16:15:47] 0 blk_len=13, head_len=12, blk_cnt=1, head=50, tail=31, len=2048
+[16:15:47] 0 blk_len=13, head_len=12, blk_cnt=0, head=50, tail=50, len=2048
+[16:15:53] 1 len=26,id=1,seq=16,cmd=3,ret=4, msg=hello
+[16:15:53] 1 blk_len=13, head_len=12, blk_cnt=1, head=51, tail=12, len=2048
+[16:15:53] 0 blk_len=13, head_len=12, blk_cnt=0, head=89, tail=89, len=2048

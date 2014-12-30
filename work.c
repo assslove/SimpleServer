@@ -101,7 +101,7 @@ int work_dispatch(int i)
 	int k = 0;
 	int fd = 0;
 	while (!stop) {
-		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
+		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 100);
 		if (nr == -1 && errno != EINTR) {
 			ERROR(0, "epoll wait [id=%d,err=%s]", i, strerror(errno));
 			return 0;
@@ -109,10 +109,10 @@ int work_dispatch(int i)
 		for (k = 0; k < nr; ++k) {
 			fd = epinfo.evs[k].data.fd;
 			//判断异常状态
-			if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
-				ERROR(0, "child wait failed fd=%d", fd);
-				continue;
-			}
+			//if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
+				//ERROR(0, "child wait failed fd=%d", fd);
+				//continue;
+			//}
 
 			if (epinfo.evs[k].events & EPOLLIN) {
 				switch (epinfo.fds[fd].type) {

@@ -24,3 +24,137 @@
 [15:59:57] 0 receive SIGTEAM
 [15:59:57] 0 master fini
 [15:59:57] 0 master serv have stopped!
+[16:09:15] 0 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[16:09:15] 1 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[16:09:15] 0 backlog=1024,bufsize=512
+[16:09:15] 0 master init
+[16:09:15] 0 serv [1] have listened
+[16:09:15] 0 switch-1
+[16:13:13] 0 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[16:13:13] 1 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[16:13:13] 0 backlog=1024,bufsize=512
+[16:13:13] 0 master init
+[16:13:13] 0 serv [1] have listened
+[16:13:13] 0 switch-1
+[16:13:17] 0 blk_len=13, head_len=12, blk_cnt=1, head=31, tail=12, len=2048
+[16:13:17] 0 blk_len=13, head_len=12, blk_cnt=2, head=50, tail=12, len=2048
+[16:13:23] 0 recv [fd=17][rlen=25][msglen=25]
+[16:13:23] 0 blk_len=13, head_len=12, blk_cnt=1, head=88, tail=50, len=2048
+[16:13:23] 1 blk_len=13, head_len=12, blk_cnt=0, head=50, tail=50, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=1, head=101, tail=88, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=2, head=114, tail=88, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=3, head=127, tail=88, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=4, head=140, tail=88, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=5, head=153, tail=88, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=6, head=166, tail=88, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=179, tail=88, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=192, tail=101, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=205, tail=101, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=218, tail=114, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=231, tail=127, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=244, tail=140, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=257, tail=153, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=270, tail=166, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=283, tail=192, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=296, tail=205, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=309, tail=218, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=322, tail=231, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=335, tail=244, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=348, tail=257, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=361, tail=270, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=374, tail=283, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=387, tail=296, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=400, tail=296, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=413, tail=309, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=426, tail=322, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=439, tail=348, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=452, tail=361, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=465, tail=374, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=478, tail=387, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=491, tail=400, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=504, tail=413, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=517, tail=426, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=530, tail=439, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=543, tail=452, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=556, tail=465, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=7, head=569, tail=478, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=582, tail=478, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=8, head=595, tail=491, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=608, tail=491, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=621, tail=504, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=634, tail=517, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=647, tail=530, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=660, tail=543, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=673, tail=556, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=686, tail=569, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=9, head=699, tail=582, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=10, head=712, tail=582, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=10, head=725, tail=595, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=10, head=738, tail=608, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=10, head=751, tail=621, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+[16:14:10] 0 blk_len=13, head_len=12, blk_cnt=10, head=764, tail=634, len=2048
+[16:14:10] 0 recv [fd=15][rlen=1][msglen=0]
+ [16:14:10] 1 blk_len=13, head_len=12, blk_cnt=1, head=63, tail=50, len=2048
+[16:15:43] 0 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[16:15:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=2048
+[16:15:43] 0 backlog=1024,bufsize=512
+[16:15:43] 0 master init
+[16:15:43] 0 serv [1] have listened
+[16:15:43] 0 switch-1
+[16:15:47] 0 blk_len=13, head_len=12, blk_cnt=1, head=31, tail=12, len=2048
+[16:15:47] 0 blk_len=13, head_len=12, blk_cnt=2, head=50, tail=12, len=2048
+[16:15:53] 0 recv [fd=17][rlen=26][msglen=26]
+[16:15:53] 0 blk_len=13, head_len=12, blk_cnt=1, head=89, tail=50, len=2048
+[16:15:53] 1 blk_len=13, head_len=12, blk_cnt=0, head=51, tail=51, len=2048

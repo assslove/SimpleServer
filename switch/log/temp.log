@@ -19,3 +19,12 @@
 [15:23:27] 0 id=1, ip=127.0.0.1, port=10000
 [15:23:27] 0 switch
 [15:23:27] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
+[16:09:15] 0 id=1, ip=127.0.0.1, port=7000
+[16:09:15] 0 switch
+[16:09:15] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
+[16:13:13] 0 id=1, ip=127.0.0.1, port=7000
+[16:13:13] 0 switch
+[16:13:13] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory
+[16:15:43] 0 id=1, ip=127.0.0.1, port=7000
+[16:15:43] 0 switch
+[16:15:43] 0 dlopen error, ./data.so: cannot open shared object file: No such file or directory

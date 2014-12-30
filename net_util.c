@@ -295,7 +295,7 @@ int connect_to_serv(char *ip, int port, int bufsize, int timeout)
 	memset(&sockaddr, 0, sizeof(struct sockaddr_in));
 	sockaddr.sin_family = AF_INET;
 	sockaddr.sin_port = htons(port);
-	if (inet_pton(AF_INET, ip, &sockaddr.sin_addr)) {
+	if (inet_pton(AF_INET, ip, &sockaddr.sin_addr) <= 0) {
 		ERROR(0, "inet_pton error [ip=%s]", ip);
 		return -1;
 	}
