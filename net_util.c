@@ -326,6 +326,8 @@ void free_buff(fd_buff_t *buff)
 
 	buff->slen = 0;
 	buff->rlen = 0;
+	buff->msglen = 0;
+	buff->sbf_size = 0;
 }
 
 int do_fd_send(int fd, void *data, int len)

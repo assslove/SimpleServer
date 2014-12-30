@@ -235,7 +235,7 @@ int handle_cli(int fd)
 
 	char *tmp_ptr = buff->rbf;
 push_again:
-	if (buff->msglen == 0 &&; buff->rlen > 0) { //获取长度
+	if (buff->msglen == 0 && buff->rlen > 0) { //获取长度
 		buff->msglen = so.get_msg_len(fd, tmp_ptr, buff->rlen, SERV_MASTER);
 		TRACE(0, "recv [fd=%u][rlen=%u][msglen=%u]", fd, buff->rlen, buff->msglen);
 	}
@@ -493,6 +493,10 @@ void handle_hup(int fd)
 	INFO(0, "serv [%d] restart success", work->id);
 }
 
+void  handle_epipe(int signo)
+{
+	ERROR(0, "recv SIGPIPE");
+}
 
 int handle_signal()
 {
@@ -502,6 +506,9 @@ int handle_signal()
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = handle_sigchld;
 	sigaction(SIGCHLD, &sa, NULL);
+
+	sa.sa_handler = handle_epipe;
+	sigaction(SIGPIPE, &sa, NULL);
 
 	//处理其他异常信号
 	sa.sa_handler = handle_term;
