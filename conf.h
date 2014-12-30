@@ -27,10 +27,10 @@ void free_work_data();
 
 /* @brief 获取字符串
  */
-const char* conf_get_str(const char *key);
+char* conf_get_str(const char *key);
 
 /* @brief 获取整型
  */
-int conf_get_int(char *key);
+int conf_get_int(const char *key);
 
 #endif

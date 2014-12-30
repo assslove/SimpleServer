@@ -7,3 +7,6 @@
 [15:23:17] 0 work serv [id=1] have stopped!
 [15:23:27] 0 work init
 [15:23:27] 0 child serv[id=1] have started
+[15:59:57] 0 receive SIGTEAM
+[15:59:57] 0 work fini
+[15:59:57] 0 work serv [id=1] have stopped!

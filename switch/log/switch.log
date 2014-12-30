@@ -20,3 +20,7 @@
 [15:23:27] 0 master init
 [15:23:27] 0 serv [1] have listened
 [15:23:27] 0 switch-1
+[15:59:57] 0 receive SIGTEAM
+[15:59:57] 0 receive SIGTEAM
+[15:59:57] 0 master fini
+[15:59:57] 0 master serv have stopped!

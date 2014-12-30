@@ -198,7 +198,7 @@ void free_work_data()
 	free(workmgr.works);
 }
 
-const char* conf_get_str(const char *key)
+char* conf_get_str(const char *key)
 {
 	char *value = g_hash_table_lookup(sim_data, key);
 	if (value == NULL) {
@@ -208,7 +208,7 @@ const char* conf_get_str(const char *key)
 	return value;
 }
 
-int conf_get_int(char *key)
+int conf_get_int(const char *key)
 {
 	char *value = g_hash_table_lookup(sim_data, key);
 	if (value == NULL) {

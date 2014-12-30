@@ -27,33 +27,18 @@ extern "C" {
 #include "log.h"
 #include "net_util.h"
 #include "conf.h"
+#include "fds.h"
 #ifdef __cplusplus
 }
 #endif
+
+#include "switch.h"
 
 #ifdef __cplusplus 
 #define OUTER_FUNC extern "C"
 #else
 #define OUTER_FUNC 
 #endif 
-
-typedef struct fdsess {
-	int fd;
-	int id; //work idx
-	int ip;
-	int port;
-} fdsess_t;
-
-/* @brief 定义包
-*/
-typedef struct proto_pkg {
-	int len;
-	int id;
-	int seq;
-	int cmd;
-	int ret;
-	uint8_t data[];
-} __attribute__((packed))proto_pkg_t;
 
 
 int switch_fd = -1;
@@ -76,6 +61,7 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 		return 0;
 	}
 	
+	pkg->seq = sess->fd;
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
 
@@ -84,6 +70,10 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 {
+	if (fd == switch_fd) {
+		handle_switch(fd, msg, len);
+	}
+
 	return 0;
 }
 
@@ -95,6 +85,11 @@ OUTER_FUNC int on_cli_closed(int fd)
 
 OUTER_FUNC int on_serv_closed(int fd)
 {
+	if (fd == switch_fd) {
+		switch_fd  = -1;
+		ERROR(0, "switch fd closed [fd=%d]", fd);
+	}
+
 	return 0;
 }
 
@@ -114,3 +109,5 @@ OUTER_FUNC int	get_msg_len(int fd, const void *data, int len, int ismaster)
 {
 	return *(int *)((uint8_t*)data);
 }
+
+
