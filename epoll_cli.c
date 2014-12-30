@@ -129,7 +129,9 @@ int main(int argc, char* argv[])
 		pkg->len = sizeof(proto_pkg_t) + strlen(input) + 1;
 		input[strlen(input)] = '\0';
 		memcpy(pkg->data, input, strlen(input) + 1);
-		send(fd, buf, pkg->len, 0);
+		for (i = 0; i < 5; ++i) {
+			send(fd, buf, pkg->len, 0);
+		}
 		sleep(1);
 	}
 

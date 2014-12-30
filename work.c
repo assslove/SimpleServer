@@ -84,6 +84,9 @@ int work_init(int i)
 		ERROR(0, "child serv init failed");
 		return -1;
 	}
+	//init list_head
+	INIT_LIST_HEAD(&epinfo.readlist);				
+	INIT_LIST_HEAD(&epinfo.closelist);				
 
 	INFO(0, "child serv[id=%d] have started", workmgr.works[i].id);
 
