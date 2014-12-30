@@ -16,6 +16,9 @@ extern char *argv_end;
 extern char *env_end;
 extern char **environ;
 
+#define likely(x) __builtin_expect(!!(x), 1)
+#define unlikely(x) __builtin_expect(!!(x), 0)
+
 /* @brief 初始化rlimit信息
  */
 inline int init_rlimit();

@@ -189,7 +189,7 @@ int do_fd_write(int fd);
 
 /* @brief 把fd关掉 释放资源
  */
-int do_fd_close(int fd);
+int do_fd_close(int fd, int ismaster);
 
 /* @brif 将fd增加 可读队列里面
  */
@@ -214,5 +214,13 @@ int connect_to_serv(const char *ip, int port, int bufsize, int timeout);
 /* @brief  handle read
  */
 int handle_read(int fd);
+
+/* @brief 处理可读队列
+ */
+int handle_readlist(int ismaster);
+
+/* @brief 处理待关闭对列
+ */
+int handle_closelist(int ismaster);
 
 #endif

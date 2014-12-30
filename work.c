@@ -92,6 +92,11 @@ int work_init(int i)
 
 int work_dispatch(int i)
 {
+	//handle closelist
+	handle_closelist(0);
+	//handle readlist
+	handle_readlist(0);
+
 	stop = 0;
 	int k = 0;
 	int fd = 0;
@@ -103,13 +108,21 @@ int work_dispatch(int i)
 		}
 		for (k = 0; k < nr; ++k) {
 			fd = epinfo.evs[k].data.fd;
+			//判断异常状态
+			if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
+				ERROR(0, "child wait failed fd=%d", fd);
+				continue;
+			}
+
 			if (epinfo.evs[k].events & EPOLLIN) {
 				switch (epinfo.fds[fd].type) {
 					case fd_type_pipe:
 						do_proc_pipe(fd);
 						break;
 					case fd_type_svr:
-						do_proc_svr(fd);
+						if (do_proc_svr(fd) == -1) {
+							do_fd_close(fd, 0);
+						}
 						break;
 					case fd_type_mcast:
 						do_proc_mcast(fd);
@@ -117,7 +130,19 @@ int work_dispatch(int i)
 					default:
 						break;
 				}
-			} 
+			} else if (epinfo.evs[k].events & EPOLLOUT) {
+				if (epinfo.fds[fd].buff.slen > 0) {
+					if (do_fd_write(fd) == -1) {
+						do_fd_close(fd, 0);
+					}
+				}
+
+				if (epinfo.fds[fd].buff.slen == 0) { //发送完毕
+					mod_fd_to_epinfo(epinfo.epfd, fd, EPOLLIN);
+				}
+			} else if (epinfo.evs[k].events & EPOLLHUP) {
+
+			}
 		}
 
 		//handle memqueue read

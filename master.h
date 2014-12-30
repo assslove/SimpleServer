@@ -44,13 +44,6 @@ void handle_mq_send();
  */
 int do_blk_send(struct mem_block *blk);
 
-/* @brief 处理可读队列
- */
-int handle_readlist();
-
-/* @brief 处理待关闭对列
- */
-int handle_closelist();
 
 
 /* @brief 执行fd打开

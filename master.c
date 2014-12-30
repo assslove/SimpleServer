@@ -104,7 +104,7 @@ int master_listen(int i)
 		return -1;
 	}
 
-	INFO(0, "serv [%d] have listened", i);
+	INFO(0, "serv [%d] have listened", work->id);
 
 	return 0;
 }
@@ -139,9 +139,9 @@ int master_dispatch()
 {
 	while (!stop) {
 		//handle closelist
-		handle_closelist();
+		handle_closelist(1);
 		//handle readlist
-		handle_readlist();
+		handle_readlist(1);
 		//处理发送队列
 		handle_mq_send();
 
@@ -158,7 +158,7 @@ int master_dispatch()
 			fd = epinfo.evs[i].data.fd;
 			//判断异常状态
 			if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
-				ERROR(0, "error wait fd=%d", fd);
+				ERROR(0, "master wait failed fd=%d", fd);
 				continue;
 			}
 
@@ -168,7 +168,9 @@ int master_dispatch()
 						while (do_fd_open(fd) != -1) ;
 						break;
 					case fd_type_cli: //read cli;
-						handle_cli(fd);
+						if (handle_cli(fd) == -1) {
+							do_fd_close(fd, 1);
+						}
 						break; 
 					case fd_type_pipe: //read pipe;
 						handle_pipe(fd);
@@ -177,7 +179,7 @@ int master_dispatch()
 			} else if (epinfo.evs[i].events & EPOLLOUT) { //write
 				if (epinfo.fds[fd].buff.slen > 0) {
 					if (do_fd_write(fd) == -1) {
-						do_fd_close(fd);
+						do_fd_close(fd, 1);
 					}
 				}
 
@@ -339,35 +341,6 @@ int do_blk_send(mem_block_t *blk)
 	return do_fd_send(blk->fd, blk->data, blk->len - blk_head_len);	
 }
 
-int handle_readlist()
-{
-	fd_wrap_t *pfd, *tmpfd;
-	list_for_each_entry_safe(pfd, tmpfd, &epinfo.readlist, node) {
-		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
-		if (pfd->type == fd_type_listen) { //打开连接
-			while(do_fd_open(pfd->fd)) {}	 //应该不会执行
-		} else if (handle_cli(pfd->fd) == -1) { //处理客户端的请求 读取
-			do_fd_close(pfd->fd); //接收失败 关闭
-		}
-	}
-
-	return 0;
-}
-
-int handle_closelist()
-{
-	fd_wrap_t *pfd, *tmpfd;
-	list_for_each_entry_safe(pfd, tmpfd, &epinfo.closelist, node) {
-		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
-		if (pfd->buff.slen > 0) {	//不再接收
-			do_fd_write(pfd->fd);		//写入缓存区
-		}
-		do_fd_close(pfd->fd);
-	}
-
-	return 0;
-}
-
 
 
 int do_fd_open(int fd) 
@@ -388,7 +361,7 @@ int do_fd_open(int fd)
 		blk.len = blk_head_len + sizeof(fd_addr_t);
 
 		if ((mq_push(&workmgr.works[blk.id].rq, &blk, &epinfo.fds[newfd].addr)) == -1) {
-			do_fd_close(fd); //不需要通知客户端
+			do_fd_close(fd, 1); //不需要通知客户端
 		}
 	}  
 

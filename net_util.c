@@ -33,6 +33,12 @@
 #include "fds.h"
 #include "log.h"
 #include "global.h"
+#include "outer.h"
+
+
+extern int handle_cli(int fd);
+extern int do_proc_svr(int fd);
+extern int do_fd_open(int fd);
 
 int set_sock_snd_timeo(int sockfd, int millisec)
 {
@@ -328,7 +334,7 @@ int do_fd_send(int fd, void *data, int len)
 	int is_send = 0;
 	if (buff->slen > 0) {
 		if (do_fd_write(fd) == -1) { //fd断了
-			do_fd_close(fd);
+			do_fd_close(fd, 1);
 			return -1;	
 		}
 		is_send = 1;
@@ -339,7 +345,7 @@ int do_fd_send(int fd, void *data, int len)
 		send_len = safe_tcp_send_n(fd, data, len);
 		if (send_len == -1) {
 			ERROR(0, "write fd error[fd=%u, err=%s]", fd, strerror(errno));
-			do_fd_close(fd);
+			do_fd_close(fd, 1);
 			return -1;
 		} 
 	}
@@ -367,7 +373,7 @@ int do_fd_send(int fd, void *data, int len)
 
 		if (setting.max_buf_len && setting.max_buf_len < buff->slen) { //如果大于最大发送缓冲区
 			ERROR(0, "sendbuf is exceeded max[fd=%d,buflen=%d,slen=%d]", fd, setting.max_buf_len, buff->slen);
-			do_fd_close(fd);
+			do_fd_close(fd, 1);
 			return -1;
 
 		}
@@ -403,19 +409,24 @@ int do_fd_write(int fd)
 }
 
 
-int do_fd_close(int fd)
+int do_fd_close(int fd, int ismaster)
 {
 	if (epinfo.fds[fd].type == fd_type_null) {
 		return 0;
 	}
 
-	mem_block_t blk;
-	blk.id = epinfo.fds[fd].idx;
-	blk.fd = fd;
-	blk.type = BLK_CLOSE;
-	blk.len = blk_head_len;
-
-	mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
+	if (ismaster) { //通知子进程
+		mem_block_t blk;
+		blk.id = epinfo.fds[fd].idx;
+		blk.fd = fd;
+		blk.type = BLK_CLOSE;
+		blk.len = blk_head_len;
+		mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
+	} else { //子进程自己处理逻辑
+		if (so.on_serv_closed) {
+			so.on_serv_closed(fd);
+		}
+	}
 
 	//从可读队列中删除
 	do_del_from_readlist(fd);
@@ -524,4 +535,37 @@ int handle_read(int fd)
 
 	return recv_len;
 }
+
+int handle_readlist(int ismaster)
+{
+	typedef int (*handle_msg)(int fd);
+	static handle_msg func[2] = {do_proc_svr, handle_cli}; //处理函数不一样
+
+	fd_wrap_t *pfd, *tmpfd;
+	list_for_each_entry_safe(pfd, tmpfd, &epinfo.readlist, node) {
+		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
+		if (unlikely(pfd->type == fd_type_listen)) { //打开连接 只有主进程才打开连接
+			while(do_fd_open(pfd->fd)) {}	 //应该不会执行
+		} else if (func[ismaster](pfd->fd) == -1) { //处理客户端的请求 读取
+			do_fd_close(pfd->fd, ismaster); //接收失败 关闭
+		}
+	}
+
+	return 0;
+}
+
+int handle_closelist(int ismaster)
+{
+	fd_wrap_t *pfd, *tmpfd;
+	list_for_each_entry_safe(pfd, tmpfd, &epinfo.closelist, node) {
+		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
+		if (pfd->buff.slen > 0) {	//不再接收
+			do_fd_write(pfd->fd);		//写入缓存区
+		}
+		do_fd_close(pfd->fd, ismaster);
+	}
+
+	return 0;
+}
+
 
