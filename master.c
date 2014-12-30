@@ -99,6 +99,11 @@ int master_listen(int i)
 	close(work->rq.pipefd[0]); //接收管道关闭读
 	close(work->sq.pipefd[1]); //发送管理关闭写
 
+	if (so.serv_init && so.serv_init(1)) {
+		ERROR(0, "parent serv init failed");
+		return -1;
+	}
+
 	INFO(0, "serv [%d] have listened", i);
 
 	return 0;
@@ -190,6 +195,10 @@ int master_dispatch()
 
 int master_fini()
 {
+	if (so.serv_fini && so.serv_fini(1)) {
+		ERROR(0, "child serv fini failed");
+	}
+
 	int i = 0;
 	for (; i < workmgr.nr_used; ++i) {
 		work_t *work = &workmgr.works[i];

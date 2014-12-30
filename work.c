@@ -78,8 +78,15 @@ int work_init(int i)
 	memset(chl_pids, 0, sizeof(chl_pids));
 	//初始化log
 	sprintf(log_file, "log/%s_%d.log", setting.srv_name, work->id);
+	
+	//初始化子进程
+	if (so.serv_init && so.serv_init(0)) {
+		ERROR(0, "child serv init failed");
+		return -1;
+	}
 
 	INFO(0, "child serv[id=%d] have started", workmgr.works[i].id);
+
 	return 0;
 }
 
@@ -126,6 +133,10 @@ int work_dispatch(int i)
 
 int work_fini(int i)
 {
+	if (so.serv_fini && so.serv_fini(0)) {
+		ERROR(0, "child serv fini failed");
+	}
+
 	work_t *work = &workmgr.works[i];
 	mq_fini(&(work->rq), setting.mem_queue_len);
 	mq_fini(&(work->sq), setting.mem_queue_len);
