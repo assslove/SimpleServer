@@ -21,6 +21,7 @@
 #include <time.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "log.h"
 
@@ -34,6 +35,8 @@ void slog(int llv, uint32_t key, const char* fmt, ...)
 	
 	
 	va_list ap;
+//	strcat(logfile, LOG_LV_NAME[llv]);
+
 	FILE* file = fopen(log_file, "a+");
 	va_start(ap, fmt);
 	fprintf(file, "[%02u:%02u:%02u] %u ", tm.tm_hour, tm.tm_min, tm.tm_sec, key);

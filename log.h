@@ -15,6 +15,16 @@ enum LOG_LV {
 	LOG_LV_BOOT = 5
 };
 
+
+const char *LOG_LV_NAME = {
+	"crit", 
+	"error", 
+	"info", 
+	"debug", 
+	"trace", 
+	"boot"
+};
+
 void slog(int llv, uint32_t key, const char* fmt, ...);
 
 #define BOOT(key, fmt, arg...) printf("%d "fmt, key, ##arg)
