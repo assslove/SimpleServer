@@ -334,7 +334,7 @@ int do_fd_open(int fd)
 		blk.len = blk_head_len + sizeof(fd_addr_t);
 
 		if ((mq_push(&workmgr.works[blk.id].rq, &blk, &epinfo.fds[newfd].addr)) == -1) {
-			do_fd_close(fd, 1); //不需要通知客户端
+			do_fd_close(fd, 2); //不需要通知客户端 
 		}
 	}  
 

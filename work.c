@@ -188,7 +188,7 @@ int handle_mq_recv(int i)
 	mem_queue_t *sendq = &workmgr.works[i].sq;
 	mem_block_t *tmpblk;
 
-	while ((tmpblk = mq_get(recvq))) {
+	while ((tmpblk = mq_get(recvq)) != NULL) {
 		switch (tmpblk->type) {
 			case BLK_DATA: //对客户端消息处理
 				do_blk_msg(tmpblk);
