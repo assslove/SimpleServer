@@ -114,9 +114,11 @@ int main(int argc, char* argv[])
 
 			}
 		}
+		getchar();
 		char buf[1024];
 		char input[200] = {'\0'};
-		int num = rand() % 100 + 1;
+		//int num = rand() % 100 + 1;
+		int num = 30;
 		gen_str(input, num);
 		printf("send: %s:%lu\n", input, strlen(input));
 //		scanf("%s", input);
@@ -129,7 +131,7 @@ int main(int argc, char* argv[])
 		pkg->len = sizeof(proto_pkg_t) + strlen(input) + 1;
 		input[strlen(input)] = '\0';
 		memcpy(pkg->data, input, strlen(input) + 1);
-		for (i = 0; i < 30; ++i) {
+		for (i = 0; i < 10; ++i) {
 			send(fd, buf, pkg->len, 0);
 		}
 		sleep(1);

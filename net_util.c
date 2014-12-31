@@ -525,6 +525,7 @@ int handle_read(int fd)
 	} else { //
 		ERROR(0, "recv error[fd=%u,error=%u]", fd, strerror(errno));
 		recv_len = 0;
+//		return -1;
 	}
 
 	if (buff->rlen == setting.max_msg_len) {
@@ -602,6 +603,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 	pfd->fd = fd;
 	pfd->addr.ip = ip;
 	pfd->addr.port = port;
+	pfd->flag = 0;
 	//初始化缓冲区
 	fd_buff_t *buff = &pfd->buff;
 	buff->slen = buff->rlen = 0;
