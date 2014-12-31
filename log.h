@@ -16,14 +16,14 @@ enum LOG_LV {
 };
 
 
-const char *LOG_LV_NAME = {
-	"crit", 
-	"error", 
-	"info", 
-	"debug", 
-	"trace", 
-	"boot"
-};
+/*const char *LOG_LV_NAME = {*/
+/*"crit", */
+/*"error", */
+/*"info", */
+/*"debug", */
+/*"trace", */
+/*"boot"*/
+/*};*/
 
 void slog(int llv, uint32_t key, const char* fmt, ...);
 
