@@ -497,6 +497,9 @@ void do_del_from_closelist(int fd)
 
 int handle_read(int fd)
 {
+#ifdef ENABLE_TRACE
+	TRACE(0, "%s", __func__);
+#endif
 	fd_buff_t *buff = &epinfo.fds[fd].buff;
 	if (!buff->rbf) {
 		buff->msglen = 0;
