@@ -423,7 +423,9 @@ int do_fd_close(int fd, int ismaster)
 		blk.fd = fd;
 		blk.type = BLK_CLOSE;
 		blk.len = blk_head_len;
-		mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
+		if (mq_push(&workmgr.works[blk.id].rq, &blk, NULL) == -1) {
+			ERROR(0, "mq is full noti child failed [fd=%d]", fd);
+		};
 	} else if (ismaster == 0) { //子进程自己处理逻辑
 		if (so.on_serv_closed) {
 			so.on_serv_closed(fd);
@@ -453,7 +455,7 @@ int do_fd_close(int fd, int ismaster)
 		epinfo.maxfd = i;
 	}
 
-	INFO(0, "close [fd=%d]", fd);
+	INFO(0, "master close [fd=%d]", fd);
 
 	return 0;
 }

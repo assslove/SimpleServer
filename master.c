@@ -249,7 +249,7 @@ push_again:
 		mem_block_t blk;		
 		raw2blk(fd, &blk);
 		if (mq_push(&workmgr.works[epinfo.fds[fd].idx].rq, &blk, tmp_ptr)) { //push error if close cli fd return -1 or 0
-			ERROR(0, "mq if full, push failed [fd=%d]", fd);
+			ERROR(0, "mq is full, push failed [fd=%d]", fd);
 			return -1;
 		}
 		//清空

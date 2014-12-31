@@ -229,7 +229,7 @@ int do_blk_open(mem_block_t *blk)
 {
 	fdsess_t *fdsess = get_fd(blk->fd);
 	if (fdsess || (blk->len != blk_head_len + sizeof(fd_addr_t))) {
-		ERROR(0, "fd open error[fd=%u,len=%u]", blk->fd, blk->len);
+		ERROR(0, "fd open error[fd=%u,len=%u,%u]", blk->fd, blk->len, fdsess);
 		return -1;
 	} else {
 		fdsess_t *sess = g_slice_alloc(sizeof(fdsess_t));

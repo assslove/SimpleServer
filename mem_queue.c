@@ -66,7 +66,7 @@ mem_block_t *mq_get(mem_queue_t *q)
 	mem_head_t *ptr = q->ptr;		
 get_again:
 	if (ptr->head > ptr->tail) { 
-		if (ptr->head > ptr->tail + blk_head_len) { 
+		if (ptr->head >= ptr->tail + blk_head_len) { 
 			return blk_tail(q);
 		}
 	} else if (ptr->head < ptr->tail) {
