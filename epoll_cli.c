@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
 		}
 		char buf[1024];
 		char input[200] = {'\0'};
-		int num = rand() % 100;
+		int num = rand() % 100 + 1;
 		gen_str(input, num);
 		printf("send: %s:%lu\n", input, strlen(input));
 //		scanf("%s", input);

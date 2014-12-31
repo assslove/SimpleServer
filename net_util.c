@@ -594,6 +594,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 		return -1;
 	}
 
+	//初始化fdinfo
 	fd_wrap_t *pfd = &epinfo.fds[fd];
 	++epinfo.seq;
 	pfd->type = type;
