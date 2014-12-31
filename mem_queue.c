@@ -160,4 +160,7 @@ void mq_display(mem_queue_t *q)
 {
 	TRACE(q->type, "blk_len=%d, head_len=%u, blk_cnt=%d, head=%d, tail=%d, len=%u", \
 			blk_head_len, mem_head_len, q->ptr->blk_cnt, q->ptr->head, q->ptr->tail, q->len);
+	if (q->ptr->blk_cnt <= 0) {
+		TRACE(q->type, "blk_cnt=%d", q->ptr->blk_cnt);
+	}
 }
