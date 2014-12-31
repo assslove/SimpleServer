@@ -59,6 +59,14 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
 
+	if (switch_fd == -1) {
+		switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
+	}
+
+	if (switch_fd == -1) {
+		ERROR(0, "cannot connect to switch");
+	}
+
 	return send_to_serv(switch_fd, cli, pkg->len);
 }
 
