@@ -320,7 +320,7 @@ void free_buff(fd_buff_t *buff)
 	}
 
 	if (buff->rbf) {
-		free(buff->rbf);
+		munmap(buff->rbf, setting.max_msg_len);
 		buff->rbf = NULL;
 	}
 
@@ -601,8 +601,13 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 	pfd->fd = fd;
 	pfd->addr.ip = ip;
 	pfd->addr.port = port;
-	memset(&pfd->buff, 0, sizeof(fd_buff_t));
-
+	//初始化缓冲区
+	fd_buff_t *buff = &pfd->buff;
+	buff->slen = buff->rlen = 0;
+	buff->sbf = buff->rbf = NULL;
+	buff->msglen = 0;
+	buff->sbf_size = 0;
+	
 	if (epinfo.maxfd < fd) epinfo.maxfd = fd;
 
 	return 0;
