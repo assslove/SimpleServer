@@ -157,10 +157,10 @@ int master_dispatch()
 		for (i = 0; i < n; i++) {
 			fd = epinfo.evs[i].data.fd;
 			//判断异常状态
-			if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
-				ERROR(0, "master wait failed fd=%d", fd);
-				continue;
-			}
+			//if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
+				//ERROR(0, "master wait failed fd=%d", fd);
+				//continue;
+			//}
 
 			if (epinfo.evs[i].events & EPOLLIN) { // read
 				switch (epinfo.fds[fd].type) {
@@ -249,6 +249,7 @@ push_again:
 		mem_block_t blk;		
 		raw2blk(fd, &blk);
 		if (mq_push(&workmgr.works[epinfo.fds[fd].idx].rq, &blk, tmp_ptr)) {
+			ERROR(0, "mq if full, push failed [fd=%d]", fd);
 			return -1;
 		}
 		//清空
@@ -305,7 +306,8 @@ void handle_mq_send()
 int do_blk_send(mem_block_t *blk)
 {
 	if (blk->type == BLK_CLOSE) { //如果是待关闭的块 这个是由子进程通知的
-		do_add_to_closelist(blk->fd); //增加进去 有可能重复发给子进程，但是没有关系的
+		//do_add_to_closelist(blk->fd); //增加进去 有可能重复发给子进程，但是没有关系的
+		do_fd_close(blk->fd, 2);
 		return 0;
 	}
 	//合法性校验

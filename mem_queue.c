@@ -94,9 +94,10 @@ int mq_push(mem_queue_t *q, mem_block_t *b, const void *data)
 	mem_head_t *ptr = q->ptr;
 push_again:
 	if (ptr->head >= ptr->tail) { //
-		if (ptr->blk_cnt >= 10) {
+		if ((ptr->head == ptr->tail && ptr->blk_cnt >= 10)) { //队列满
 			return -1;
 		} 
+
 		if (ptr->head + b->len > q->len) { //如果大于最大长度
 			if (ptr->head + blk_head_len <= q->len) { //如果容下一个块头
 				//填充

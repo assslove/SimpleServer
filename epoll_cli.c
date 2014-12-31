@@ -134,7 +134,6 @@ int main(int argc, char* argv[])
 		for (i = 0; i < 20; ++i) {
 			send(fd, buf, pkg->len, 0);
 		}
-		sleep(1);
 	}
 
 	free(evs);

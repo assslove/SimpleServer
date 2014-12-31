@@ -67,7 +67,8 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 		ERROR(0, "cannot connect to switch");
 	}
 
-	return send_to_serv(switch_fd, cli, pkg->len);
+	return send_to_cli(sess, cli, pkg->len);
+	//return send_to_serv(switch_fd, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)

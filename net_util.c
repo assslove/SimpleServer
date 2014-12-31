@@ -424,7 +424,7 @@ int do_fd_close(int fd, int ismaster)
 		blk.type = BLK_CLOSE;
 		blk.len = blk_head_len;
 		mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
-	} else { //子进程自己处理逻辑
+	} else if (ismaster == 0) { //子进程自己处理逻辑
 		if (so.on_serv_closed) {
 			so.on_serv_closed(fd);
 		}
