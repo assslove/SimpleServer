@@ -145,6 +145,10 @@ int work_dispatch(int i)
 				}
 			} else if (epinfo.evs[k].events & EPOLLHUP) {
 
+			} else if (epinfo.evs[k].events & EPOLLRDHUP) {
+
+			} else {
+				INFO(0, "wait event [fd=%d,events=%d]", fd, epinfo.evs[k].events);
 			}
 		}
 

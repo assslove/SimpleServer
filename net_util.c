@@ -576,6 +576,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 
 	struct epoll_event event;
 	event.data.fd = fd;
+
 	switch (type) {
 		case fd_type_listen:
 		case fd_type_pipe:
@@ -583,7 +584,8 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 		case fd_type_svr:
 			event.events = EPOLLIN | EPOLLET;
 			break;
-
+		default:
+			event.events = EPOLLIN | EPOLLOUT | EPOLLET;
 	}
 
 	int ret = epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, fd, &event);	
@@ -599,6 +601,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 	pfd->fd = fd;
 	pfd->addr.ip = ip;
 	pfd->addr.port = port;
+	memset(&pfd->buff, 0, sizeof(fd_buff_t));
 
 	if (epinfo.maxfd < fd) epinfo.maxfd = fd;
 
