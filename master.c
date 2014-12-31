@@ -188,7 +188,11 @@ int master_dispatch()
 				}
 			} else if (epinfo.evs[i].events & EPOLLHUP) {
 				handle_hup(fd);
-			} 
+			} else if (epinfo.evs[i].events & EPOLLRDHUP) { //测试用
+				INFO(0, "fd other peer closed [fd=%d]", fd);
+			} else {
+				INFO(0, "wait info [fd=%d,events=%d]", fd, epinfo.evs[i].events);
+			}
 		}
 	}
 
