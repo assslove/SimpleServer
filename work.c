@@ -319,5 +319,5 @@ void close_cli(int fd)
 	blk.type = BLK_CLOSE;
 	blk.fd = fd;
 	mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
-	//do_blk_close(&blk); 不要重复执行
+	do_blk_close(&blk); //不要重复执行
 }

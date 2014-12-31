@@ -480,7 +480,7 @@ void do_add_to_closelist(int fd)
 {
 	do_del_from_readlist(fd);
 	if (!(epinfo.fds[fd].flag & CACHE_CLOSE)) {
-		list_add_tail(&epinfo.fds[fd].node, &epinfo.readlist);
+		list_add_tail(&epinfo.fds[fd].node, &epinfo.closelist);
 		epinfo.fds[fd].flag |= CACHE_CLOSE;
 		TRACE(0, "add to closelist[fd=%u]", fd);
 	}
@@ -563,7 +563,9 @@ int handle_closelist(int ismaster)
 	list_for_each_entry_safe(pfd, tmpfd, &epinfo.closelist, node) {
 		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
 		if (pfd->buff.slen > 0) {	//不再接收
-			do_fd_write(pfd->fd);		//写入缓存区
+			if (do_fd_write(pfd->fd) == -1) {//写入缓存区
+				pfd->buff.slen = 0; //写入错误不再写入
+			};		
 		}
 		do_fd_close(pfd->fd, ismaster);
 	}
