@@ -119,7 +119,7 @@ int work_dispatch(int i)
 
 			if (epinfo.evs[k].events & EPOLLIN) {
 				switch (epinfo.fds[fd].type) {
-					case fd_type_pipe: //用于父子进程通信mq
+					case fd_type_pipe:
 						do_proc_pipe(fd);
 						break;
 					case fd_type_svr:
@@ -127,7 +127,7 @@ int work_dispatch(int i)
 							do_fd_close(fd, 0);
 						}
 						break;
-					case fd_type_mcast: //处理广播
+					case fd_type_mcast:
 						do_proc_mcast(fd);
 						break;
 					default:
