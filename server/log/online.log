@@ -1,10 +1,2222 @@
-[17:47:56] 0 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=10240
-[17:47:56] 0 blk_cnt=0
-[17:47:56] 1 blk_len=13, head_len=12, blk_cnt=0, head=12, tail=12, len=10240
-[17:47:56] 1 blk_cnt=0
-[17:47:56] 0 backlog=1024,bufsize=10240
-[17:47:56] 0 online-1
-[17:47:56] 0 master init
-[17:47:56] 0 connect to [127.0.0.1:7000] failed
-[17:47:56] 0 cannot connect to switch
-[17:47:56] 0 serv [1] have listened
+[18:24:46] 0 blk_len=13, head_len=12, blk_cnt=2, head=2589, tail=2570, len=10240
+[18:24:47] 0 handle_read
+[18:24:47] 0 recv [fd=11][rlen=240][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=2, head=2632, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=210][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=3, head=2675, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=180][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=4, head=2718, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=150][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=5, head=2761, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=120][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=6, head=2804, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=90][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=7, head=2847, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=60][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=8, head=2890, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=30][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=9, head=2933, tail=2589, len=10240
+[18:24:47] 0 handle_read
+[18:24:47] 0 recv [fd=11][rlen=2760][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=10, head=2976, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2730][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=11, head=3019, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2700][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=12, head=3062, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2670][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=13, head=3105, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2640][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=14, head=3148, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2610][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=15, head=3191, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2580][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=16, head=3234, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2550][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=17, head=3277, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2520][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=18, head=3320, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2490][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=19, head=3363, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2460][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=20, head=3406, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2430][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=21, head=3449, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2400][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=22, head=3492, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2370][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=23, head=3535, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2340][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=24, head=3578, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2310][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=25, head=3621, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2280][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=26, head=3664, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2250][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=27, head=3707, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2220][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=28, head=3750, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2190][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=29, head=3793, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2160][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=30, head=3836, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2130][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=31, head=3879, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2100][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=32, head=3922, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2070][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=33, head=3965, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2040][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=34, head=4008, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=2010][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=35, head=4051, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1980][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=36, head=4094, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1950][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=37, head=4137, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1920][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=38, head=4180, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1890][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=39, head=4223, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1860][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=40, head=4266, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1830][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=41, head=4309, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1800][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=42, head=4352, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1770][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=43, head=4395, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1740][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=44, head=4438, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1710][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=45, head=4481, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1680][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=46, head=4524, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1650][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=47, head=4567, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1620][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=48, head=4610, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1590][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=49, head=4653, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1560][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=50, head=4696, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1530][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=51, head=4739, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1500][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=52, head=4782, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1470][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=53, head=4825, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1440][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=54, head=4868, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1410][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=55, head=4911, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1380][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=56, head=4954, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1350][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=57, head=4997, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1320][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=58, head=5040, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1290][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=59, head=5083, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1260][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=60, head=5126, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1230][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=61, head=5169, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1200][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=62, head=5212, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1170][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=63, head=5255, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1140][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=64, head=5298, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1110][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=65, head=5341, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1080][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=66, head=5384, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1050][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=67, head=5427, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=1020][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=68, head=5470, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=990][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=69, head=5513, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=960][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=70, head=5556, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=930][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=71, head=5599, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=900][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=72, head=5642, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=870][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=73, head=5685, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=840][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=74, head=5728, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=810][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=75, head=5771, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=780][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=76, head=5814, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=750][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=77, head=5857, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=720][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=78, head=5900, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=690][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=79, head=5943, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=660][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=80, head=5986, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=630][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=81, head=6029, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=600][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=82, head=6072, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=570][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=83, head=6115, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=540][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=84, head=6158, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=510][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=85, head=6201, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=480][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=86, head=6244, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=450][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=87, head=6287, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=420][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=88, head=6330, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=390][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=89, head=6373, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=360][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=90, head=6416, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=330][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=91, head=6459, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=300][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=92, head=6502, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=270][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=93, head=6545, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=240][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=94, head=6588, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=210][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=95, head=6631, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=180][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=96, head=6674, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=150][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=97, head=6717, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=120][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=98, head=6760, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=90][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=99, head=6803, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=60][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=100, head=6846, tail=2589, len=10240
+[18:24:47] 0 recv [fd=11][rlen=30][msglen=30]
+[18:24:47] 0 blk_len=13, head_len=12, blk_cnt=101, head=6889, tail=2589, len=10240
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2587, tail=2587, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2630, tail=2630, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2673, tail=2673, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2716, tail=2716, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2759, tail=2759, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2802, tail=2802, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2845, tail=2845, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2888, tail=2888, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2931, tail=2931, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=2974, tail=2974, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3017, tail=3017, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3060, tail=3060, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3103, tail=3103, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3146, tail=3146, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3189, tail=3189, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3232, tail=3232, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3275, tail=3275, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3318, tail=3318, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3361, tail=3361, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3404, tail=3404, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3447, tail=3447, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3490, tail=3490, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3533, tail=3533, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3576, tail=3576, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3619, tail=3619, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3662, tail=3662, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3705, tail=3705, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3748, tail=3748, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3791, tail=3791, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3834, tail=3834, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3877, tail=3877, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3920, tail=3920, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=3963, tail=3963, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4006, tail=4006, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4049, tail=4049, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4092, tail=4092, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4135, tail=4135, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4178, tail=4178, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4221, tail=4221, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4264, tail=4264, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4307, tail=4307, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4350, tail=4350, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4393, tail=4393, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4436, tail=4436, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4479, tail=4479, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4522, tail=4522, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4565, tail=4565, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4608, tail=4608, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4651, tail=4651, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4694, tail=4694, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4737, tail=4737, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4780, tail=4780, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4823, tail=4823, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4866, tail=4866, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4909, tail=4909, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4952, tail=4952, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=4995, tail=4995, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5038, tail=5038, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5081, tail=5081, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5124, tail=5124, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5167, tail=5167, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5210, tail=5210, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5253, tail=5253, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5296, tail=5296, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5339, tail=5339, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5382, tail=5382, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5425, tail=5425, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5468, tail=5468, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5511, tail=5511, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5554, tail=5554, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5597, tail=5597, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5640, tail=5640, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5683, tail=5683, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5726, tail=5726, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5769, tail=5769, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5812, tail=5812, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5855, tail=5855, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5898, tail=5898, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5941, tail=5941, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=5984, tail=5984, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6027, tail=6027, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6070, tail=6070, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6113, tail=6113, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6156, tail=6156, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6199, tail=6199, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6242, tail=6242, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6285, tail=6285, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6328, tail=6328, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6371, tail=6371, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6414, tail=6414, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6457, tail=6457, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6500, tail=6500, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6543, tail=6543, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6586, tail=6586, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6629, tail=6629, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6672, tail=6672, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6715, tail=6715, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6758, tail=6758, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6801, tail=6801, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:47] 1 blk_len=13, head_len=12, blk_cnt=0, head=6844, tail=6844, len=10240
+[18:24:47] 1 blk_cnt=0
+[18:24:48] 0 handle_read
+[18:24:48] 0 recv [fd=11][rlen=78][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=2, head=6980, tail=6889, len=10240
+[18:24:48] 0 handle_read
+[18:24:48] 0 recv [fd=11][rlen=7722][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=3, head=7071, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7644][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=4, head=7162, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7566][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=5, head=7253, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7488][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=6, head=7344, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7410][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=7, head=7435, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7332][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=8, head=7526, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7254][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=9, head=7617, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7176][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=10, head=7708, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7098][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=11, head=7799, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=7020][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=12, head=7890, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6942][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=13, head=7981, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6864][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=14, head=8072, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6786][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=15, head=8163, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6708][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=16, head=8254, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6630][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=17, head=8345, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6552][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=18, head=8436, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6474][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=19, head=8527, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6396][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=20, head=8618, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6318][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=21, head=8709, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6240][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=22, head=8800, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6162][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=23, head=8891, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6084][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=24, head=8982, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=6006][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=25, head=9073, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5928][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=26, head=9164, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5850][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=27, head=9255, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5772][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=28, head=9346, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5694][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=29, head=9437, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5616][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=30, head=9528, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5538][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=31, head=9619, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5460][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=32, head=9710, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5382][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=33, head=9801, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5304][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=34, head=9892, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5226][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=35, head=9983, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5148][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=36, head=10074, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=5070][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=37, head=10165, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4992][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=38, head=103, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4914][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=39, head=194, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4836][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=40, head=285, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4758][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=41, head=376, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4680][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=42, head=467, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4602][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=43, head=558, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4524][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=44, head=649, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4446][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=45, head=740, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4368][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=46, head=831, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4290][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=47, head=922, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4212][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=48, head=1013, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4134][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=49, head=1104, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=4056][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=50, head=1195, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3978][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=51, head=1286, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3900][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=52, head=1377, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3822][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=53, head=1468, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3744][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=54, head=1559, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3666][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=55, head=1650, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3588][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=56, head=1741, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3510][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=57, head=1832, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3432][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=58, head=1923, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3354][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=59, head=2014, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3276][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=60, head=2105, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3198][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=61, head=2196, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3120][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=62, head=2287, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=3042][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=63, head=2378, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2964][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=64, head=2469, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2886][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=65, head=2560, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2808][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=66, head=2651, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2730][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=67, head=2742, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2652][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=68, head=2833, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2574][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=69, head=2924, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2496][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=70, head=3015, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2418][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=71, head=3106, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2340][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=72, head=3197, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2262][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=73, head=3288, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2184][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=74, head=3379, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2106][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=75, head=3470, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=2028][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=76, head=3561, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1950][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=77, head=3652, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1872][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=78, head=3743, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1794][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=79, head=3834, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1716][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=80, head=3925, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1638][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=81, head=4016, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1560][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=82, head=4107, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1482][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=83, head=4198, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1404][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=84, head=4289, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1326][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=85, head=4380, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1248][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=86, head=4471, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1170][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=87, head=4562, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1092][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=88, head=4653, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=1014][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=89, head=4744, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=936][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=90, head=4835, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=858][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=91, head=4926, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=780][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=92, head=5017, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=702][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=93, head=5108, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=624][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=94, head=5199, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=546][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=95, head=5290, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=468][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=96, head=5381, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=390][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=97, head=5472, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=312][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=98, head=5563, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=234][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=99, head=5654, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=156][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=100, head=5745, tail=6889, len=10240
+[18:24:48] 0 recv [fd=11][rlen=78][msglen=78]
+[18:24:48] 0 blk_len=13, head_len=12, blk_cnt=101, head=5836, tail=6889, len=10240
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=6935, tail=6935, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7026, tail=7026, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7117, tail=7117, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7208, tail=7208, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7299, tail=7299, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7390, tail=7390, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7481, tail=7481, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7572, tail=7572, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7663, tail=7663, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7754, tail=7754, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7845, tail=7845, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=7936, tail=7936, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8027, tail=8027, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8118, tail=8118, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8209, tail=8209, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8300, tail=8300, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8391, tail=8391, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8482, tail=8482, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8573, tail=8573, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8664, tail=8664, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8755, tail=8755, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8846, tail=8846, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=8937, tail=8937, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9028, tail=9028, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9119, tail=9119, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9210, tail=9210, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9301, tail=9301, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9392, tail=9392, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9483, tail=9483, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9574, tail=9574, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9665, tail=9665, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9756, tail=9756, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9847, tail=9847, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=9938, tail=9938, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=10029, tail=10029, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=10120, tail=10120, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=10211, tail=10211, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=103, tail=103, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=194, tail=194, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=285, tail=285, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=376, tail=376, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=467, tail=467, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=558, tail=558, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=649, tail=649, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=740, tail=740, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=831, tail=831, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=922, tail=922, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1013, tail=1013, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1104, tail=1104, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1195, tail=1195, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1286, tail=1286, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1377, tail=1377, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1468, tail=1468, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1559, tail=1559, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1650, tail=1650, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1741, tail=1741, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1832, tail=1832, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=1923, tail=1923, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2014, tail=2014, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2105, tail=2105, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2196, tail=2196, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2287, tail=2287, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2378, tail=2378, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2469, tail=2469, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2560, tail=2560, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2651, tail=2651, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2742, tail=2742, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2833, tail=2833, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=2924, tail=2924, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3015, tail=3015, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3106, tail=3106, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3197, tail=3197, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3288, tail=3288, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3379, tail=3379, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3470, tail=3470, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3561, tail=3561, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3652, tail=3652, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3743, tail=3743, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3834, tail=3834, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=3925, tail=3925, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4016, tail=4016, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4107, tail=4107, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4198, tail=4198, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4289, tail=4289, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4380, tail=4380, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4471, tail=4471, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4562, tail=4562, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4653, tail=4653, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4744, tail=4744, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4835, tail=4835, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=4926, tail=4926, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5017, tail=5017, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5108, tail=5108, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5199, tail=5199, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5290, tail=5290, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5381, tail=5381, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5472, tail=5472, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5563, tail=5563, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5654, tail=5654, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:48] 1 blk_len=13, head_len=12, blk_cnt=0, head=5745, tail=5745, len=10240
+[18:24:48] 1 blk_cnt=0
+[18:24:49] 0 handle_read
+[18:24:49] 0 recv [fd=11][rlen=29][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=2, head=5878, tail=5836, len=10240
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=5787, tail=5787, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 0 handle_read
+[18:24:49] 0 recv [fd=11][rlen=2871][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=2, head=5920, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2842][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=3, head=5962, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2813][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=4, head=6004, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2784][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=5, head=6046, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2755][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=6, head=6088, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2726][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=7, head=6130, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2697][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=8, head=6172, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2668][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=9, head=6214, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2639][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=10, head=6256, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2610][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=11, head=6298, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2581][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=12, head=6340, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2552][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=13, head=6382, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2523][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=14, head=6424, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2494][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=15, head=6466, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2465][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=16, head=6508, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2436][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=17, head=6550, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2407][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=18, head=6592, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2378][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=19, head=6634, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2349][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=20, head=6676, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2320][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=21, head=6718, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2291][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=22, head=6760, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2262][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=23, head=6802, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2233][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=24, head=6844, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2204][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=25, head=6886, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2175][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=26, head=6928, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2146][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=27, head=6970, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2117][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=28, head=7012, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2088][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=29, head=7054, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2059][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=30, head=7096, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2030][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=31, head=7138, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=2001][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=32, head=7180, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1972][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=33, head=7222, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1943][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=34, head=7264, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1914][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=35, head=7306, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1885][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=36, head=7348, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1856][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=37, head=7390, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1827][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=38, head=7432, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1798][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=39, head=7474, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1769][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=40, head=7516, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1740][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=41, head=7558, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1711][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=42, head=7600, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1682][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=43, head=7642, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1653][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=44, head=7684, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1624][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=45, head=7726, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1595][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=46, head=7768, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1566][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=47, head=7810, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1537][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=48, head=7852, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1508][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=49, head=7894, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1479][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=50, head=7936, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1450][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=51, head=7978, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1421][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=52, head=8020, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1392][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=53, head=8062, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1363][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=54, head=8104, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1334][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=55, head=8146, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1305][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=56, head=8188, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1276][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=57, head=8230, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1247][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=58, head=8272, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1218][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=59, head=8314, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1189][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=60, head=8356, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1160][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=61, head=8398, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1131][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=62, head=8440, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1102][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=63, head=8482, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1073][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=64, head=8524, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1044][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=65, head=8566, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=1015][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=66, head=8608, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=986][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=67, head=8650, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=957][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=68, head=8692, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=928][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=69, head=8734, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=899][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=70, head=8776, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=870][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=71, head=8818, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=841][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=72, head=8860, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=812][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=73, head=8902, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=783][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=74, head=8944, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=754][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=75, head=8986, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=725][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=76, head=9028, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=696][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=77, head=9070, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=667][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=78, head=9112, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=638][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=79, head=9154, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=609][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=80, head=9196, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=580][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=81, head=9238, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=551][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=82, head=9280, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=522][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=83, head=9322, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=493][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=84, head=9364, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=464][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=85, head=9406, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=435][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=86, head=9448, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=406][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=87, head=9490, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=377][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=88, head=9532, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=348][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=89, head=9574, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=319][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=90, head=9616, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=290][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=91, head=9658, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=261][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=92, head=9700, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=232][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=93, head=9742, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=203][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=94, head=9784, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=174][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=95, head=9826, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=145][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=96, head=9868, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=116][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=97, head=9910, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=87][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=98, head=9952, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=58][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=99, head=9994, tail=5878, len=10240
+[18:24:49] 0 recv [fd=11][rlen=29][msglen=29]
+[18:24:49] 0 blk_len=13, head_len=12, blk_cnt=100, head=10036, tail=5878, len=10240
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=5829, tail=5829, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=5871, tail=5871, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=5913, tail=5913, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=5955, tail=5955, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=5997, tail=5997, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6039, tail=6039, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6081, tail=6081, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6123, tail=6123, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6165, tail=6165, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6207, tail=6207, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6249, tail=6249, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6291, tail=6291, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6333, tail=6333, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6375, tail=6375, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6417, tail=6417, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6459, tail=6459, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6501, tail=6501, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6543, tail=6543, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6585, tail=6585, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6627, tail=6627, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6669, tail=6669, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6711, tail=6711, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6753, tail=6753, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6795, tail=6795, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6837, tail=6837, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6879, tail=6879, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6921, tail=6921, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=6963, tail=6963, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7005, tail=7005, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7047, tail=7047, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7089, tail=7089, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7131, tail=7131, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7173, tail=7173, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7215, tail=7215, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7257, tail=7257, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7299, tail=7299, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7341, tail=7341, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7383, tail=7383, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7425, tail=7425, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7467, tail=7467, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7509, tail=7509, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7551, tail=7551, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7593, tail=7593, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7635, tail=7635, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7677, tail=7677, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7719, tail=7719, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7761, tail=7761, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7803, tail=7803, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7845, tail=7845, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7887, tail=7887, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7929, tail=7929, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=7971, tail=7971, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8013, tail=8013, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8055, tail=8055, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8097, tail=8097, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8139, tail=8139, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8181, tail=8181, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8223, tail=8223, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8265, tail=8265, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8307, tail=8307, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8349, tail=8349, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8391, tail=8391, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8433, tail=8433, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8475, tail=8475, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8517, tail=8517, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8559, tail=8559, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8601, tail=8601, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8643, tail=8643, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8685, tail=8685, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8727, tail=8727, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8769, tail=8769, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8811, tail=8811, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8853, tail=8853, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8895, tail=8895, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8937, tail=8937, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=8979, tail=8979, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9021, tail=9021, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9063, tail=9063, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9105, tail=9105, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9147, tail=9147, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9189, tail=9189, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9231, tail=9231, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9273, tail=9273, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9315, tail=9315, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9357, tail=9357, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9399, tail=9399, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9441, tail=9441, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9483, tail=9483, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9525, tail=9525, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9567, tail=9567, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9609, tail=9609, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9651, tail=9651, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9693, tail=9693, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9735, tail=9735, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9777, tail=9777, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9819, tail=9819, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9861, tail=9861, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9903, tail=9903, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:49] 1 blk_len=13, head_len=12, blk_cnt=0, head=9945, tail=9945, len=10240
+[18:24:49] 1 blk_cnt=0
+[18:24:50] 0 handle_read
+[18:24:50] 0 recv [fd=11][rlen=97][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=2, head=10146, tail=10036, len=10240
+[18:24:50] 0 handle_read
+[18:24:50] 0 recv [fd=11][rlen=9603][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=3, head=122, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=9506][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=4, head=232, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=9409][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=5, head=342, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=9312][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=6, head=452, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=9215][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=7, head=562, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=9118][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=8, head=672, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=9021][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=9, head=782, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8924][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=10, head=892, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8827][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=11, head=1002, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8730][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=12, head=1112, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8633][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=13, head=1222, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8536][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=14, head=1332, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8439][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=15, head=1442, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8342][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=16, head=1552, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8245][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=17, head=1662, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8148][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=18, head=1772, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=8051][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=19, head=1882, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7954][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=20, head=1992, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7857][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=21, head=2102, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7760][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=22, head=2212, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7663][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=23, head=2322, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7566][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=24, head=2432, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7469][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=25, head=2542, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7372][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=26, head=2652, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7275][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=27, head=2762, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7178][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=28, head=2872, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=7081][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=29, head=2982, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6984][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=30, head=3092, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6887][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=31, head=3202, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6790][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=32, head=3312, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6693][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=33, head=3422, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6596][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=34, head=3532, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6499][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=35, head=3642, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6402][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=36, head=3752, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6305][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=37, head=3862, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6208][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=38, head=3972, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6111][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=39, head=4082, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=6014][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=40, head=4192, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5917][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=41, head=4302, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5820][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=42, head=4412, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5723][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=43, head=4522, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5626][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=44, head=4632, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5529][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=45, head=4742, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5432][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=46, head=4852, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5335][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=47, head=4962, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5238][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=48, head=5072, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5141][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=49, head=5182, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=5044][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=50, head=5292, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4947][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=51, head=5402, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4850][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=52, head=5512, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4753][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=53, head=5622, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4656][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=54, head=5732, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4559][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=55, head=5842, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4462][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=56, head=5952, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4365][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=57, head=6062, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4268][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=58, head=6172, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4171][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=59, head=6282, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=4074][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=60, head=6392, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3977][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=61, head=6502, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3880][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=62, head=6612, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3783][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=63, head=6722, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3686][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=64, head=6832, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3589][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=65, head=6942, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3492][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=66, head=7052, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3395][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=67, head=7162, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3298][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=68, head=7272, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3201][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=69, head=7382, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3104][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=70, head=7492, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=3007][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=71, head=7602, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2910][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=72, head=7712, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2813][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=73, head=7822, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2716][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=74, head=7932, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2619][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=75, head=8042, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2522][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=76, head=8152, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2425][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=77, head=8262, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2328][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=78, head=8372, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2231][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=79, head=8482, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2134][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=80, head=8592, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=2037][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=81, head=8702, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1940][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=82, head=8812, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1843][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=83, head=8922, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1746][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=84, head=9032, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1649][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=85, head=9142, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1552][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=86, head=9252, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1455][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=87, head=9362, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1358][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=88, head=9472, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1261][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=89, head=9582, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1164][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=90, head=9692, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=1067][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=91, head=9802, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=970][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=92, head=9912, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=873][msglen=97]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=93, head=10022, tail=10036, len=10240
+[18:24:50] 0 recv [fd=11][rlen=776][msglen=97]
+[18:24:50] 0 mq is full, push failed [fd=11]
+[18:24:50] 0 blk_len=13, head_len=12, blk_cnt=94, head=10035, tail=10036, len=10240
+[18:24:50] 0 master close [fd=11]
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=10055, tail=10055, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=10165, tail=10165, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=122, tail=122, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=232, tail=232, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=342, tail=342, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=452, tail=452, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=562, tail=562, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=672, tail=672, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=782, tail=782, len=10240
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=892, tail=892, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1002, tail=1002, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1112, tail=1112, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1222, tail=1222, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1332, tail=1332, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1442, tail=1442, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1552, tail=1552, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1662, tail=1662, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1772, tail=1772, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1882, tail=1882, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=1992, tail=1992, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2102, tail=2102, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2212, tail=2212, len=10240
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2322, tail=2322, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2432, tail=2432, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2542, tail=2542, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2652, tail=2652, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2762, tail=2762, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2872, tail=2872, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=2982, tail=2982, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3092, tail=3092, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3202, tail=3202, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3312, tail=3312, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3422, tail=3422, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3532, tail=3532, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3642, tail=3642, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3752, tail=3752, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3862, tail=3862, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=3972, tail=3972, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4082, tail=4082, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4192, tail=4192, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4302, tail=4302, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4412, tail=4412, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4522, tail=4522, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4632, tail=4632, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4742, tail=4742, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4852, tail=4852, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=4962, tail=4962, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5072, tail=5072, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5182, tail=5182, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5292, tail=5292, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5402, tail=5402, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5512, tail=5512, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5622, tail=5622, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5732, tail=5732, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5842, tail=5842, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=5952, tail=5952, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6062, tail=6062, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6172, tail=6172, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6282, tail=6282, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6392, tail=6392, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6502, tail=6502, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6612, tail=6612, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6722, tail=6722, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6832, tail=6832, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=6942, tail=6942, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7052, tail=7052, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7162, tail=7162, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7272, tail=7272, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7382, tail=7382, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7492, tail=7492, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7602, tail=7602, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7712, tail=7712, len=10240
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7822, tail=7822, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=7932, tail=7932, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8042, tail=8042, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8152, tail=8152, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8262, tail=8262, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8372, tail=8372, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8482, tail=8482, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8592, tail=8592, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8702, tail=8702, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8812, tail=8812, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=8922, tail=8922, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9032, tail=9032, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9142, tail=9142, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9252, tail=9252, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9362, tail=9362, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9472, tail=9472, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9582, tail=9582, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9692, tail=9692, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9802, tail=9802, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:24:50] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:24:50] 1 blk_len=13, head_len=12, blk_cnt=0, head=9912, tail=9912, len=10240
+[18:24:50] 1 blk_cnt=0
+[18:25:11] 0 blk_len=13, head_len=12, blk_cnt=2, head=10054, tail=10035, len=10240
+[18:25:12] 0 handle_read
+[18:25:12] 0 recv [fd=11][rlen=3630][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=2, head=10188, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3509][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=3, head=146, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3388][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=4, head=280, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3267][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=5, head=414, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3146][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=6, head=548, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3025][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=7, head=682, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=2904][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=8, head=816, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=2783][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=9, head=950, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=2662][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=10, head=1084, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=2541][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=11, head=1218, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=2420][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=12, head=1352, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=2299][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=13, head=1486, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=2178][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=14, head=1620, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=2057][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=15, head=1754, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=1936][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=16, head=1888, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=1815][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=17, head=2022, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=1694][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=18, head=2156, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=1573][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=19, head=2290, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=1452][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=20, head=2424, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=1331][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=21, head=2558, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=1210][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=22, head=2692, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=1089][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=23, head=2826, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=968][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=24, head=2960, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=847][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=25, head=3094, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=726][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=26, head=3228, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=605][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=27, head=3362, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=484][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=28, head=3496, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=363][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=29, head=3630, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=242][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=30, head=3764, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=121][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=31, head=3898, tail=10054, len=10240
+[18:25:12] 0 handle_read
+[18:25:12] 0 recv [fd=11][rlen=8470][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=32, head=4032, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=8349][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=33, head=4166, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=8228][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=34, head=4300, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=8107][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=35, head=4434, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7986][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=36, head=4568, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7865][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=37, head=4702, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7744][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=38, head=4836, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7623][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=39, head=4970, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7502][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=40, head=5104, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7381][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=41, head=5238, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7260][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=42, head=5372, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7139][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=43, head=5506, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=7018][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=44, head=5640, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=6897][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=45, head=5774, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=6776][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=46, head=5908, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=6655][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=47, head=6042, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=6534][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=48, head=6176, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=6413][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=49, head=6310, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=6292][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=50, head=6444, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=6171][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=51, head=6578, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=6050][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=52, head=6712, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=5929][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=53, head=6846, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=5808][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=54, head=6980, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=5687][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=55, head=7114, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=5566][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=56, head=7248, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=5445][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=57, head=7382, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=5324][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=58, head=7516, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=5203][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=59, head=7650, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=5082][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=60, head=7784, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=4961][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=61, head=7918, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=4840][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=62, head=8052, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=4719][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=63, head=8186, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=4598][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=64, head=8320, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=4477][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=65, head=8454, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=4356][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=66, head=8588, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=4235][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=67, head=8722, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=4114][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=68, head=8856, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3993][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=69, head=8990, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3872][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=70, head=9124, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3751][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=71, head=9258, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3630][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=72, head=9392, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3509][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=73, head=9526, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3388][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=74, head=9660, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3267][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=75, head=9794, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3146][msglen=121]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=76, head=9928, tail=10054, len=10240
+[18:25:12] 0 recv [fd=11][rlen=3025][msglen=121]
+[18:25:12] 0 mq is full, push failed [fd=11]
+[18:25:12] 0 blk_len=13, head_len=12, blk_cnt=77, head=9941, tail=10054, len=10240
+[18:25:12] 0 master close [fd=11]
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=10046, tail=10046, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=10180, tail=10180, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=146, tail=146, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=280, tail=280, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=414, tail=414, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=548, tail=548, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=682, tail=682, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=816, tail=816, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=950, tail=950, len=10240
+[18:25:12] 1 blk_cnt=1
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=1084, tail=1084, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=1218, tail=1218, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=1352, tail=1352, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=1486, tail=1486, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=1620, tail=1620, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=1754, tail=1754, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=1888, tail=1888, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=2022, tail=2022, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=2156, tail=2156, len=10240
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=2290, tail=2290, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=2424, tail=2424, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=2558, tail=2558, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=2692, tail=2692, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=2826, tail=2826, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=2960, tail=2960, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=3094, tail=3094, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=3228, tail=3228, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=3362, tail=3362, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=3496, tail=3496, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=3630, tail=3630, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=3764, tail=3764, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=3898, tail=3898, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=4032, tail=4032, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=4166, tail=4166, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=4300, tail=4300, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=4434, tail=4434, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=4568, tail=4568, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=4702, tail=4702, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=4836, tail=4836, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=4970, tail=4970, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=5104, tail=5104, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=5238, tail=5238, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=5372, tail=5372, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=5506, tail=5506, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=5640, tail=5640, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=5774, tail=5774, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=5908, tail=5908, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=6042, tail=6042, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=6176, tail=6176, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=6310, tail=6310, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=6444, tail=6444, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=6578, tail=6578, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=6712, tail=6712, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=6846, tail=6846, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=6980, tail=6980, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=7114, tail=7114, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=7248, tail=7248, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=7382, tail=7382, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=7516, tail=7516, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=7650, tail=7650, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=7784, tail=7784, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=7918, tail=7918, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=8052, tail=8052, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=8186, tail=8186, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=8320, tail=8320, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=8454, tail=8454, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=8588, tail=8588, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=8722, tail=8722, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=8856, tail=8856, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=8990, tail=8990, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=9124, tail=9124, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=9258, tail=9258, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=9392, tail=9392, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=9526, tail=9526, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=9660, tail=9660, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:12] 0 write fd error[fd=11, err=Bad file descriptor]
+[18:25:12] 1 blk_len=13, head_len=12, blk_cnt=0, head=9794, tail=9794, len=10240
+[18:25:12] 1 blk_cnt=0
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=2, head=9960, tail=9941, len=10240
+[18:25:40] 0 handle_read
+[18:25:40] 0 recv [fd=11][rlen=680][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=2, head=10041, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=612][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=3, head=10122, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=544][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=4, head=10203, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=476][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=5, head=93, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=408][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=6, head=174, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=340][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=7, head=255, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=272][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=8, head=336, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=204][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=9, head=417, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=136][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=10, head=498, tail=9960, len=10240
+[18:25:40] 0 recv [fd=11][rlen=68][msglen=68]
+[18:25:40] 0 blk_len=13, head_len=12, blk_cnt=11, head=579, tail=9960, len=10240
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=9875, tail=9875, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=9956, tail=9956, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=10037, tail=10037, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=10118, tail=10118, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=10199, tail=10199, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=93, tail=93, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=174, tail=174, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=255, tail=255, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=336, tail=336, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:40] 1 blk_len=13, head_len=12, blk_cnt=0, head=417, tail=417, len=10240
+[18:25:40] 1 blk_cnt=0
+[18:25:41] 0 handle_read
+[18:25:41] 0 recv [fd=11][rlen=93][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=2, head=685, tail=579, len=10240
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=523, tail=523, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 0 handle_read
+[18:25:41] 0 recv [fd=11][rlen=837][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=2, head=791, tail=685, len=10240
+[18:25:41] 0 recv [fd=11][rlen=744][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=3, head=897, tail=685, len=10240
+[18:25:41] 0 recv [fd=11][rlen=651][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=4, head=1003, tail=685, len=10240
+[18:25:41] 0 recv [fd=11][rlen=558][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=5, head=1109, tail=685, len=10240
+[18:25:41] 0 recv [fd=11][rlen=465][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=6, head=1215, tail=685, len=10240
+[18:25:41] 0 recv [fd=11][rlen=372][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=7, head=1321, tail=685, len=10240
+[18:25:41] 0 recv [fd=11][rlen=279][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=8, head=1427, tail=685, len=10240
+[18:25:41] 0 recv [fd=11][rlen=186][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=9, head=1533, tail=685, len=10240
+[18:25:41] 0 recv [fd=11][rlen=93][msglen=93]
+[18:25:41] 0 blk_len=13, head_len=12, blk_cnt=10, head=1639, tail=685, len=10240
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=629, tail=629, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=735, tail=735, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=841, tail=841, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=947, tail=947, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=1053, tail=1053, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=1159, tail=1159, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=1265, tail=1265, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=1371, tail=1371, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:41] 1 blk_len=13, head_len=12, blk_cnt=0, head=1477, tail=1477, len=10240
+[18:25:41] 1 blk_cnt=0
+[18:25:42] 0 handle_read
+[18:25:42] 0 recv [fd=11][rlen=92][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=2, head=1744, tail=1639, len=10240
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=1582, tail=1582, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 0 handle_read
+[18:25:42] 0 recv [fd=11][rlen=828][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=2, head=1849, tail=1744, len=10240
+[18:25:42] 0 recv [fd=11][rlen=736][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=3, head=1954, tail=1744, len=10240
+[18:25:42] 0 recv [fd=11][rlen=644][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=4, head=2059, tail=1744, len=10240
+[18:25:42] 0 recv [fd=11][rlen=552][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=5, head=2164, tail=1744, len=10240
+[18:25:42] 0 recv [fd=11][rlen=460][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=6, head=2269, tail=1744, len=10240
+[18:25:42] 0 recv [fd=11][rlen=368][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=7, head=2374, tail=1744, len=10240
+[18:25:42] 0 recv [fd=11][rlen=276][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=8, head=2479, tail=1744, len=10240
+[18:25:42] 0 recv [fd=11][rlen=184][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=9, head=2584, tail=1744, len=10240
+[18:25:42] 0 recv [fd=11][rlen=92][msglen=92]
+[18:25:42] 0 blk_len=13, head_len=12, blk_cnt=10, head=2689, tail=1744, len=10240
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=1687, tail=1687, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=1792, tail=1792, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=1897, tail=1897, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=2002, tail=2002, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=2107, tail=2107, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=2212, tail=2212, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=2317, tail=2317, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=2422, tail=2422, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:42] 1 blk_len=13, head_len=12, blk_cnt=0, head=2527, tail=2527, len=10240
+[18:25:42] 1 blk_cnt=0
+[18:25:43] 0 handle_read
+[18:25:43] 0 recv [fd=11][rlen=109][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=2, head=2811, tail=2689, len=10240
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=2649, tail=2649, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 0 handle_read
+[18:25:43] 0 recv [fd=11][rlen=981][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=2, head=2933, tail=2811, len=10240
+[18:25:43] 0 recv [fd=11][rlen=872][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=3, head=3055, tail=2811, len=10240
+[18:25:43] 0 recv [fd=11][rlen=763][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=4, head=3177, tail=2811, len=10240
+[18:25:43] 0 recv [fd=11][rlen=654][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=5, head=3299, tail=2811, len=10240
+[18:25:43] 0 recv [fd=11][rlen=545][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=6, head=3421, tail=2811, len=10240
+[18:25:43] 0 recv [fd=11][rlen=436][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=7, head=3543, tail=2811, len=10240
+[18:25:43] 0 recv [fd=11][rlen=327][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=8, head=3665, tail=2811, len=10240
+[18:25:43] 0 recv [fd=11][rlen=218][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=9, head=3787, tail=2811, len=10240
+[18:25:43] 0 recv [fd=11][rlen=109][msglen=109]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=10, head=3909, tail=2811, len=10240
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=2771, tail=2771, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=2893, tail=2893, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=3015, tail=3015, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=3137, tail=3137, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=3259, tail=3259, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=3381, tail=3381, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=3503, tail=3503, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=3625, tail=3625, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 1 blk_len=13, head_len=12, blk_cnt=0, head=3747, tail=3747, len=10240
+[18:25:43] 1 blk_cnt=0
+[18:25:43] 0 handle_read
+[18:25:43] 0 recv error[fd=11,error=664099420]
+[18:25:43] 0 blk_len=13, head_len=12, blk_cnt=2, head=3922, tail=3909, len=10240
