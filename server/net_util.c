@@ -530,7 +530,7 @@ int handle_read(int fd)
 	} else { //
 		ERROR(0, "recv error[fd=%u,error=%u]", fd, strerror(errno));
 		recv_len = 0;
-//		return -1;
+		return -1;
 	}
 
 	if (buff->rlen == setting.max_msg_len) {
