@@ -24,7 +24,7 @@ enum MEM_TYPE {
 typedef struct mem_head {
 	volatile int head;		//头部	
 	volatile int tail;		//尾部
-	volatile int blk_cnt;	//总共块数 
+	volatile int blk_cnt;	//总共块数  不正确,估计
 } __attribute__((packed)) mem_head_t;
 
 /* @brief 内存队列

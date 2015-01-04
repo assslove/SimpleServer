@@ -134,8 +134,8 @@ int main(int argc, char* argv[])
 			int fd = evs[i].data.fd;
 			printf("fd=%u type=%u\n", fd, evs[i].events);
 			if (evs[i].events && EPOLLIN) {
-				char recvbuf[10240];
-				int ret = safe_tcp_recv_n(fd, recvbuf, 10240);
+				char recvbuf[102400];
+				int ret = safe_tcp_recv_n(fd, recvbuf, 102400);
 				if (ret == 0) {
 					printf("fd closed");
 					return 0;
@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
 		gen_str(input, num);
 		printf("send: %s:%lu\n\n", input, strlen(input));
 		//		scanf("%s", input);
-		for (i = 0; i < 10; ++i) {
+		for (i = 0; i < 100; ++i) {
 			char buf[1024];
 			proto_pkg_t *pkg = (proto_pkg_t *)buf;	
 			pkg->id =  i;
@@ -185,6 +185,7 @@ int main(int argc, char* argv[])
 
 			send(fd, buf, pkg->len, 0);
 		}
+		sleep(1);
 	}
 
 	free(evs);

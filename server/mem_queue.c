@@ -73,7 +73,7 @@ get_again:
 		if (ptr->head >= ptr->tail + blk_head_len) { 
 			return blk_tail(q);
 		} else { //不会出现
-			TRACE(0, "err_mem_queue");		
+			TRACE(0, "queue is null");		
 			mq_display(q);
 		}
 	} else if (ptr->head < ptr->tail) {
@@ -90,9 +90,6 @@ get_again:
 			}
 		}
 	} 
-	//else if (ptr->blk_cnt >= 10) { //相等情况下如果大于10块说明还有数据
-		//return blk_tail(q);	
-	//} 
 
 	return NULL;
 }
@@ -114,7 +111,7 @@ push_again:
 				ptr->head = mem_head_len;		//调整到头部
 				goto push_again;
 			}
-		} else {
+		} else {//完全可以容纳
 			mem_block_t *blk = blk_head(q);
 			memcpy(blk, b, blk_head_len);
 			memcpy(blk->data, data, b->len - blk_head_len);
