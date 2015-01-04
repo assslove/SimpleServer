@@ -68,6 +68,9 @@ get_again:
 	if (ptr->head > ptr->tail) { 
 		if (ptr->head >= ptr->tail + blk_head_len) { 
 			return blk_tail(q);
+		} else { //不会出现
+			TRACE(0, "err_mem_queue");		
+			mq_display(q);
 		}
 	} else if (ptr->head < ptr->tail) {
 		if (q->len < ptr->tail + blk_head_len) { //如果容纳不下一个块
@@ -99,11 +102,10 @@ push_again:
 		} 
 
 		if (ptr->head + b->len > q->len) { //如果大于最大长度
-			if (ptr->head + blk_head_len <= q->len) { //如果容下一个块头
-				//填充
+			if (ptr->head + blk_head_len <= q->len) { //如果容下一个块头//填充
 				mem_block_t *blk = blk_head(q);
 				blk->type = BLK_ALIGN;
-				blk->len = q->len; 
+				blk->len = q->len - ptr->head; 
 			}
 
 			ptr->head = mem_head_len;		//调整到头部
