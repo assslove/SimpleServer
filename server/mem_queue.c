@@ -102,19 +102,18 @@ int mq_push(mem_queue_t *q, mem_block_t *b, const void *data)
 	mem_head_t *ptr = q->ptr;
 push_again:
 	if (ptr->head >= ptr->tail) { //
-		if (ptr->head + b->len > q->len) { //如果大于最大长度
+		if (ptr->head + b->len >= q->len) { //如果大于最大长度
 			if (ptr->head + blk_head_len <= q->len) { //如果容下一个块头//填充
 				mem_block_t *blk = blk_head(q);
 				blk->type = BLK_ALIGN;
 				blk->len = q->len - ptr->head; 
 			}
-
 			if (mem_head_len == ptr->tail) { //如果尾部还没有弹出 说明是满的状态
 				return -1;
 			} else {
 				ptr->head = mem_head_len;		//调整到头部
+				goto push_again;
 			}
-			goto push_again;
 		} else {
 			mem_block_t *blk = blk_head(q);
 			memcpy(blk, b, blk_head_len);
