@@ -239,6 +239,8 @@ int do_blk_open(mem_block_t *blk)
 		sess->ip = addr->ip;
 		sess->port = addr->port;
 		save_fd(sess);
+
+		TRACE(0, "work add fd [fd=%d]", blk->fd);
 	}
 	return 0;
 }
@@ -254,6 +256,8 @@ int do_blk_close(mem_block_t *blk)
 	so.on_cli_closed(blk->fd);
 	
 	remove_fd(blk->fd);
+
+	TRACE(0, "work remove fd [fd=%d]", blk->fd);
 
 	return 0;
 }

@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <malloc.h>
+#include <assert.h>
 
 typedef struct proto_pkg {
 	int len;
@@ -45,6 +46,43 @@ void gen_str(char buf[], int n)
 		buf[i] = (char)('a' + rand() % 26);
 	}
 }
+
+int safe_tcp_recv_n(int sockfd, void* buf, int total)
+{
+	assert(total > 0);
+
+	int recv_bytes, cur_len = 0;
+
+	for (recv_bytes = 0; recv_bytes < total; recv_bytes += cur_len)	{
+		cur_len = recv(sockfd, buf + recv_bytes, total - recv_bytes, 0);
+		if (cur_len == 0) { 
+			return 0;
+		} else if (cur_len == -1) { // errno 
+			if (errno == EINTR) {
+				cur_len = 0;
+			} else if (errno == EAGAIN || errno == EWOULDBLOCK)	{
+				return recv_bytes;
+			} else {
+				return -1;
+			}
+		}
+	}
+
+	return recv_bytes;
+}
+
+int set_io_nonblock(int fd, int nonblock)
+{
+	int val;
+	if (nonblock) {
+		val = (O_NONBLOCK | fcntl(fd, F_GETFL));
+	} else {
+		val = (~O_NONBLOCK & fcntl(fd, F_GETFL));
+	}
+	return fcntl(fd, F_SETFL, val);
+}
+
+int seq = 0;
 
 int main(int argc, char* argv[]) 
 {
@@ -72,6 +110,8 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+	set_io_nonblock(fd, 1);
+
 	struct epoll_event event;
 	event.data.fd = fd;
 	event.events = EPOLLIN | EPOLLET;
@@ -94,44 +134,55 @@ int main(int argc, char* argv[])
 			int fd = evs[i].data.fd;
 			printf("fd=%u type=%u\n", fd, evs[i].events);
 			if (evs[i].events && EPOLLIN) {
-				char recvbuf[1024];
-				int ret = recv(fd, recvbuf, 1024, 0);
+				char recvbuf[10240];
+				int ret = safe_tcp_recv_n(fd, recvbuf, 10240);
 				if (ret == 0) {
 					printf("fd closed");
 					return 0;
+				} else if (ret > 0) {
+					printf("recvbuf len=%d\n", ret);
+					int len = ret;
+					int readlen = 0;
+					while (readlen < len) {
+						char*  ptr = recvbuf;
+						proto_pkg_t *msg = (proto_pkg_t *)(ptr + readlen);
+						printf("recv: %d,%d,%d,%d,%d,%s\n", 
+								msg->id, 
+								msg->cmd, 
+								msg->seq,
+								msg->ret, 
+								msg->len,
+								msg->data
+							  );
+						readlen += msg->len;
+					}
 				} else {
-					proto_pkg_t *msg = (proto_pkg_t *)recvbuf;
-					printf("recv: %d,%d,%d,%d,%d,%s\n", 
-							msg->id, 
-							msg->seq,
-							msg->cmd, 
-							msg->ret, 
-							msg->len,
-							msg->data
-							);
+					printf("recv error");
+					return 0;
 				}
 			} else if (evs[i].events && EPOLLOUT) {
 
 			}
 		}
 		//getchar();
-		char buf[1024];
 		char input[200] = {'\0'};
-		int num = rand() % 100 + 1;
+		int num = rand() % 150+ 1;
 		//int num = 30;
 		gen_str(input, num);
-		printf("send: %s:%lu\n", input, strlen(input));
-//		scanf("%s", input);
-		proto_pkg_t *pkg = (proto_pkg_t *)buf;	
-		pkg->id = 1;
-		pkg->seq  = 2;
-		pkg->cmd = 3;
-		pkg->ret = 4;
-
-		pkg->len = sizeof(proto_pkg_t) + strlen(input) + 1;
-		input[strlen(input)] = '\0';
-		memcpy(pkg->data, input, strlen(input) + 1);
+		printf("send: %s:%lu\n\n", input, strlen(input));
+		//		scanf("%s", input);
 		for (i = 0; i < 10; ++i) {
+			char buf[1024];
+			proto_pkg_t *pkg = (proto_pkg_t *)buf;	
+			pkg->id =  i;
+			pkg->cmd = i + 1;
+			pkg->ret = i + 2;
+			pkg->seq = ++seq;
+
+			pkg->len = sizeof(proto_pkg_t) + strlen(input) + 1;
+			input[strlen(input)] = '\0';
+			memcpy(pkg->data, input, strlen(input) + 1);
+
 			send(fd, buf, pkg->len, 0);
 		}
 	}
