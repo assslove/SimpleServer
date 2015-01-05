@@ -53,8 +53,6 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 
 	DEBUG(pkg->id, "online len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
 
-
-
 	//pkg->seq = sess->fd;
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);

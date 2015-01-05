@@ -33,6 +33,8 @@ test_serv.so: test_serv.cpp switch.cpp
 	g++ -g -shared -fPIC test_serv.cpp switch.cpp -o test_serv.so `pkg-config --cflags --libs glib-2.0` -I./ -D_GNU_SOURCE 
 data.so: data.c
 	gcc -g -shared -fPIC data.c -o data.so
+test_mcast : test_mcast.c
+	gcc -g test_mcast.c -o test_mcast
 
 clean:
 	rm -rf *.o simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf test_serv.so
