@@ -71,8 +71,10 @@ void readcb(struct bufferevent *bev, void *user_data)
 
 //		evbuffer_drain(input, len);
 		used += len;	
+		bufferevent_write(bev, buff, len);
 	}
-	evbuffer_write(output, fd);
+
+//	evbuffer_write(output, fd);
 }
 
 void writecb(struct bufferevent *bev, void *user_data)
@@ -83,7 +85,7 @@ void writecb(struct bufferevent *bev, void *user_data)
 	evutil_socket_t fd = *(evutil_socket_t *)user_data;
 	INFO(0, "recv write event [total=%u, fd=%d]", total, fd);	
 
-	evbuffer_write(output, fd);
+	bufferevent_write_buffer(bev, output);
 }
 
 void event_cb(struct bufferevent *bev, short events, void *user_data)
@@ -121,6 +123,7 @@ void listener_cb(struct evconnlistener *listener, evutil_socket_t fd, struct soc
 
 	bufferevent_setcb(bev, readcb, writecb, event_cb, &fd);
 	bufferevent_enable(bev, EV_READ | EV_WRITE);
+	bufferevent_setwatermark(bev, EV_READ | EV_WRITE, 4, 0);
 
 	INFO(0, "cli have accept [fd=%u]", fd);
 }
