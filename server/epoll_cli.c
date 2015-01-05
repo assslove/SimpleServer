@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
 
 	struct sockaddr_in servaddr;
 	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = htons(9000);
+	servaddr.sin_port = htons(9001);
 	inet_pton(AF_INET, "127.0.0.1", &servaddr.sin_addr);
 
 	int ret = connect(fd, (struct sockaddr *)&servaddr, sizeof(struct sockaddr));
@@ -134,8 +134,8 @@ int main(int argc, char* argv[])
 			int fd = evs[i].data.fd;
 			printf("fd=%u type=%u\n", fd, evs[i].events);
 			if (evs[i].events && EPOLLIN) {
-				char recvbuf[10240];
-				int ret = safe_tcp_recv_n(fd, recvbuf, 10240);
+				char recvbuf[102400];
+				int ret = safe_tcp_recv_n(fd, recvbuf, 102400);
 				if (ret == 0) {
 					printf("fd closed");
 					return 0;

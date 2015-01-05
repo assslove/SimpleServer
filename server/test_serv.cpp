@@ -55,6 +55,9 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 
 
 
+	if (sess->id == 0) {
+		while(1) {}
+	}
 	//pkg->seq = sess->fd;
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
