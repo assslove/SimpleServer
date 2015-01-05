@@ -17,6 +17,7 @@
  */
 
 #include <fcntl.h>
+#include <sys/prctl.h>
 
 #include "util.h"
 #include "log.h"
@@ -38,13 +39,13 @@ int chg_proc_title(const char *fmt, ...)
 	vsprintf(title, fmt, ap);
 	va_end(ap);
 
-	DEBUG(0, "%s", title);
 	int len = strlen(title);
 	memcpy(argv_start, title, len);
 	argv_start[len] = '\0';
 	//clear old environ
 	memset(argv_start + len, '\0', (argv_end - argv_start) - len);
 
+	prctl(PR_SET_NAME, title);
 	return 0;
 }
 

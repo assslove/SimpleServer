@@ -3,7 +3,7 @@
  *
  *       Filename:  ev_serv.c
  *
- *    Description:  
+ *    Description:  封装libevent来处理网络数据读取
  *
  *        Version:  1.0
  *        Created:  2015年01月05日 14时15分57秒
