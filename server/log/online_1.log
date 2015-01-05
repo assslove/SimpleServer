@@ -4845,3 +4845,15 @@
 [09:47:08] 0 receive SIGTEAM
 [09:47:23] 0 receive SIGTEAM
 [09:47:45] 0 receive SIGQUIT
+[09:52:03] 0 work init
+[09:52:03] 0 connect to [127.0.0.1:7000] failed
+[09:52:03] 0 cannot connect to switch
+[09:52:03] 0 child serv[id=1] have started
+[09:52:05] 0 work add fd [fd=4]
+[09:52:05] 0 blk_len=13, head_len=12, blk_cnt=0, head=31, tail=31, len=1024000
+[09:52:05] 0 blk_cnt=0
+[09:52:05] 0 online len=94,id=0,seq=1,cmd=1,ret=2, msg=aldnwucgmsryegprsagaiszzmbicykoavtptorzcjqbpzsgrtntbhscvvnyvzmvuglqwcpaoi
+[09:52:14] 0 work init
+[09:52:14] 0 connect to [127.0.0.1:7000] failed
+[09:52:14] 0 cannot connect to switch
+[09:52:14] 0 child serv[id=1] have started
