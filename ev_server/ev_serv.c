@@ -3,7 +3,7 @@
  *
  *       Filename:  ev_serv.c
  *
- *    Description:  封装libevent来处理网络数据读取
+ *    Description:  封装libevent来处理网络数据读取 echo 服务 小东西很健壮
  *
  *        Version:  1.0
  *        Created:  2015年01月05日 14时15分57秒
@@ -21,6 +21,7 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <errno.h>
+#include <malloc.h>
 
 #include <glib.h>
 
@@ -90,13 +91,15 @@ void writecb(struct bufferevent *bev, void *user_data)
 
 void event_cb(struct bufferevent *bev, short events, void *user_data)
 {
+	evutil_socket_t fd = *(evutil_socket_t *)user_data;
 	if (events | BEV_EVENT_EOF) {
-		ERROR(0, "connection closed");
+		ERROR(0, "connection closed [fd=%u]", fd);
 	} else if (events | BEV_EVENT_ERROR) {
 		ERROR(0, "connect err [%s]", strerror(errno));
 	}
 
 	bufferevent_free(bev);
+	free(user_data);
 }
 
 void signal_cb(evutil_socket_t fd, short event, void* user_data)
@@ -121,7 +124,10 @@ void listener_cb(struct evconnlistener *listener, evutil_socket_t fd, struct soc
 		return ;
 	}
 
-	bufferevent_setcb(bev, readcb, writecb, event_cb, &fd);
+	int *pfd = (int *)malloc(sizeof(int));
+	*pfd = fd;
+
+	bufferevent_setcb(bev, readcb, writecb, event_cb, pfd);
 	bufferevent_enable(bev, EV_READ | EV_WRITE);
 	bufferevent_setwatermark(bev, EV_READ | EV_WRITE, 4, 0);
 
