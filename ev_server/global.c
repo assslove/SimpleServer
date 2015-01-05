@@ -17,3 +17,4 @@
  */
 
 char log_file[64] = {"temp.log"};
+
