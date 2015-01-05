@@ -506,7 +506,7 @@ int handle_read(int fd)
 	if (!buff->rbf) {
 		buff->msglen = 0;
 		buff->rlen = 0;
-		buff->rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
+		buff->rbf = mmap(0, setting.max_buf_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
 		if (buff->rbf == MAP_FAILED) {
 			ERROR(0, "mmap error");
 			return -1;
