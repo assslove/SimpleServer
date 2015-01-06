@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	std::string rbuf;
 	std::string sbuf;
 	for (; i < 10000; ++i) {
-		int len = rand() % 100 + 1;
+		int len = rand() % 1000 + 1;
 		int nozip_len = (len + 1) * 4;
 		timeval start;
 		gettimeofday(&start, NULL);
