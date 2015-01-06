@@ -35,6 +35,8 @@ data.so: data.c
 	gcc -g -shared -fPIC data.c -o data.so
 test_mcast : test_mcast.c
 	gcc -g test_mcast.c -o test_mcast
+mcast_cli: mcast_cli.c
+	gcc -g mcast_cli.c -o mcast_cli
 
 clean:
 	rm -rf *.o simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf test_serv.so
