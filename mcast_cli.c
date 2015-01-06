@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
 	struct sockaddr_in local_sa;
 	local_sa.sin_family = AF_INET;
 	local_sa.sin_port = htons(8888);
-	local_sa.sin_addr.s_addr = inet_addr("172.21.174.115");
+	local_sa.sin_addr.s_addr = INADDR_ANY;
 
 	int flag = 1;
 	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
