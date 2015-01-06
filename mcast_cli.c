@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
 	struct sockaddr_in local_sa;
 	local_sa.sin_family = AF_INET;
 	local_sa.sin_port = htons(8888);
-	local_sa.sin_addr.s_addr = INADDR_ANY;
+	local_sa.sin_addr.s_addr = INADDR_ANY; //可选择任意ip
 
 	int flag = 1;
 	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 
 	struct ip_mreq req;
 	req.imr_multiaddr.s_addr = inet_addr("239.0.0.2");
-	req.imr_interface.s_addr = inet_addr("172.21.174.115");
+	req.imr_interface.s_addr = inet_addr("172.21.174.115"); //必须为本地接口 ip
 
 	if (join_mcast(sockfd, &req) == -1) {
 		printf("join mcast error\n");
