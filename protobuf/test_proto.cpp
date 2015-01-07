@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 		//用于消息的加密与解密
 		test::Simple sim;
 		for (int j = 0; j < len; ++j) {
-			sim.add_id(rand() % 10000);
+			sim.add_id(rand() % 100);
 		}
 
 		assert(sim.id_size() == len);
@@ -72,7 +72,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "nozip_len = " << nozip_len 
 			<<"\tzip_len=" << zip_len 
-			<<"\tusedsec="  << (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec) << "\tlen=" << tmp.id_size() << std::endl;
+			<<"\tusedsec="  << (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec) << "\tlen=" << tmp.id_size() 
+			<< "\t zip_rate=" << zip_len / (nozip_len * 1.0) 
+			<< std::endl;
 		sleep(1);
 	}
 
