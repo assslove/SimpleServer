@@ -24,14 +24,17 @@
 #include <errno.h>
 #include <string.h>
 
+int count = 0;
+pthread_mutex_t count_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void* produce(void *arg)
 {
-	static int i = 0;
-	while (i != 10) {
-		sleep(1);
-		++i;
-		printf("child %u\n", i);
+	int i;
+	for (i = 0; i < 10000; ++i) { 
+		pthread_mutex_lock(&count_mutex);
+		printf("child tid=%u count=%u\n", (uint32_t)pthread_self(), count + 1);
+		count = count + 1;
+		pthread_mutex_unlock(&count_mutex);
 	}
 
 	return NULL;
@@ -39,17 +42,17 @@ void* produce(void *arg)
 
 int main(int argc, char* argv[])
 {
-	pthread_t tid;
+	pthread_t tid1, tid2;
 
-	int ret = pthread_create(&tid, NULL, produce, NULL);
+	int ret = pthread_create(&tid1, NULL, produce, NULL);
+	ret = pthread_create(&tid2, NULL, produce, NULL);
 	if (ret != 0) {
 		errno = ret;
 		printf("create pthread error! %s", strerror(errno));
 	}
 
-	printf("parent tid=%u\n", (uint32_t)tid);
-
-	pthread_join(pid, NULL);
+	pthread_join(tid1, NULL);
+	pthread_join(tid2, NULL);
 
 	sleep(20);
 
