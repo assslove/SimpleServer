@@ -1,0 +1,5 @@
+package test;
+
+message Simple {
+	repeated int32 id = 1;
+}

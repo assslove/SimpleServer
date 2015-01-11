@@ -218,6 +218,17 @@ int conf_get_int(const char *key)
 	return atoi(value);
 }
 
+int conf_get_int_def(const char *key, int def)
+{
+	char *value = g_hash_table_lookup(sim_data, key);
+	if (value == NULL) {
+		return def;
+	}
+
+	return atoi(value);
+}
+
+
 int load_conf()
 {
 	if (load_simple_data() || load_work_data()) {
