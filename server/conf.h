@@ -33,4 +33,8 @@ char* conf_get_str(const char *key);
  */
 int conf_get_int(const char *key);
 
+/* @brief 获取整型
+ */
+int conf_get_int_def(const char *key, int def);
+
 #endif
