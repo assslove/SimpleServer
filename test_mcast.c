@@ -56,6 +56,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	set_mcast_ttl(sockfd, 1);
+	set_mcast_loop(sockfd, 1);
+
 
 	return 0;
 }
