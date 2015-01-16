@@ -31,6 +31,15 @@
 
 int work_init(int i)
 {
+	log_fini();
+	//log init
+	char pre_buf[16] = {'\0'};
+	sprintf(pre_buf, "%d", workmgr.works[i].id);
+	if (log_init("log", LOG_LV_TRACE, 102400000, 100000, pre_buf) == -1) {
+		fprintf(stderr, "初始化日志失败");
+		return 0;
+	}
+
 	work_t *work = &workmgr.works[i];
 	//chg title
 	chg_proc_title("%s-%d", setting.srv_name, work->id);
@@ -178,6 +187,8 @@ int work_fini(int i)
 	close(epinfo.epfd);
 
 	DEBUG(0, "work serv [id=%d] have stopped!", work->id);
+
+	log_fini();
 
 	return 0;	
 }

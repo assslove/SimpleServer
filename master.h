@@ -22,7 +22,6 @@ int master_dispatch();
  */
 int master_fini();
 
-
 /*  @brief 处理cli
  */
 int handle_cli(int fd);

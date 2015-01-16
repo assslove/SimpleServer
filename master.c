@@ -219,6 +219,8 @@ int master_fini()
 		if (buff->sbf) free(buff->sbf);
 	}
 
+	log_fini();
+
 	free(epinfo.evs);
 	free(epinfo.fds);
 	close(epinfo.epfd);

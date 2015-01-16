@@ -31,6 +31,12 @@
 
 int work_init(int i)
 {
+	int ret = 0;
+	if (log_init("log", LOG_LV_TRACE, 102400000, 100000, i) == -1) {
+		fprintf(stderr, "初始化日志失败");
+		return 0;
+	}
+
 	work_t *work = &workmgr.works[i];
 	//chg title
 	chg_proc_title("%s-%d", setting.srv_name, work->id);

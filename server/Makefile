@@ -9,7 +9,7 @@ simple_svr: simple_svr.c net_util.c mem_queue.c conf.h log.c util.c master.c wor
 epoll_cli: epoll_cli.c
 	gcc -g -o epoll_cli epoll_cli.c
 test_serv.so: test_serv.cpp switch.cpp
-	g++ -g -shared -fPIC test_serv.cpp switch.cpp -o test_serv.so `pkg-config --cflags --libs glib-2.0` -I./ -D_GNU_SOURCE 
+	g++ -g -shared -fPIC test_serv.cpp switch.cpp -o test_serv.so `pkg-config --cflags --libs glib-2.0` -I./ -D_GNU_SOURCE  -I./../../libnanc/src/
 data.so: data.c
 	gcc -g -shared -fPIC data.c -o data.so
 clean:

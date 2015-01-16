@@ -43,6 +43,12 @@
 int main(int argc, char* argv[]) 
 {	
 	int ret;
+	//log init
+	if (log_init("log", LOG_LV_TRACE, 102400000, 100000, "0") == -1) {
+		fprintf(stderr, "初始化日志失败");
+		return 0;
+	}
+
 	//load conf
 	if ((ret = load_conf()) == -1) {
 		return 0;
