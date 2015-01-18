@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:	genry , houbin-12@163.com
+ *         Author:	houbin , houbin-12@163.com
  *   Organization:  Houbin, Inc. ShangHai CN. All rights reserved.
  *
  * =====================================================================================

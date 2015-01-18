@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:	genry , houbin-12@163.com
+ *         Author:	houbin , houbin-12@163.com
  *   Organization:  Houbin, Inc. ShangHai CN. All rights reserved.
  *
  * =====================================================================================
@@ -35,7 +35,7 @@ int work_init(int i)
 	//log init
 	char pre_buf[16] = {'\0'};
 	sprintf(pre_buf, "%d", workmgr.works[i].id);
-	if (log_init("log", LOG_LV_TRACE, 102400000, 100000, pre_buf) == -1) {
+	if (log_init("log", LOG_LV_TRACE, 10240000, 100000, pre_buf) == -1) {
 		fprintf(stderr, "初始化日志失败");
 		return 0;
 	}
