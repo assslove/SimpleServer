@@ -1,0 +1,8 @@
+12:33:57 0 work init
+12:33:57 0 child serv[id=2] have started
+12:35:30 0 work init
+12:35:30 0 child serv[id=1] have started
+12:38:29 0 cli fd=10 closed
+12:40:29 0 cli fd=10 closed
+18:31:30 0 receive SIGTEAM
+18:31:30 0 work fini
