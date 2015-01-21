@@ -6,6 +6,7 @@
 	remoteIp 为远程服务ip
 	remotePort 为远程服务port
 	routerId 为0x0-0xff 供选选择 
+	根据routeId与id来路由 id % 100来计算 默认为 idStart-idEnd 来判断到底路由到那个服务上
 	系统启动后会自动连接相应的服务 
  -->
 <Routers>
