@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--默认命令号为16位 0xffff
+	每0xFF为一段命令
+	0-7FFF供平台使用 公共使用 
+	80ff-ffff供自己使用 项目内 每个命令段会路由到不同的ip port上
+	remoteIp 为远程服务ip
+	remotePort 为远程服务port
+	routerId 为0x0-0xff 供选选择 
+	系统启动后会自动连接相应的服务 
+ -->
+<Routers>
+	<Rooter routerId="80" remoteIp="127.0.0.1" remotePort="9000" desc=""/>
+	<Rooter routerId="81" remoteIp="127.0.0.1" remotePort="9001" desc=""/>
+</Routers>
