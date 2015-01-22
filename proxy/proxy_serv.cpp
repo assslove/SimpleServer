@@ -81,10 +81,10 @@ OUTER_FUNC int on_cli_closed(int fd)
 
 OUTER_FUNC int on_serv_closed(int fd)
 {
-	if (fd == switch_fd) {
-		switch_fd  = -1;
-		ERROR(0, "switch fd closed [fd=%d]", fd);
-	}
+	//if (fd == switch_fd) {
+		//switch_fd  = -1;
+		//ERROR(0, "switch fd closed [fd=%d]", fd);
+	//}
 
 	return 0;
 }
@@ -93,13 +93,13 @@ OUTER_FUNC int serv_init(int ismaster)
 {
 	INFO(0, "%s init", ismaster ? "master" : "work");
 
-	if (switch_fd == -1) {
-		switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
-	}
+	//if (switch_fd == -1) {
+		//switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
+	//}
 
-	if (switch_fd == -1) {
-		ERROR(0, "cannot connect to switch");
-	}
+	//if (switch_fd == -1) {
+		//ERROR(0, "cannot connect to switch");
+	//}
 	
 	return 0;
 }
@@ -112,7 +112,7 @@ OUTER_FUNC int serv_fini(int ismaster)
 
 OUTER_FUNC int	get_msg_len(int fd, const void *data, int len, int ismaster)
 {
-	return *(int *)((uint8_t*)data);
+	return *(int *)(data);
 }
 
 

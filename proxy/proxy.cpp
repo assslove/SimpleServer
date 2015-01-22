@@ -19,14 +19,15 @@
 #include <string.h>
 
 extern "C" {
-#include "fds.h"
-#include "log.h"
-#include "net_util.h"
+#include <sserv/log.h>
+#include <sserv/net_util.h>
+#include <sserv/conf.h>
+#include <sserv/fds.h>
 }
 
-#include "switch.h"
+#include "proxy.h"
 
-int handle_switch(int fd, void *msg, int len)
+int handle_proxy(int fd, void *msg, int len)
 {
 	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
 
