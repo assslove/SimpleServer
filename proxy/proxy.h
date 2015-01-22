@@ -48,11 +48,18 @@ class Proxy : public Singleton<Proxy> {
 		 */
 		void do_router();
 
+		/* @brief 处理发送proxy的请求包
+		 */
+		int handle_request(int fd, void *msg, int len);
+
+		/* @brief 处理回调
+		 */
+		int handle_response(int fd, void *msg, int len);
+
 	private:
 		UserFdMap fds; //保存回调时间可以发给指定的用户
 	
 };
 
-int handle_proxy(int fd, void *msg, int len);
-
+#define proxy Proxy::getInstance()
 #endif 

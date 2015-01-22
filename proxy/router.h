@@ -84,6 +84,10 @@ class RouterManager : public Singleton<RouterManager> {
 		 */
 		void sendAcrossRouter(proto_pkg_t *pkg);
 
+		/* @brief 遍历routers, 找到fd
+		 */
+		const table_t* getRouterByFd(int fd);
+
 	private:
 		RouterMap routers; //所有路由信息
 };

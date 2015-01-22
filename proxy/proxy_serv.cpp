@@ -44,13 +44,14 @@ OUTER_FUNC void handle_timer()
 
 OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 {
+	//校验
 	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
 
-	DEBUG(pkg->id, "online len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
+	DEBUG(pkg->id, "proxy len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
 
 	//pkg->seq = sess->fd;
-	uint32_t  cli[1024];
-	memcpy(cli, msg, pkg->len);
+	//uint32_t  cli[1024];
+	//memcpy(cli, msg, pkg->len);
 
 	//if (switch_fd == -1) {
 		//switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
@@ -59,18 +60,14 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 	//if (switch_fd == -1) {
 		//ERROR(0, "cannot connect to switch");
 	//}
-
-	return send_to_cli(sess, cli, pkg->len);
+	return proxy->handle_request(sess->fd, msg, len);
+//	return send_to_cli(sess, cli, pkg->len);
 	//return send_to_serv(switch_fd, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 {
-	if (fd == switch_fd) {
-		handle_switch(fd, msg, len);
-	}
-
-	return 0;
+	return proxy->handle_response(fd, msg, len);
 }
 
 OUTER_FUNC int on_cli_closed(int fd) 
@@ -81,10 +78,13 @@ OUTER_FUNC int on_cli_closed(int fd)
 
 OUTER_FUNC int on_serv_closed(int fd)
 {
+	//TODO 找个fd，并把fd置为-1
 	//if (fd == switch_fd) {
 		//switch_fd  = -1;
 		//ERROR(0, "switch fd closed [fd=%d]", fd);
 	//}
+	
+	ERROR(0, "fd closed [fd=%d]", fd);
 
 	return 0;
 }

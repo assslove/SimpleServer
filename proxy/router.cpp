@@ -15,12 +15,19 @@
  *
  * =====================================================================================
  */
+extern "C" {
+#include <libnanc/log.h>
+}
 
 #include "router.h"
 
 void RouterManager::printRouter()
 {
-	
+	RouterIter it = routers.begin();	
+	for (; it != routers.end(); ++it) {
+		INFO(0, "router [id=%u][type=%u]", it->first, it->second.type);	
+		databases.print();
+	}
 }
 
 void RouterManager::preProcess()
@@ -36,4 +43,9 @@ const table_t* RouterManager::getRouter(uint16_t cmd, uint32_t id)
 void RouterManager::sendAcrossRouter(proto_pkg_t *pkg)
 {
 	
+}
+
+const table_t* RouterManager::getRouterByFd(int fd)
+{
+	return NULL;	
 }
