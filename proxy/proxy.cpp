@@ -31,10 +31,10 @@ int handle_proxy(int fd, void *msg, int len)
 {
 	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
 
-	DEBUG(pkg->id, "switch callback len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
+	//DEBUG(pkg->id, "switch callback len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
 
-	uint32_t  cli[1024];
-	memcpy(cli, msg, pkg->len);
-
-	return send_to_cli(get_fd(pkg->seq), cli, pkg->len);
+	//uint32_t  cli[1024];
+	//memcpy(cli, msg, pkg->len);
+	Proxy::getInstance()::save(pkg->id, fd);
+	//return send_to_cli(get_fd(pkg->seq), cli, pkg->len);
 }
