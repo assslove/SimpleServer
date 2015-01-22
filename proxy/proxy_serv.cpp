@@ -3,7 +3,7 @@
  *
  *       Filename:  test_serv.cpp
  *
- *    Description:  对SimpleServer 的测试 echo 服务器
+ *    Description:  proxy服务器 用于数据库与其它平台服务的交互
  *
  *        Version:  1.0
  *        Created:  12/23/2014 05:18:02 PM
@@ -24,24 +24,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "log.h"
-#include "net_util.h"
-#include "conf.h"
-#include "fds.h"
+#include <sserv/log.h>
+#include <sserv/net_util.h>
+#include <sserv/conf.h>
+#include <sserv/fds.h>
 #ifdef __cplusplus
 }
 #endif
-
-#include "switch.h"
 
 #ifdef __cplusplus 
 #define OUTER_FUNC extern "C"
 #else
 #define OUTER_FUNC 
 #endif 
-
-
-int switch_fd = -1;
 
 OUTER_FUNC void handle_timer()
 {
