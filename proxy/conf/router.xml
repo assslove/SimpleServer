@@ -6,10 +6,18 @@
 	remoteIp 为远程服务ip
 	remotePort 为远程服务port
 	routerId 为0x0-0xff 供选选择 
+	type 使用类型 0-无类型 1-单库单表 2-1库10表 3-1库100表 4-100库10表 5-100库100表
 	根据routeId与id来路由 id % 100来计算 默认为 idStart-idEnd 来判断到底路由到那个服务上
 	系统启动后会自动连接相应的服务 
  -->
 <Routers>
-	<Rooter routerId="80" remoteIp="127.0.0.1" remotePort="9000" desc=""/>
-	<Rooter routerId="81" remoteIp="127.0.0.1" remotePort="9001" desc=""/>
+	<Rooter routeId="80" type="5" desc="USER库路由">
+		<SubRooter remoteIp="127.0.0.1" remotePort="9000" idStart="00" idEnd="24" subIdStart="00" subIdEnd="99"/>
+		<SubRooter remoteIp="127.0.0.1" remotePort="9001" idStart="25" idEnd="49" subIdStart="00" subIdEnd="99"/>
+		<SubRooter remoteIp="127.0.0.1" remotePort="9002" idStart="50" idEnd="74" subIdStart="00" subIdEnd="99"/>
+		<SubRooter remoteIp="127.0.0.1" remotePort="9003" idStart="75" idEnd="99" subIdStart="00" subIdEnd="99"/>
+	</Rooter> 
+	<Rooter routeId="81" type="0" desc="GLOBAL库路由">
+		<SubRooter remoteIp="127.0.0.1" remotePort="9000" idStart="00" idEnd="99" subIdStart="00" subIdEnd="99"/>
+	</Rooter> 
 </Routers>
