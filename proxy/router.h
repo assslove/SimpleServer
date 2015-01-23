@@ -99,6 +99,11 @@ class RouterManager : public Singleton<RouterManager> {
 		~RouterManager() {}
 
 	public:
+
+		/* @brief 加载router.xml
+		 */
+		int loadRouterXml();
+
 		/* @brief 打印路由信息
 		*/
 		void printRouter();

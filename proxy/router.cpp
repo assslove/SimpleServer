@@ -20,6 +20,7 @@ extern "C" {
 }
 
 #include <libnanc++/util.h>
+#include <libnanc++/xml_parser.h>
 
 #include "router.h"
 
@@ -63,4 +64,28 @@ int RouterManager::sendAcrossRouter(proto_pkg_t *pkg)
 const table_t* RouterManager::getRouterByFd(int fd)
 {
 	return NULL;	
+}
+
+int RouterManager::loadRouterXml()
+{
+	XmlParser parser;
+	if (!parser.initFile("conf/router.xml")) {
+		ERROR(0, "load router.xml failed");
+		return -1;
+	}
+	
+	xmlNodePtr root = parser.getRootNode("Rooters"); 	
+	if (root) {
+		xmlNodePtr chl = parser.getChildNode(root, "Rooter");
+		while (chl) {
+			router_t item;
+			uint32_t cmd = 0;
+			parser.getNodePropNum(chl, "routeId", &cmd, sizeof(cmd));
+			parser.getNodePropNum(chl, "type", &item.type, sizeof(item.type));
+
+			routers.insert(std::make_pair<uint32_t, router_t>(cmd, item));
+		}
+	}
+
+	return 0;	
 }

@@ -95,6 +95,13 @@ OUTER_FUNC int on_serv_closed(int fd)
 
 OUTER_FUNC int serv_init(int ismaster) 
 {
+	if (g_router.loadRouterXml()) {
+		ERROR(0, "load router.xml failed");
+		return -1;
+	}
+	//打印router信息
+	g_router.printRouter();
+
 	INFO(0, "%s init", ismaster ? "master" : "work");
 
 	//if (switch_fd == -1) {
