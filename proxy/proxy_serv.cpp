@@ -62,14 +62,16 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 	//if (switch_fd == -1) {
 		//ERROR(0, "cannot connect to switch");
 	//}
-	return proxy->handleRequest(sess->fd, pkg, len);
+	g_proxy.handleRequest(sess->fd, pkg);
+	return 0;
 //	return send_to_cli(sess, cli, pkg->len);
 	//return send_to_serv(switch_fd, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 {
-	return proxy->handleResponse(fd, msg, len);
+	g_proxy.handleResponse(fd, msg, len);
+	return 0;
 }
 
 OUTER_FUNC int on_cli_closed(int fd) 

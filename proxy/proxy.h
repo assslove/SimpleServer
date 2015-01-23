@@ -1,17 +1,18 @@
 #ifndef _PROXY_H_
 #define _PROXY_H_
 
-
 #include <libnanc++/singleton.h>
 #include <tr1/unordered_map>
 #include <stdint.h>
 
+#include "router.h"
 
-#ifdef  ONE_SERV
+#ifdef SERV_ONE 
 #define UserId uint32_t
-#elif
+#else
 #define UserId uint64_t
 #endif
+
 /* @brief 代理服务器实现逻辑
  * @note 本服务器只适用于单角色多服或者单服
  */
@@ -41,7 +42,7 @@ class Proxy : public Singleton<Proxy> {
 		/* @brief 缓存用户id fd
 		 */
 		void save(UserId id, int fd) {
-			fds.insert(std::pair<Userid, int>(id, fd));
+			fds.insert(std::pair<UserId, int>(id, fd));
 		}
 
 		/* @brief 删除用户id
@@ -52,23 +53,23 @@ class Proxy : public Singleton<Proxy> {
 
 		/* @brief 执行路由
 		 */
-		void doRouter(proto_pkg_t *pkg) {
+		int doRouter(proto_pkg_t *pkg) {
 			return g_router.sendAcrossRouter(pkg);
 		}
 
 		/* @brief 处理发送proxy的请求包
 		 */
-		int handleRequest(int fd, proto_pkg_t *pkg);
+		void handleRequest(int fd, proto_pkg_t *pkg);
 
 		/* @brief 处理回调
 		 */
-		int handleResponse(int fd, void *msg, int len);
+		void  handleResponse(int fd, void *msg, int len);
 
 	private:
 		UserFdMap fds; //保存回调时间可以发给指定的用户
 		UserId	  temp_user_id; //临时用用户id
-	
 };
 
-#define proxy Proxy::getInstance()
+#define g_proxy Proxy::getInstance()
+
 #endif 

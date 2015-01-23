@@ -37,7 +37,7 @@ void RouterManager::preProcess()
 	RouterIter it = routers.begin();	
 	for (; it != routers.end(); ++it) {
 		it->second.databases.sort_less();
-		FOREACH(i, it->second.database.getRangeVec()) { //对tables进行排序
+		FOREACH(i, it->second.databases.get_range_vec()) { //对tables进行排序
 			i->sort();
 		}
 	}
@@ -57,7 +57,7 @@ const table_t* RouterManager::getRouter(uint16_t cmd, uint32_t id)
 
 int RouterManager::sendAcrossRouter(proto_pkg_t *pkg)
 {
-	table_t *tb = getRouter(pkg->cmd, pkg->id);	
+	const table_t *tb = getRouter(pkg->cmd, pkg->id);	
 }
 
 const table_t* RouterManager::getRouterByFd(int fd)

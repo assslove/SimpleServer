@@ -3,9 +3,13 @@
 
 #include <tr1/unordered_map>
 #include <stdint.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 extern "C" {
 #include <libnanc/log.h>
+#include <libnanc/proto_head.h>
 }
 
 #include <libnanc++/singleton.h>
@@ -32,7 +36,7 @@ typedef struct table {
 	uint8_t start;			//起始点
 	uint8_t end;			//结束点
 
-	table& operator< (const table& node) const {
+	bool operator< (const table& node) const {
 		return start < node.start;
 	}
 
@@ -41,7 +45,7 @@ typedef struct table {
 	void print() 
 	{
 		INFO(0, "table: [start=%u][end=%u][fd=%u][remote_ip=%s][remote_port=%u]", \
-				start, end, fd, inet_ntoa(*(struct addr_in *)&remote_ip), remote_port);
+				start, end, fd, inet_ntoa(*((struct in_addr*)&remote_ip)), remote_port);
 	}
 
 } table_t;
@@ -51,9 +55,9 @@ typedef struct table {
 typedef struct database {
 	uint8_t start;
 	uint8_t end;
-	RangeMgr<table_t> tables;
+	RangeManager<table_t> tables;
 
-	database& operator< (const database& node) const {
+	bool operator< (const database& node) const {
 		return start < node.start;
 	}
 
@@ -75,7 +79,7 @@ typedef struct database {
 
 typedef struct {
 	uint8_t type;					//router类型
-	RangeMgr<database_t> databases;	//二层嵌套 路由信息
+	RangeManager<database_t> databases;	//二层嵌套 路由信息
 } router_t;
 
 #pragma pack()
@@ -89,38 +93,38 @@ typedef RouterMap::iterator RouterIter;
 class RouterManager : public Singleton<RouterManager> {
 
 	friend class Singleton<RouterManager>;
+
 	private: 
-	RouterManager() {}
-	~RouterManager() {}
+		RouterManager() {}
+		~RouterManager() {}
 
 	public:
+		/* @brief 打印路由信息
+		*/
+		void printRouter();
 
-	/* @brief 打印路由信息
-	*/
-	void printRouter();
+		/* @brief 预处理，主要对RangeManager 进行排序 查找时可以用log(n)查找到
+		*/
+		void preProcess();
 
-	/* @brief 预处理，主要对RangeMgr 进行排序 查找时可以用log(n)查找到
-	*/
-	void preProcess();
+		/* @brief 获取指定cmd id 的路由信息
+		*/
+		const table_t* getRouter(uint16_t cmd, uint32_t id);
 
-	/* @brief 获取指定cmd id 的路由信息
-	*/
-	const table_t* getRouter(uint16_t cmd, uint32_t id);
+		/* @brief 通过router发送消息到指定服务器
+		 * @note  0 成功 其它发送失败
+		 */
+		int sendAcrossRouter(proto_pkg_t *pkg);
 
-	/* @brief 通过router发送消息到指定服务器
-	 * @note  0 成功 其它发送失败
-	 */
-	int sendAcrossRouter(proto_pkg_t *pkg);
-
-	/* @brief 遍历routers, 找到fd
-	*/
-	const table_t* getRouterByFd(int fd);
+		/* @brief 遍历routers, 找到fd
+		*/
+		const table_t* getRouterByFd(int fd);
 
 	private:
-	RouterMap routers;	//所有路由信息
-	RouterIter it;		//迭代器
-};
+		RouterMap routers;	//所有路由信息
+		RouterIter it;		//迭代器
+	};
 
-#define  g_router RouterManager::getInstance();
+#define  g_router RouterManager::getInstance()
 
 #endif

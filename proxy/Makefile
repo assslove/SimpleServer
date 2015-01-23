@@ -10,7 +10,7 @@ $(TARGET) : $(OBJS)
 	@echo "srcs:" $(SRCS)
 	@echo "objs:" $(OBJS)
 	@echo "complie to objs"
-	$(CC) $(OBJS) $(CFLAGS) $(LIBS) $(INC) -o $(TARGET)
+	$(CC) $(OBJS) $(CXXFLAGS) $(LIBS) $(INC) -o $(TARGET)
 
 clean:
 	rm -f $(OBJECTS)  proxy.so
