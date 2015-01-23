@@ -19,6 +19,8 @@ extern "C" {
 #include <libnanc/log.h>
 }
 
+#include <libnanc++/util.h>
+
 #include "router.h"
 
 void RouterManager::printRouter()
@@ -26,23 +28,36 @@ void RouterManager::printRouter()
 	RouterIter it = routers.begin();	
 	for (; it != routers.end(); ++it) {
 		INFO(0, "router [id=%u][type=%u]", it->first, it->second.type);	
-		databases.print();
+		it->second.databases.print();
 	}
 }
 
 void RouterManager::preProcess()
 {
-	
+	RouterIter it = routers.begin();	
+	for (; it != routers.end(); ++it) {
+		it->second.databases.sort_less();
+		FOREACH(i, it->second.database.getRangeVec()) { //对tables进行排序
+			i->sort();
+		}
+	}
 }
 
 const table_t* RouterManager::getRouter(uint16_t cmd, uint32_t id)
 {
+	router_t *prouter = NULL;
+	it = routers.find(cmd);
+	if (it != routers.end()) {
+		prouter = &it->second;	
+	}
+
+	uint32_t db_idx = id % 100;
 	return NULL;	
 }
 
-void RouterManager::sendAcrossRouter(proto_pkg_t *pkg)
+int RouterManager::sendAcrossRouter(proto_pkg_t *pkg)
 {
-	
+	table_t *tb = getRouter(pkg->cmd, pkg->id);	
 }
 
 const table_t* RouterManager::getRouterByFd(int fd)

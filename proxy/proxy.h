@@ -44,20 +44,29 @@ class Proxy : public Singleton<Proxy> {
 			fds.insert(std::pair<Userid, int>(id, fd));
 		}
 
+		/* @brief 删除用户id
+		 */
+		void del(UserId id) {
+			fds.erase(id);
+		}
+
 		/* @brief 执行路由
 		 */
-		void do_router();
+		void doRouter(proto_pkg_t *pkg) {
+			return g_router.sendAcrossRouter(pkg);
+		}
 
 		/* @brief 处理发送proxy的请求包
 		 */
-		int handle_request(int fd, void *msg, int len);
+		int handleRequest(int fd, proto_pkg_t *pkg);
 
 		/* @brief 处理回调
 		 */
-		int handle_response(int fd, void *msg, int len);
+		int handleResponse(int fd, void *msg, int len);
 
 	private:
 		UserFdMap fds; //保存回调时间可以发给指定的用户
+		UserId	  temp_user_id; //临时用用户id
 	
 };
 

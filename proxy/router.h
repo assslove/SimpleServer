@@ -4,6 +4,10 @@
 #include <tr1/unordered_map>
 #include <stdint.h>
 
+extern "C" {
+#include <libnanc/log.h>
+}
+
 #include <libnanc++/singleton.h>
 #include <libnanc++/range.h>
 
@@ -11,7 +15,7 @@
 
 /* @brief 路由类型
  */
-enum ROOTER_TYPE {
+enum RooterType {
 	ROOTER_TYPE_1X1 = 0,		//单库单表
 	ROOTER_TYPE_1X10 = 1,		//单库十表
 	ROOTER_TYPE_1X100 = 2,		//单库百表
@@ -32,10 +36,18 @@ typedef struct table {
 		return start < node.start;
 	}
 
+	/* @brief 打印结构体信息
+	 */
+	void print() 
+	{
+		INFO(0, "table: [start=%u][end=%u][fd=%u][remote_ip=%s][remote_port=%u]", \
+				start, end, fd, inet_ntoa(*(struct addr_in *)&remote_ip), remote_port);
+	}
+
 } table_t;
 
 /* @brief 根据库来路由
- */
+*/
 typedef struct database {
 	uint8_t start;
 	uint8_t end;
@@ -45,53 +57,70 @@ typedef struct database {
 		return start < node.start;
 	}
 
+	/* @brief 打印结构体信息
+	 */
+	void print() {
+		INFO(0, "database: [start=%u][end=%u]", start, end);
+		tables.print();
+	}
+
+	void sort()	{
+		tables.sort_less();	
+	}
+
 } database_t;
 
+
+
+
 typedef struct {
-	int8_t type;					//router类型
+	uint8_t type;					//router类型
 	RangeMgr<database_t> databases;	//二层嵌套 路由信息
 } router_t;
+
+#pragma pack()
 
 typedef std::tr1::unordered_map<uint32_t, router_t> RouterMap; //路由id-路由信息
 typedef RouterMap::iterator RouterIter;
 
-#pragma pack()
 
 /* @breif 路由管理类
- */
+*/
 class RouterManager : public Singleton<RouterManager> {
 
 	friend class Singleton<RouterManager>;
 	private: 
-		RouterManager() {}
-		~RouterManager() {}
+	RouterManager() {}
+	~RouterManager() {}
 
 	public:
 
-		/* @brief 打印路由信息
-		 */
-		void printRouter();
+	/* @brief 打印路由信息
+	*/
+	void printRouter();
 
-		/* @brief 预处理，主要对RangeMgr 进行排序 查找时可以用log(n)查找到
-		 */
-		void preProcess();
-		
-		/* @brief 获取指定cmd id 的路由信息
-		 */
-		const table_t* getRouter(uint16_t cmd, uint32_t id);
+	/* @brief 预处理，主要对RangeMgr 进行排序 查找时可以用log(n)查找到
+	*/
+	void preProcess();
 
-		/* @brief 能过router发送消息到指定服务器
-		 */
-		void sendAcrossRouter(proto_pkg_t *pkg);
+	/* @brief 获取指定cmd id 的路由信息
+	*/
+	const table_t* getRouter(uint16_t cmd, uint32_t id);
 
-		/* @brief 遍历routers, 找到fd
-		 */
-		const table_t* getRouterByFd(int fd);
+	/* @brief 通过router发送消息到指定服务器
+	 * @note  0 成功 其它发送失败
+	 */
+	int sendAcrossRouter(proto_pkg_t *pkg);
+
+	/* @brief 遍历routers, 找到fd
+	*/
+	const table_t* getRouterByFd(int fd);
 
 	private:
-		RouterMap routers; //所有路由信息
+	RouterMap routers;	//所有路由信息
+	RouterIter it;		//迭代器
 };
 
-#define router_mgr RouterManager::getInstance();
+#define  g_router RouterManager::getInstance();
 
 #endif

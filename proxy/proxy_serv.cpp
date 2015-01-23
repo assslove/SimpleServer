@@ -38,6 +38,8 @@ extern "C" {
 #define OUTER_FUNC 
 #endif 
 
+#include "proxy.h"
+
 OUTER_FUNC void handle_timer()
 {
 }
@@ -60,14 +62,14 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 	//if (switch_fd == -1) {
 		//ERROR(0, "cannot connect to switch");
 	//}
-	return proxy->handle_request(sess->fd, msg, len);
+	return proxy->handleRequest(sess->fd, pkg, len);
 //	return send_to_cli(sess, cli, pkg->len);
 	//return send_to_serv(switch_fd, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 {
-	return proxy->handle_response(fd, msg, len);
+	return proxy->handleResponse(fd, msg, len);
 }
 
 OUTER_FUNC int on_cli_closed(int fd) 
