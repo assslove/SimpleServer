@@ -76,13 +76,23 @@ int RouterManager::loadRouterXml()
 	
 	xmlNodePtr root = parser.getRootNode("Rooters"); 	
 	if (root) {
-		xmlNodePtr chl = parser.getChildNode(root, "Rooter");
-		while (chl) {
+		xmlNodePtr ch1 = parser.getChildNode(root, "Rooter");
+		while (ch1) {
 			router_t item;
 			uint32_t cmd = 0;
-			parser.getNodePropNum(chl, "routeId", &cmd, sizeof(cmd));
-			parser.getNodePropNum(chl, "type", &item.type, sizeof(item.type));
+			parser.getNodePropNum(ch1, "routeId", &cmd, sizeof(cmd));
+			parser.getNodePropNum(ch1, "type", &item.type, sizeof(item.type));
 
+			xmlNodePtr ch2 = parser.getChildNode(ch1, "Database");
+			while (ch2) {
+				database_t db;
+
+				xmlNodePtr ch3 = parser.getChildNode(ch2, "Table");
+
+				while(ch3) {
+
+				}
+			}
 			routers.insert(std::make_pair<uint32_t, router_t>(cmd, item));
 		}
 	}

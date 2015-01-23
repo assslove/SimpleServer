@@ -7,14 +7,17 @@ SRCS = $(wildcard *.cpp)
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))
 CC = g++
 
+all : $(TARGET)
+
 $(TARGET) : $(OBJS)
 	@echo "srcs:" $(SRCS)
 	@echo "objs:" $(OBJS)
 	@echo "complie to objs"
 	@echo $(LIBS)
 	$(CC) $(OBJS) $(CXXFLAGS) $(INC) $(LIBS) -o $(TARGET)
+
 %.o : %.cpp
-	$(CC) $(OBJS) $(CXXFLAGS) $(INC) $(LIBS) -c $< -o $@ 
+	#$(CC) $(OBJS) $(CXXFLAGS) $(INC) $(LIBS) -c $< -o $@ 
 
 clean:
-	rm -f $(OBJECTS)  proxy.so
+	rm -f $(OBJS)  proxy.so
