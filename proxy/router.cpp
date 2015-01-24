@@ -38,7 +38,7 @@ void RouterManager::preProcess()
 	RouterIter it = routers.begin();	
 	for (; it != routers.end(); ++it) {
 		it->second.databases.sort_less();
-		FOREACH(i, it->second.databases.get_range_vec()) { //对tables进行排序
+		FOREACH (i, it->second.databases.get_range_vec()) { //对tables进行排序
 			i->sort();
 		}
 	}
