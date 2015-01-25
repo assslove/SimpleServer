@@ -1,8 +1,8 @@
 # 用于创建proxy
 TARGET=proxy.so
 INC = 
-LIBS = `pkg-config --cflags --libs glib-2.0` `xml2-config --cflags --libs` -L/usr/local/lib -lnanc -lnanc++ 
-CXXFLAGS = -g -Wall -fPIC -shared -D_GNU_SOURCE -DSERV_ONE
+LIBS = `pkg-config --cflags --libs glib-2.0` `xml2-config --cflags --libs` -L/usr/local/lib -lnanc -lnanc++  
+CXXFLAGS = -g -Wall -fPIC -shared -D_GNU_SOURCE -DSERV_ONE 
 SRCS = $(wildcard *.cpp)
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))
 CC = g++
