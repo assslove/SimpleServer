@@ -1,7 +1,7 @@
 # 用于创建proxy
 TARGET=proxy.so
 INC = 
-LIBS = `pkg-config --cflags --libs glib-2.0` `xml2-config --cflags --libs` -L/usr/local/lib -lnanc -lnanc++  
+LIBS = `pkg-config --cflags --libs glib-2.0 libxml-2.0` -L/usr/local/lib -lnanc -lnanc++ -lxml2
 CXXFLAGS = -g -Wall -fPIC -shared -D_GNU_SOURCE -DSERV_ONE 
 SRCS = $(wildcard *.cpp)
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))
@@ -13,10 +13,10 @@ $(TARGET) : $(OBJS)
 	@echo "srcs:" $(SRCS)
 	@echo "objs:" $(OBJS)
 	@echo $(LIBS)
-	$(CC) $(CXXFLAGS) $(INC) $(LIBS) -o $(TARGET) $(OBJS)
+	$(CC)  -o $(TARGET) $(OBJS) $(CXXFLAGS) $(INC) $(LIBS)
 
 $(OBJS) : %.o : %.cpp
-	$(CC) $(CXXFLAGS) $(INC) $(LIBS) -c $< -o $@ 
+	$(CC) -c $< -o $@  $(CXXFLAGS) $(INC) $(LIBS) 
 
 clean:
 	rm -f $(OBJS)  proxy.so
