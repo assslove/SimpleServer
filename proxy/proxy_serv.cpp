@@ -51,21 +51,8 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 
 	DEBUG(pkg->id, "proxy len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
 
-	//pkg->seq = sess->fd;
-	//uint32_t  cli[1024];
-	//memcpy(cli, msg, pkg->len);
-
-	//if (switch_fd == -1) {
-		//switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
-	//}
-
-	//if (switch_fd == -1) {
-		//ERROR(0, "cannot connect to switch");
-	//}
 	g_proxy.handleRequest(sess->fd, pkg);
 	return 0;
-//	return send_to_cli(sess, cli, pkg->len);
-	//return send_to_serv(switch_fd, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
