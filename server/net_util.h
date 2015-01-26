@@ -209,7 +209,7 @@ void do_del_from_closelist(int fd);
 
 /*  @brief 连接某个服务器 用于work进程
  */
-int connect_to_serv(char *ip, int port, int bufsize, int timeout);
+int connect_to_serv(const char *ip, int port, int bufsize, int timeout);
 
 /* @brief  handle read
  */

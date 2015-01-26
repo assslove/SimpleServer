@@ -289,7 +289,7 @@ int send_to_serv(int fd, void *msg, int len)
 }
 
 
-int connect_to_serv(char *ip, int port, int bufsize, int timeout)
+int connect_to_serv(const char *ip, int port, int bufsize, int timeout)
 {
 	struct sockaddr_in sockaddr;
 	memset(&sockaddr, 0, sizeof(struct sockaddr_in));
