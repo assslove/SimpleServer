@@ -32,9 +32,6 @@ extern "C" {
 
 void  Proxy::handleRequest(int fd, proto_pkg_t *pkg)
 {
-	//DEBUG(pkg->id, "switch callback len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
-
-	//处理多服与单服包头的不一样
 #ifdef SERV_ONE
 	temp_user_id = pkg->id;
 #else

@@ -24,16 +24,16 @@ class Proxy : public Singleton<Proxy> {
 	typedef UserFdMap::iterator Iter;
 
 	private:
-		Proxy() {}
+		Proxy() : temp_user_id(0), m_tempfd(0), m_it(NULL) {fds.clear();}
 		~Proxy() {}
 	public:
 
 		/* @brief  获取fd
 		 */
 		int get(UserId id) {
-			Iter it = fds.find(id);	
-			if (it != fds.end()) {
-				return it->second;
+			m_it = fds.find(id);	
+			if (m_it != fds.end()) {
+				return m_it->second;
 			}
 
 			return 0;
@@ -69,6 +69,7 @@ class Proxy : public Singleton<Proxy> {
 		UserFdMap fds; //保存回调时间可以发给指定的用户
 		UserId	  temp_user_id; //临时用用户id
 		int m_tempfd; //临时fd
+		Iter m_it;	  //
 };
 
 #define g_proxy Proxy::getInstance()
