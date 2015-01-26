@@ -66,10 +66,12 @@ class Proxy : public Singleton<Proxy> {
 		void  handleResponse(const proto_pkg_t *pkg);
 
 		/* @brief 处理服务器fd断开
+		 * @note  将相关fd置为-1
 		 */
 		void handleServClosed(int fd);
 
 		/* @brief 处理客户端fd断开
+		 *  将fd相关用户都删除
 		 */
 		void handleCliClosed(int fd);
 

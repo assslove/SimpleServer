@@ -141,6 +141,10 @@ class RouterManager : public Singleton<RouterManager> {
 		*/
 		const table_t* getRouterByFd(int fd);
 
+		/*  @brief 把远程fd置为-1
+		 */
+		void resetRemoteFd(int fd);
+
 	private:
 		RouterMap routers;	//所有路由信息
 		RouterIter it;		//迭代器

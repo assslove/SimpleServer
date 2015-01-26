@@ -83,7 +83,6 @@ OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 OUTER_FUNC int on_cli_closed(int fd) 
 {
 	g_proxy.handleCliClosed(fd);
-	INFO(0, "cli fd=%u closed", fd);
 	return 0;
 }
 

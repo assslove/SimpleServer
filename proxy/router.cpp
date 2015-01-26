@@ -97,6 +97,20 @@ const table_t* RouterManager::getRouterByFd(int fd)
 	return NULL;	
 }
 
+
+void RouterManager::resetRemoteFd(int fd)
+{	
+	FOREACH (i, routers) {
+		FOREACH (j, i->second.databases.get_range_vec()) {
+			FOREACH (k, j->tables.get_range_vec()) {
+				if (k->fd == fd) {
+					k->fd = -1;
+				}
+			}
+		}
+	}
+}
+
 int RouterManager::loadRouterXml()
 {
 	routers.clear();
@@ -161,4 +175,5 @@ int RouterManager::loadRouterXml()
 	INFO(0, "sort router xml end");
 	return 0;	
 }
+
 

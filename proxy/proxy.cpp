@@ -72,6 +72,8 @@ void Proxy::handleCliClosed(int fd)
 		}
 	}
 
+	ERROR(0, "cli fd closed [user_count=%lu]", remove_list.size());
+
 	FOREACH (it, remove_list) {
 		fds.erase(*it);
 	}
@@ -79,5 +81,5 @@ void Proxy::handleCliClosed(int fd)
 
 void Proxy::handleServClosed(int fd)
 {
-	
+	g_router.resetRemoteFd(fd);	
 }
