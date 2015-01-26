@@ -48,6 +48,18 @@ void  Proxy::handleRequest(int fd, proto_pkg_t *pkg)
 	//return send_to_cli(get_fd(pkg->seq), cli, pkg->len);
 }
 
-void Proxy::handleResponse(int fd, void *msg, int len)
+void Proxy::handleResponse(const proto_pkg_t *pkg)
 {
+#ifdef SERV_ONE
+	temp_user_id = pkg->id;
+#else
+	temp_user_id = pkg->id, temp_user_id = temp_user_id << 32 | pkg->svr_id;
+#endif
+	int m_tempfd = get(temp_user_id);
+	if (m_tempfd == 0) {
+		ERROR(0, "cannot find callback fd [id=%u]", pkg->id);
+		return ;
+	}
+
+	send_to_cli(get_fd(m_tempfd), pkg, pkg->len);
 }

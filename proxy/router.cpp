@@ -88,7 +88,7 @@ int RouterManager::sendAcrossRouter(proto_pkg_t *pkg)
 			return -1;
 		}
 	}
-
+	//转发消息
 	return send_to_serv(tb->fd, pkg, pkg->len);
 }
 

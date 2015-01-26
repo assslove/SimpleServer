@@ -63,11 +63,12 @@ class Proxy : public Singleton<Proxy> {
 
 		/* @brief 处理回调
 		 */
-		void  handleResponse(int fd, void *msg, int len);
+		void  handleResponse(const proto_pkg_t *pkg);
 
 	private:
 		UserFdMap fds; //保存回调时间可以发给指定的用户
 		UserId	  temp_user_id; //临时用用户id
+		int m_tempfd; //临时fd
 };
 
 #define g_proxy Proxy::getInstance()

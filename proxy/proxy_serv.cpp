@@ -70,7 +70,13 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 {
-	g_proxy.handleResponse(fd, msg, len);
+	//校验
+	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
+
+	DEBUG(pkg->id, "proxy callback len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
+
+
+	g_proxy.handleResponse(pkg);
 	return 0;
 }
 
