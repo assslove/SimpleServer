@@ -60,6 +60,16 @@ int set_sock_rcv_timeo(int sockfd, int millisec)
 	return setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 }
 
+int set_sock_sndbuf_size(int sockfd, int size)
+{
+	return setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &size, sizeof(int));
+}
+
+int set_sock_rcvbuf_size(int sockfd, int size)
+{
+	return setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &size, sizeof(int));
+}
+
 int safe_tcp_recv_n(int sockfd, void* buf, int total)
 {
 	assert(total > 0);
@@ -217,7 +227,8 @@ int safe_tcp_connect(const char* ipaddr, in_port_t port, int bufsize, int timeou
 	}
 
 	if (bufsize) {
-		
+		set_sock_sndbuf_size(sockfd, bufsize);
+		set_sock_rcvbuf_size(sockfd, bufsize);
 	}
 
 	return sockfd;

@@ -82,7 +82,7 @@ int RouterManager::sendAcrossRouter(proto_pkg_t *pkg)
 
 	if (tb->fd == -1) {
 		std::string remote_ip = inet_ntoa(*((struct in_addr*)&remote_ip));
-		tb->fd = connect_to_serv(remote_ip.c_str(), tb->remote_port, 10240, 1000);
+		tb->fd = connect_to_serv(remote_ip.c_str(), tb->remote_port, conf_get_int("raw_buf_len"), 1000);
 		if (tb->fd == -1) {
 			ERROR(0, "cannot connect to serv [remote_ip=%s], [remote_ip=%u]", remote_ip.c_str(), tb->remote_port);
 			return -1;

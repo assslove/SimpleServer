@@ -129,6 +129,14 @@ int set_sock_snd_timmo(int sockfd, int millisec);
  */
 int set_sock_rcv_timeo(int sockfd, int millisec);
 
+/* @brief 设置发送缓存区
+ */
+int set_sock_sndbuf_size(int sockfd, int size);
+
+/* @brief 设置接收缓存区
+ */
+int set_sock_rcvbuf_size(int sockfd, int size);
+
 /* @brief 接收total字节数据到buf
  */
 int safe_tcp_recv_n(int sockfd, void* buf, int total);

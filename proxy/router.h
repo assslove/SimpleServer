@@ -30,7 +30,7 @@ enum RooterType {
 /* @brief 最低级的路由 更把某张表路由到指定服务器
  */
 typedef struct table {
-	mutable int fd;					//服务器连接fd
+	mutable int fd;			//服务器连接fd
 	uint32_t remote_ip;		//远端ip
 	uint16_t remote_port;	//远端port
 	uint8_t start;			//起始点
