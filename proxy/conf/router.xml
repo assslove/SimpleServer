@@ -14,7 +14,8 @@
 <Routers>
 	<Router routeId="80" type="4" desc="USER库路由">
 		<Database idStart="00" idEnd="24">
-			<Table remoteIp="127.0.0.1" remotePort="9000" subIdStart="00" subIdEnd="99"/>
+			<Table remoteIp="127.0.0.1" remotePort="9000" subIdStart="00" subIdEnd="49"/>
+			<Table remoteIp="127.0.0.1" remotePort="9000" subIdStart="50" subIdEnd="99"/>
 		</Database>
 		<Database idStart="25" idEnd="99">
 			<Table remoteIp="127.0.0.1" remotePort="9001" subIdStart="00" subIdEnd="99"/>

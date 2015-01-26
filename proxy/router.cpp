@@ -94,13 +94,13 @@ int RouterManager::loadRouterXml()
 
 				while(ch3) {
 
-					ch3	= parser.getNextNode(ch2, "Table");
+					ch3	= parser.getNextNode(ch3, "Table");
 				}
 
-				ch2	= parser.getNextNode(ch1, "Database");
+				ch2	= parser.getNextNode(ch2, "Database");
 			}
 			routers.insert(std::make_pair<uint32_t, router_t>(cmd, item));
-			ch1 = parser.getNextNode(root, "Router");
+			ch1 = parser.getNextNode(ch1, "Router");
 		}
 	}
 
