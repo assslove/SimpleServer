@@ -27,6 +27,8 @@ extern "C" {
 #include <libnanc/proto_head.h>
 }
 
+#include <libnanc++/util.h>
+
 #include "proxy.h"
 #include "router.h"
 
@@ -63,7 +65,16 @@ void Proxy::handleResponse(const proto_pkg_t *pkg)
 
 void Proxy::handleCliClosed(int fd)
 {
-	
+	std::vector<int> remove_list;	
+	FOREACH (it, fds) {
+		if (it->second == fd) {
+			remove_list.push_back(it->first);
+		}
+	}
+
+	FOREACH (it, remove_list) {
+		fds.erase(*it);
+	}
 }
 
 void Proxy::handleServClosed(int fd)
