@@ -43,8 +43,6 @@ void  Proxy::handleRequest(int fd, proto_pkg_t *pkg)
 	if (g_proxy.doRouter(pkg)) { //处理失败
 		g_proxy.del(temp_user_id);
 	}
-
-	//return send_to_cli(get_fd(pkg->seq), cli, pkg->len);
 }
 
 void Proxy::handleResponse(const proto_pkg_t *pkg)
