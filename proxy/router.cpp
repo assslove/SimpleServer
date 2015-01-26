@@ -15,6 +15,11 @@
  *
  * =====================================================================================
  */
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 extern "C" {
 #include <libnanc/log.h>
 }
@@ -76,7 +81,7 @@ int RouterManager::loadRouterXml()
 		ERROR(0, "load router.xml failed");
 		return -1;
 	}
-	
+
 	xmlNodePtr root = parser.getRootNode("Routers"); 	
 	if (root) {
 		xmlNodePtr ch1 = parser.getChildNode(root, "Router");
@@ -89,14 +94,31 @@ int RouterManager::loadRouterXml()
 			xmlNodePtr ch2 = parser.getChildNode(ch1, "Database");
 			while (ch2) {
 				database_t db;
+				parser.getNodePropNum(ch2, "idStart", &db.start, sizeof(db.start));
+				parser.getNodePropNum(ch2, "idEnd", &db.end, sizeof(db.end));
+
 
 				xmlNodePtr ch3 = parser.getChildNode(ch2, "Table");
 
 				while(ch3) {
+					table_t tb;
+					parser.getNodePropNum(ch3, "subIdStart", &tb.start, sizeof(tb.start));
+					std::string remote_ip;	
+					struct in_addr temp_addr;
+					parser.getNodePropStr(ch3, "remoteIp", remote_ip);
+					if (inet_aton(remote_ip.c_str(), &temp_addr) == -1) {
+						ERROR(0, "ip format invalid [%s]", remote_ip.c_str());
+						return -1;
+					}
+					tb.remote_ip = temp_addr.s_addr;
+
+					parser.getNodePropNum(ch3, "subIdEnd", &tb.end, sizeof(tb.end));
+					parser.getNodePropNum(ch3, "remotePort", &tb.remote_port, sizeof(tb.remote_port));
+					db.tables.push_back(tb);
 
 					ch3	= parser.getNextNode(ch3, "Table");
 				}
-
+				item.databases.push_back(db);
 				ch2	= parser.getNextNode(ch2, "Database");
 			}
 			routers.insert(std::make_pair<uint32_t, router_t>(cmd, item));
