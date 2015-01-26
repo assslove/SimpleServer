@@ -65,6 +65,14 @@ class Proxy : public Singleton<Proxy> {
 		 */
 		void  handleResponse(const proto_pkg_t *pkg);
 
+		/* @brief 处理服务器fd断开
+		 */
+		void handleServClosed(int fd);
+
+		/* @brief 处理客户端fd断开
+		 */
+		void handleCliClosed(int fd);
+
 	private:
 		UserFdMap fds; //保存回调时间可以发给指定的用户
 		UserId	  temp_user_id; //临时用用户id

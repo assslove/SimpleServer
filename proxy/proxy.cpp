@@ -60,3 +60,13 @@ void Proxy::handleResponse(const proto_pkg_t *pkg)
 
 	send_to_cli(get_fd(m_tempfd), pkg, pkg->len);
 }
+
+void Proxy::handleCliClosed(int fd)
+{
+	
+}
+
+void Proxy::handleServClosed(int fd)
+{
+	
+}

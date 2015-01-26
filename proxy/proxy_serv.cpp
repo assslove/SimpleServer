@@ -82,18 +82,15 @@ OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 
 OUTER_FUNC int on_cli_closed(int fd) 
 {
+	g_proxy.handleCliClosed(fd);
 	INFO(0, "cli fd=%u closed", fd);
 	return 0;
 }
 
 OUTER_FUNC int on_serv_closed(int fd)
 {
-	//TODO 找个fd，并把fd置为-1
-	//if (fd == switch_fd) {
-		//switch_fd  = -1;
-		//ERROR(0, "switch fd closed [fd=%d]", fd);
-	//}
-	
+	g_proxy.handleServClosed(fd);	
+
 	ERROR(0, "fd closed [fd=%d]", fd);
 
 	return 0;
@@ -111,14 +108,6 @@ OUTER_FUNC int serv_init(int ismaster)
 	}
 
 	INFO(0, "%s init", ismaster ? "master" : "work");
-
-	//if (switch_fd == -1) {
-	//switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
-	//}
-
-	//if (switch_fd == -1) {
-	//ERROR(0, "cannot connect to switch");
-	//}
 
 	return 0;
 }
