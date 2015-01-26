@@ -12,17 +12,23 @@
 	系统启动后会自动连接相应的服务 
  -->
 <Routers>
-	<Rooter routeId="80" type="5" desc="USER库路由">
+	<Router routeId="80" type="4" desc="USER库路由">
 		<Database idStart="00" idEnd="24">
 			<Table remoteIp="127.0.0.1" remotePort="9000" subIdStart="00" subIdEnd="99"/>
 		</Database>
 		<Database idStart="25" idEnd="99">
 			<Table remoteIp="127.0.0.1" remotePort="9001" subIdStart="00" subIdEnd="99"/>
 		</Database>
-	</Rooter> 
-	<Rooter routeId="81" type="0" desc="GLOBAL库路由">
+	</Router> 
+	<Router routeId="81" type="0" desc="GLOBAL库路由">
 		<Database idStart="00" idEnd="99">
 			<Table remoteIp="127.0.0.1" remotePort="9000" subIdStart="00" subIdEnd="99"/>
 		</Database>
-	</Rooter> 
+	</Router> 
+	<Router routeId="82" type="0" desc="GLOBAL库路由">
+		<Database idStart="00" idEnd="99">
+			<Table remoteIp="127.0.0.1" remotePort="9000" subIdStart="00" subIdEnd="99"/>
+		</Database>
+	</Router> 
+
 </Routers>

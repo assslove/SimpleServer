@@ -77,9 +77,9 @@ int RouterManager::loadRouterXml()
 		return -1;
 	}
 	
-	xmlNodePtr root = parser.getRootNode("Rooters"); 	
+	xmlNodePtr root = parser.getRootNode("Routers"); 	
 	if (root) {
-		xmlNodePtr ch1 = parser.getChildNode(root, "Rooter");
+		xmlNodePtr ch1 = parser.getChildNode(root, "Router");
 		while (ch1) {
 			router_t item;
 			uint32_t cmd = 0;
@@ -100,7 +100,7 @@ int RouterManager::loadRouterXml()
 				ch2	= parser.getNextNode(ch1, "Database");
 			}
 			routers.insert(std::make_pair<uint32_t, router_t>(cmd, item));
-			ch1 = parser.getNextNode(root, "Rooter");
+			ch1 = parser.getNextNode(root, "Router");
 		}
 	}
 
