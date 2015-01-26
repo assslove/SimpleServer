@@ -68,6 +68,9 @@ const table_t* RouterManager::getRouterByFd(int fd)
 
 int RouterManager::loadRouterXml()
 {
+	routers.clear();
+
+	INFO(0, "load router xml begin");
 	XmlParser parser;
 	if (!parser.initFile("conf/router.xml")) {
 		ERROR(0, "load router.xml failed");
@@ -91,11 +94,18 @@ int RouterManager::loadRouterXml()
 
 				while(ch3) {
 
+					ch3	= parser.getNextNode(ch2, "Table");
 				}
+
+				ch2	= parser.getNextNode(ch1, "Database");
 			}
 			routers.insert(std::make_pair<uint32_t, router_t>(cmd, item));
+			ch1 = parser.getNextNode(root, "Rooter");
 		}
 	}
 
+	INFO(0, "load router xml end [%u]", routers.size());
+	preProcess();
+	INFO(0, "sort router xml end");
 	return 0;	
 }

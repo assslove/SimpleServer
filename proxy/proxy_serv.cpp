@@ -95,23 +95,25 @@ OUTER_FUNC int on_serv_closed(int fd)
 
 OUTER_FUNC int serv_init(int ismaster) 
 {
-	if (g_router.loadRouterXml()) {
-		ERROR(0, "load router.xml failed");
-		return -1;
+	if (!ismaster) {
+		if (g_router.loadRouterXml()) {
+			ERROR(0, "load router.xml failed");
+			return -1;
+		}
+		//打印router信息
+		g_router.printRouter();
 	}
-	//打印router信息
-	g_router.printRouter();
 
 	INFO(0, "%s init", ismaster ? "master" : "work");
 
 	//if (switch_fd == -1) {
-		//switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
+	//switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
 	//}
 
 	//if (switch_fd == -1) {
-		//ERROR(0, "cannot connect to switch");
+	//ERROR(0, "cannot connect to switch");
 	//}
-	
+
 	return 0;
 }
 
