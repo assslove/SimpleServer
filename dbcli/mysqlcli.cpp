@@ -45,8 +45,27 @@ int main(int argc, char* argv[])
 	char to[1024];
 	uint32_t len = mysql_real_escape_string(mysql, to, from, strlen(from));
 	printf("len = %u\n from =%u", len, strlen(from));
-	mysql_real_query(mysql, to, 1024);
+	int ret = mysql_real_query(mysql, to, 1024);
+	if (ret) {
+		fprintf(stderr, "%s", mysql_error(mysql));
+		exit(1);
+	}
 	MYSQL_RES *res = mysql_store_result(mysql);
+	if (!res) {
+		fprintf(stderr, "query failid\n");
+		exit(1);
+	}
+	printf("\n result=%lu\n", mysql_num_rows(res));
+	MYSQL_ROW row;
+
+	uint32_t num_fields = mysql_num_fields(res);
+
+	while (row = mysql_fetch_row(res)) {
+		for (int i = 0; i < num_fields; ++i) {
+			printf("%s\n", row[i]);
+		}
+	}
+	mysql_free_result(res);
 	mysql_close(mysql);
 	mysql_library_end();
 	return 0;
