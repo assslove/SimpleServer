@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  mysqlcli.c
+ *       Filename:  mysqlcli.cpp
  *
  *    Description:  对mysqlcli的测试 用于测试性能 图表显示 
  *
@@ -17,3 +17,14 @@
  */
 
 
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+
+
+int main(int argc, char* argv[]) 
+{
+	printf("hello,world\n");
+	return 0;
+}
