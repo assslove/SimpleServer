@@ -5,4 +5,4 @@ create table t_user (
 	nick char(16),
 	score int not NULL,
 	primary key (user_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

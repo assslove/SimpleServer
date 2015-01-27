@@ -41,6 +41,8 @@ int main(int argc, char* argv[])
 	mysql_autocommit(mysql, 0);
 	mysql_commit(mysql);
 	mysql_autocommit(mysql, 1);
+	mysql_real_query(mysql, "set names utf8", strlen("set names utf8"));
+	mysql_set_character_set(mysql, "utf8");
 	char from[128] = {"select * from t_user"};
 	char to[1024];
 	uint32_t len = mysql_real_escape_string(mysql, to, from, strlen(from));
