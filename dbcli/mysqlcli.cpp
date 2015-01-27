@@ -42,16 +42,23 @@ int main(int argc, char* argv[])
 	mysql_commit(mysql);
 	mysql_autocommit(mysql, 1);
 	mysql_real_query(mysql, "set names utf8", strlen("set names utf8"));
-	mysql_set_character_set(mysql, "utf8");
+	//mysql_set_character_set(mysql, "utf8");
 	char from[128] = {"select * from t_user"};
+//char from[128] = {"insert into t_user values (3, 4, 3)"};
 	char to[1024];
 	uint32_t len = mysql_real_escape_string(mysql, to, from, strlen(from));
-	printf("len = %u\n from =%u", len, strlen(from));
+	printf("len = %u\n from =%u\n", len, strlen(from));
 	int ret = mysql_real_query(mysql, to, len);
 	if (ret) {
-		fprintf(stderr, "%s", mysql_error(mysql));
+		fprintf(stderr, "%s\n", mysql_error(mysql));
 		exit(1);
 	}
+
+	printf("insert id len =%u\n", mysql_insert_id(mysql));
+
+	uint32_t row_len = mysql_affected_rows(mysql);
+	printf("affected rows len =%u\n", row_len);
+
 	MYSQL_RES *res = mysql_store_result(mysql);
 	if (!res) {
 		fprintf(stderr, "query failid\n");
