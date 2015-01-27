@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 	char to[1024];
 	uint32_t len = mysql_real_escape_string(mysql, to, from, strlen(from));
 	printf("len = %u\n from =%u", len, strlen(from));
-	int ret = mysql_real_query(mysql, to, 1024);
+	int ret = mysql_real_query(mysql, to, len);
 	if (ret) {
 		fprintf(stderr, "%s", mysql_error(mysql));
 		exit(1);
