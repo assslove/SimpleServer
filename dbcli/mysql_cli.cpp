@@ -21,14 +21,14 @@
 
 #include "mysql_cli.h"
 
-MysqlCli::MysqlCli()
+MysqlCli::MysqlCli(const char *host_, const char *user_, const char *passwd_, uint16_t port)
 {
-			
+	
 }
 
 MysqlCli::~MysqlCli()
 {
-	mysql_close(mysql);		
+	mysql_close(m_mysql);		
 	mysql_library_end();
 }
 
@@ -38,4 +38,18 @@ int MysqlCli::mysqlInit()
 		ERROR(0, "could not init MySQL lib");
 		return -1;
 	}
+
+	m_mysql = mysql_init(NULL);
+	if (!m_mysql) {
+		ERROR(0, "mysql init error");
+		return -1;
+	}
+
+	m_mysql = mysql_real_connect(m_mysql, m_host, m_user, m_passwd, NULL, m_port, NULL, 0);
+	if (!m_mysql) {
+		ERROR(0, "cannot not connect mysql [host=%s,user=%s,passwd=%s,port=%u]", m_host, m_user, m_passwd, m_port);
+		return -1;
+	}
+
+	return 0;
 }
