@@ -17,5 +17,25 @@
  * =====================================================================================
  */
 
+#include <libnanc/log.h>
+
 #include "mysql_cli.h"
 
+MysqlCli::MysqlCli()
+{
+			
+}
+
+MysqlCli::~MysqlCli()
+{
+	mysql_close(mysql);		
+	mysql_library_end();
+}
+
+int MysqlCli::mysqlInit()		
+{
+	if (mysql_library_init(0, NULL, NULL)) {
+		ERROR(0, "could not init MySQL lib");
+		return -1;
+	}
+}
