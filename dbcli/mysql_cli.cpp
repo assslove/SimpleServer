@@ -19,23 +19,24 @@
 
 #include <string.h>
 
-extern "C" {
-#include <libnanc/log.h>
-}
 
 #include "mysql_cli.h"
 
-MysqlCli::MysqlCli(const char *host_, const char *user_, const char *passwd_, uint16_t port)
+MysqlCli::MysqlCli(const char *host_, const char *user_, const char *passwd_, uint16_t port_, const char* charset_)
 {
 	strcpy(m_host, host_);		
 	strcpy(m_user, user_);
 	strcpy(m_passwd, passwd_);
-	m_port = port;
+	m_port = port_;
+	strcpy(m_charset, charset_);
 }
 
 MysqlCli::~MysqlCli()
 {
-	mysql_close(m_mysql);		
+	if (m_mysql) {
+		mysql_close(m_mysql);		
+	}
+
 	mysql_library_end();
 }
 
@@ -56,6 +57,28 @@ int MysqlCli::mysqlInit()
 	if (!m_mysql) {
 		ERROR(0, "cannot not connect mysql [host=%s,user=%s,passwd=%s,port=%u]", m_host, m_user, m_passwd, m_port);
 		return -1;
+	}
+
+	if (mysql_set_character_set(m_mysql, m_charset)) {
+		ERROR(0, "mysql set character set failed [%s]", mysql_error(m_mysql));
+		return -1;
+	}
+
+	return 0;
+}
+
+int MysqlCli::mysqlExecQuery(const char *sqlstr_, int sqllen_)
+{
+	m_ret = mysql_real_query(m_mysql, sqlstr_, sqllen_);
+	if (m_ret) {
+		ERROR(0, "query failed [%s][%s]", sqlstr_, mysql_error(m_mysql));
+		return m_ret;
+	}
+
+	res = mysql_store_result(m_mysql);
+	if (!res) {
+		ERROR(0, "store result failed[%s][%s]", sqlstr_, mysql_error(m_mysql));
+		return m_ret;
 	}
 
 	return 0;
