@@ -17,13 +17,20 @@
  * =====================================================================================
  */
 
+#include <string.h>
+
+extern "C" {
 #include <libnanc/log.h>
+}
 
 #include "mysql_cli.h"
 
 MysqlCli::MysqlCli(const char *host_, const char *user_, const char *passwd_, uint16_t port)
 {
-	
+	strcpy(m_host, host_);		
+	strcpy(m_user, user_);
+	strcpy(m_passwd, passwd_);
+	m_port = port;
 }
 
 MysqlCli::~MysqlCli()

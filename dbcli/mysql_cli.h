@@ -11,6 +11,9 @@ class MysqlCli {
 		MysqlCli(const char *host_, const char *user_, const char *passwd_, uint16_t port);
 		~MysqlCli();
 
+		/* @brief 初始化Mysql
+		 * @return 0 on success, -1 on error
+		 */
 		int mysqlInit();		
 		
 	private:
