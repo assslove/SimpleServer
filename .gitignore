@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Object files
 *.o
 *.ko
@@ -24,3 +25,7 @@
 core
 cscope.files*
 *.log
+*_test
+*.a
+*.so
+*.o
