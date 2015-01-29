@@ -18,8 +18,9 @@
  */
 
 #include <string.h>
+#include <mysql.h>
 
-
+#include "dbcli_def.h"
 #include "mysql_cli.h"
 
 MysqlCli::MysqlCli(const char *host_, const char *user_, const char *passwd_, uint16_t port_, const char* charset_)
@@ -28,7 +29,12 @@ MysqlCli::MysqlCli(const char *host_, const char *user_, const char *passwd_, ui
 	strcpy(m_user, user_);
 	strcpy(m_passwd, passwd_);
 	m_port = port_;
-	strcpy(m_charset, charset_);
+	
+	if (charset_) {
+		strcpy(m_charset, charset_);
+	} else {
+		strcpy(m_charset, "utf8");
+	}
 }
 
 MysqlCli::~MysqlCli()
@@ -53,6 +59,36 @@ int MysqlCli::mysqlInit()
 		return -1;
 	}
 
+	return mysqlConnect();
+}
+
+int MysqlCli::mysqlExecQuery(const char *sqlstr_, int sqllen_, MYSQL_RES **res_)
+{
+	if (!this->mysqlExec(sqlstr_, sqllen_)) {
+		if (!(*res_ = mysql_store_result(m_mysql))) {
+			ERROR(0, "store result failed[%s][%s]", sqlstr_, mysql_error(m_mysql));
+			return DB_ERR_STORE_RES;
+		}
+	} else {
+		return DB_ERROR;	
+	}
+
+	return 0;
+}
+
+int MysqlCli::mysqlExecUpdate(const char *sqlstr_, int sqllen_, int* affectRows_)
+{
+	if (!this->mysqlExec(sqlstr_, sqllen_)) {
+		*affectRows = mysql_affected_row(m_mysql);
+	} else {
+		return DB_ERROR;	
+	}
+
+	return 0;	
+}
+
+int MysqlCli::mysqlConnect()
+{
 	m_mysql = mysql_real_connect(m_mysql, m_host, m_user, m_passwd, NULL, m_port, NULL, 0);
 	if (!m_mysql) {
 		ERROR(0, "cannot not connect mysql [host=%s,user=%s,passwd=%s,port=%u]", m_host, m_user, m_passwd, m_port);
@@ -67,17 +103,25 @@ int MysqlCli::mysqlInit()
 	return 0;
 }
 
-int MysqlCli::mysqlExecQuery(const char *sqlstr_, int sqllen_)
+int MysqlCli::mysqlExec(const char *sqlstr_, int sqllen_)
 {
+#ifdef ENABLE_TRACE_LOG
+	TRACE(0, "SQL:%s", sqlstr_);
+#endif
+
 	m_ret = mysql_real_query(m_mysql, sqlstr_, sqllen_);
-	if (m_ret) {
-		ERROR(0, "query failed [%s][%s]", sqlstr_, mysql_error(m_mysql));
-		return m_ret;
+	if (!m_ret) {
+		return 0;
 	}
 
-	res = mysql_store_result(m_mysql);
-	if (!res) {
-		ERROR(0, "store result failed[%s][%s]", sqlstr_, mysql_error(m_mysql));
+	if (mysql_errno(m_mysql) == CR_SERVER_GONE_ERROR) { //会话关闭
+		if (this->mysqlConnect() == 0) { //连接成功再次执行
+			return this->mysql_real_query(m_mysql, sqlstr_, sqllen_); 
+		} else { //否则返回错误码
+			return mysql_errno(m_mysql);
+		}
+	} else {
+		ERROR(0, "mysql exec failed [%s][%s]", sqlstr_, mysql_error(m_mysql));
 		return m_ret;
 	}
 

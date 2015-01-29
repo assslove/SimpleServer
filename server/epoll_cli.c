@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
 		gen_str(input, num);
 		printf("send: %s:%lu\n\n", input, strlen(input));
 		//		scanf("%s", input);
-		for (i = 0; i < 30; ++i) {
+		for (i = 0; i < 100; ++i) {
 			char buf[1024];
 			proto_pkg_t *pkg = (proto_pkg_t *)buf;	
 			pkg->id =  i;
