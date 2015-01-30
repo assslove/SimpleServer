@@ -18,7 +18,7 @@
  */
 
 #include <string.h>
-#include <mysql.h>
+#include <errmsg.h>
 
 #include "dbcli_def.h"
 #include "mysql_cli.h"
@@ -70,7 +70,7 @@ int MysqlCli::mysqlExecQuery(const char *sqlstr_, int sqllen_, MYSQL_RES **res_)
 			return DB_ERR_STORE_RES;
 		}
 	} else {
-		return DB_ERROR;	
+		return DB_ERR;	
 	}
 
 	return 0;
@@ -79,9 +79,9 @@ int MysqlCli::mysqlExecQuery(const char *sqlstr_, int sqllen_, MYSQL_RES **res_)
 int MysqlCli::mysqlExecUpdate(const char *sqlstr_, int sqllen_, int* affectRows_)
 {
 	if (!this->mysqlExec(sqlstr_, sqllen_)) {
-		*affectRows = mysql_affected_row(m_mysql);
+		*affectRows_ = mysql_affected_rows(m_mysql);
 	} else {
-		return DB_ERROR;	
+		return DB_ERR;	
 	}
 
 	return 0;	
@@ -116,7 +116,7 @@ int MysqlCli::mysqlExec(const char *sqlstr_, int sqllen_)
 
 	if (mysql_errno(m_mysql) == CR_SERVER_GONE_ERROR) { //会话关闭
 		if (this->mysqlConnect() == 0) { //连接成功再次执行
-			return this->mysql_real_query(m_mysql, sqlstr_, sqllen_); 
+			return mysql_real_query(m_mysql, sqlstr_, sqllen_); 
 		} else { //否则返回错误码
 			return mysql_errno(m_mysql);
 		}

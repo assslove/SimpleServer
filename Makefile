@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 WORKDIR = /home/houbin/work/SimpleServer/
 LIBS = `pkg-config --cflags --libs glib-2.0`
 
@@ -42,3 +43,4 @@ test_pthread: test_pthread.c
 
 clean:
 	rm -rf *.o simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf test_serv.so
+

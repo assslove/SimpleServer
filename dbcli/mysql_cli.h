@@ -1,6 +1,8 @@
 #ifndef _MYSQL_CLI_H
 #define _MYSQL_CLI_H
 
+#include <mysql.h>
+
 extern "C" {
 #include <libnanc/log.h>
 }

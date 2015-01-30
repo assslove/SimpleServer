@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 SimpleServer
 ============
 
@@ -8,4 +9,5 @@ nonblock,
 net framework and logic are seperate, 
 extensiable
 under developing,
+
 
