@@ -52,6 +52,18 @@ class MysqlCli {
 			return m_ret;
 		}
 
+		/* @brief 获得最后插入的increment id
+		 */
+		int mysqlGetLastId() {
+			return mysql_insert_id(m_mysql);
+		}
+
+		/* @brief 获取影响的行数
+		 */
+		int mysqlGetAffectedRows(MYSQL_RES *res) {
+			return mysql_num_rows(res);
+		}
+
 	private:
 
 		/* @brief 执行sql语句

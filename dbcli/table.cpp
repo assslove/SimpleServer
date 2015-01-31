@@ -16,4 +16,76 @@
  * =====================================================================================
  */
 
+#include <string.h>
+#include <mysqld_error.h>
 
+#include "mysql_cli.h"
+#include "dbcli_def.h"
+#include "table.h"
+
+Table::Table(MysqlCli *mc_, const char* dbname_, const char* tbname)
+{
+	this->m_mc = mc_;	
+	strcpy(m_dbname, dbname_);
+	strcpy(m_tbname, tbname);
+}
+
+int Table::execUpdateSql(const char* sqlstr_, int len_, int *affectrows_)
+{
+	return this->m_mc->mysqlExecUpdate(sqlstr_, len_, affectrows_);
+}
+
+int Table::execInsertSql(const char* sqlstr_, int len_, int duplicate_)
+{
+	int affectrows, ret;
+	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
+		return 0;
+	} else if (ret == ER_DUP_ENTRY) { //主键重复返回错误码
+		return duplicate_;
+	} 
+
+	return ret;
+}
+
+int Table::execDeleteSql(const char* sqlstr_, int len_, int nofind_)
+{
+	int affectrows, ret;
+	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
+		if (affectrows == 0) { //没有删除指定的行 说明找不到
+			return nofind_;
+		} else {
+			return 0;
+		}
+	} 
+
+	return ret;
+}
+
+int Table::execInsertSqlAndGetLastId(const char* sqlstr_, int len_, int duplicate_, uint32_t *lastid_)
+{
+	int affectrows, ret;	
+	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
+		*lastid_ = this->m_mc->mysqlGetLastId();
+		return 0;
+	} 
+
+	return ret;
+}
+
+char* Table::getTableName()
+{
+	this->m_mc->mysqlSelectDB(this->m_dbname);	
+	sprintf(this->m_db_tb_name, "%s.%s", this->m_dbname, this->m_tbname);
+	return this->m_db_tb_name;
+}
+
+int Table::execQuerySql(MYSQL_RES **res_, uint32_t *count_) 
+{
+	int ret;
+	if ((ret = this->m_mc->mysqlExecQuery(m_sqlstr, m_sqllen, res_))) {
+		return ret;
+	} else {
+		*count_ = this->m_mc->mysqlGetAffectedRows(*res_);
+		return 0;
+	}
+}	
