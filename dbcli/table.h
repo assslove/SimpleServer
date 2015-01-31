@@ -1,6 +1,9 @@
 #ifndef _TABLE_H
 #define _TABLE_H
 
+#include <stdint.h>
+#include <mysql.h>
+
 class MysqlCli;
 
 #define SQLSTR_LEN 1024 * 10
@@ -13,7 +16,7 @@ class Table {
 
 		/* @brief 构造函数
 		 */
-		Table(MysqlCli *mc_, const char* dbname_, const char* tbname);
+		Table(MysqlCli *mc_, const char* dbname_, const char* tbname_);
 
 		/* @brief 执行查询语句
 		 * @param res_ 执行的结果集
@@ -44,13 +47,13 @@ class Table {
 
 		/* @brief 返回指定数据库的全表名 如XX_00.xx_00;
 		 */
-		virtual char* getTableName();
+		virtual char* getTableName(uint32_t id);
 
 		/* @brief 析构函数
 		 */
 		virtual ~Table() {}
 		
-	private:
+	protected:
 		MysqlCli *m_mc; //底层数据库类
 		char m_sqlstr[SQLSTR_LEN];	//最大查询语句长度
 		int m_sqllen;				//sql语句长度

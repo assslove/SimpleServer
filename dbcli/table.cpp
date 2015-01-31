@@ -23,11 +23,11 @@
 #include "dbcli_def.h"
 #include "table.h"
 
-Table::Table(MysqlCli *mc_, const char* dbname_, const char* tbname)
+Table::Table(MysqlCli *mc_, const char* dbname_, const char* tbname_)
 {
 	this->m_mc = mc_;	
 	strcpy(m_dbname, dbname_);
-	strcpy(m_tbname, tbname);
+	strcpy(m_tbname, tbname_);
 }
 
 int Table::execUpdateSql(const char* sqlstr_, int len_, int *affectrows_)
@@ -75,8 +75,9 @@ int Table::execInsertSqlAndGetLastId(const char* sqlstr_, int len_, int duplicat
 	return ret;
 }
 
-char* Table::getTableName()
+char* Table::getTableName(uint32_t id_)
 {
+	this->m_id = id_;
 	this->m_mc->mysqlSelectDB(this->m_dbname);	
 	sprintf(this->m_db_tb_name, "%s.%s", this->m_dbname, this->m_tbname);
 	return this->m_db_tb_name;
