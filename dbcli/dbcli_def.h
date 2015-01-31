@@ -9,4 +9,14 @@ enum DB_ERROR_CODE {
 	DB_ERR_STORE_RES = 2,	//存储结果失败
 };
 
+inline safe_atoi(const char *str) 
+{
+	return (str != NULL) ? atoi(str) : 0;
+}
+
+inline safe_atol(const char *str) 
+{
+	return (str != NULL) ? atoll(str) : 0;
+}
+
 #endif

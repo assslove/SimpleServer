@@ -64,10 +64,23 @@ class MysqlCli {
 			return mysql_num_rows(res);
 		}
 
+		/* @brief 设置用户id
+		 */
 		void mysqlSetId(uint32_t id_) {
 			this->m_id = id_;
 		}
 
+		void mysqlRoolback() {
+			if ((m_ret = mysql_rollback(m_mysql))) {
+				ERROR(m_id, "mysql roolback err [%s]", mysql_error(m_mysql));
+			}
+		}
+
+		void mysqlCommit() {
+			if ((m_ret = mysql_commit(m_mysql))) {
+				ERROR(m_id, "mysql commit err [%s]", mysql_error(m_mysql));
+			}
+		}
 	private:
 
 		/* @brief 执行sql语句
