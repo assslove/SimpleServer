@@ -49,13 +49,13 @@ MysqlCli::~MysqlCli()
 int MysqlCli::mysqlInit()		
 {
 	if (mysql_library_init(0, NULL, NULL)) {
-		ERROR(0, "could not init MySQL lib");
+		ERROR(m_id, "could not init MySQL lib");
 		return -1;
 	}
 
 	m_mysql = mysql_init(NULL);
 	if (!m_mysql) {
-		ERROR(0, "mysql init error");
+		ERROR(m_id, "mysql init error");
 		return -1;
 	}
 
@@ -66,7 +66,7 @@ int MysqlCli::mysqlExecQuery(const char *sqlstr_, int sqllen_, MYSQL_RES **res_)
 {
 	if (!this->mysqlExec(sqlstr_, sqllen_)) {
 		if (!(*res_ = mysql_store_result(m_mysql))) {
-			ERROR(0, "store result failed[%s][%s]", sqlstr_, mysql_error(m_mysql));
+			ERROR(m_id, "store result failed[%s][%s]", sqlstr_, mysql_error(m_mysql));
 			return DB_ERR_STORE_RES;
 		}
 	} else {
@@ -91,12 +91,12 @@ int MysqlCli::mysqlConnect()
 {
 	m_mysql = mysql_real_connect(m_mysql, m_host, m_user, m_passwd, NULL, m_port, NULL, 0);
 	if (!m_mysql) {
-		ERROR(0, "cannot not connect mysql [host=%s,user=%s,passwd=%s,port=%u]", m_host, m_user, m_passwd, m_port);
+		ERROR(m_id, "cannot not connect mysql [host=%s,user=%s,passwd=%s,port=%u]", m_host, m_user, m_passwd, m_port);
 		return -1;
 	}
 
 	if (mysql_set_character_set(m_mysql, m_charset)) {
-		ERROR(0, "mysql set character set failed [%s]", mysql_error(m_mysql));
+		ERROR(m_id, "mysql set character set failed [%s]", mysql_error(m_mysql));
 		return -1;
 	}
 
@@ -121,7 +121,7 @@ int MysqlCli::mysqlExec(const char *sqlstr_, int sqllen_)
 			return mysql_errno(m_mysql);
 		}
 	} else {
-		ERROR(0, "mysql exec failed [%s][%s]", sqlstr_, mysql_error(m_mysql));
+		ERROR(m_id, "mysql exec failed [%s][%s]", sqlstr_, mysql_error(m_mysql));
 		return m_ret;
 	}
 

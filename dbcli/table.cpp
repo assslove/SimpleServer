@@ -38,6 +38,7 @@ int Table::execUpdateSql(const char* sqlstr_, int len_, int *affectrows_)
 int Table::execInsertSql(const char* sqlstr_, int len_, int duplicate_)
 {
 	int affectrows, ret;
+	this->m_mc->mysqlSetId(m_id);
 	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
 		return 0;
 	} else if (ret == ER_DUP_ENTRY) { //主键重复返回错误码
@@ -50,6 +51,7 @@ int Table::execInsertSql(const char* sqlstr_, int len_, int duplicate_)
 int Table::execDeleteSql(const char* sqlstr_, int len_, int nofind_)
 {
 	int affectrows, ret;
+	this->m_mc->mysqlSetId(m_id);
 	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
 		if (affectrows == 0) { //没有删除指定的行 说明找不到
 			return nofind_;
@@ -64,6 +66,7 @@ int Table::execDeleteSql(const char* sqlstr_, int len_, int nofind_)
 int Table::execInsertSqlAndGetLastId(const char* sqlstr_, int len_, int duplicate_, uint32_t *lastid_)
 {
 	int affectrows, ret;	
+	this->m_mc->mysqlSetId(m_id);
 	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
 		*lastid_ = this->m_mc->mysqlGetLastId();
 		return 0;
@@ -82,6 +85,7 @@ char* Table::getTableName()
 int Table::execQuerySql(MYSQL_RES **res_, uint32_t *count_) 
 {
 	int ret;
+	this->m_mc->mysqlSetId(m_id);
 	if ((ret = this->m_mc->mysqlExecQuery(m_sqlstr, m_sqllen, res_))) {
 		return ret;
 	} else {

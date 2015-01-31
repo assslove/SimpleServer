@@ -57,8 +57,7 @@ class Table {
 		char m_dbname[32];			//db名字
 		char m_tbname[32];			//table名字
 		char m_db_tb_name[32];		//db_XX.tb_XX名字
-
-		
+		uint32_t m_id;				//主键id
 };
 
 #endif

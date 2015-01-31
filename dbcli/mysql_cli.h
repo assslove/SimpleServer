@@ -37,7 +37,7 @@ class MysqlCli {
 		 */
 		int mysqlAutocommit(int ison_) {
 			if ((m_ret = mysql_autocommit(m_mysql, ison_))) {
-				ERROR(0, "mysql autocommit set failed [%s]", mysql_error(m_mysql));
+				ERROR(m_id, "mysql autocommit set failed [%s]", mysql_error(m_mysql));
 				return m_ret;
 			}
 		}
@@ -46,7 +46,7 @@ class MysqlCli {
 		 */
 		int mysqlSelectDB(const char* dbname_) {
 			if ((m_ret = mysql_select_db(m_mysql, dbname_))) {
-				ERROR(0, "mysql select db err [%s]", mysql_error(m_mysql));
+				ERROR(m_id, "mysql select db err [%s]", mysql_error(m_mysql));
 			}
 
 			return m_ret;
@@ -64,6 +64,10 @@ class MysqlCli {
 			return mysql_num_rows(res);
 		}
 
+		void mysqlSetId(uint32_t id_) {
+			this->m_id = id_;
+		}
+
 	private:
 
 		/* @brief 执行sql语句
@@ -78,6 +82,7 @@ class MysqlCli {
 		char m_charset[16]; //字符集
 		MYSQL* m_mysql;     //mysql实例 
 		int m_ret;			//返回值
+		uint32_t m_id;		//用户id
 };
 
 #endif
