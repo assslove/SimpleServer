@@ -42,31 +42,31 @@ void protobuf_AssignDesc_limit_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MLimit, value_),
   };
   MLimit_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
       MLimit_descriptor_,
       MLimit::default_instance_,
       MLimit_offsets_,
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MLimit, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MLimit, _unknown_fields_),
       -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(MLimit));
+      -1,
+      sizeof(MLimit),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MLimit, _internal_metadata_),
+      -1);
   MLimitlist_descriptor_ = file->message_type(1);
   static const int MLimitlist_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MLimitlist, limit_),
   };
   MLimitlist_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
       MLimitlist_descriptor_,
       MLimitlist::default_instance_,
       MLimitlist_offsets_,
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MLimitlist, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MLimitlist, _unknown_fields_),
       -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(MLimitlist));
+      -1,
+      sizeof(MLimitlist),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MLimitlist, _internal_metadata_),
+      -1);
 }
 
 namespace {
@@ -80,9 +80,9 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    MLimit_descriptor_, &MLimit::default_instance());
+      MLimit_descriptor_, &MLimit::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    MLimitlist_descriptor_, &MLimitlist::default_instance());
+      MLimitlist_descriptor_, &MLimitlist::default_instance());
 }
 
 }  // namespace
@@ -120,6 +120,16 @@ struct StaticDescriptorInitializer_limit_2eproto {
   }
 } static_descriptor_initializer_limit_2eproto_;
 
+namespace {
+
+static void MergeFromFail(int line) GOOGLE_ATTRIBUTE_COLD;
+static void MergeFromFail(int line) {
+  GOOGLE_CHECK(false) << __FILE__ << ":" << line;
+}
+
+}  // namespace
+
+
 // ===================================================================
 
 #ifndef _MSC_VER
@@ -128,7 +138,7 @@ const int MLimit::kValueFieldNumber;
 #endif  // !_MSC_VER
 
 MLimit::MLimit()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::Message() , _internal_metadata_(NULL)  {
   SharedCtor();
   // @@protoc_insertion_point(constructor:db_proto.MLimit)
 }
@@ -137,7 +147,8 @@ void MLimit::InitAsDefaultInstance() {
 }
 
 MLimit::MLimit(const MLimit& from)
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
   SharedCtor();
   MergeFrom(from);
   // @@protoc_insertion_point(copy_constructor:db_proto.MLimit)
@@ -177,8 +188,12 @@ const MLimit& MLimit::default_instance() {
 
 MLimit* MLimit::default_instance_ = NULL;
 
-MLimit* MLimit::New() const {
-  return new MLimit;
+MLimit* MLimit::New(::google::protobuf::Arena* arena) const {
+  MLimit* n = new MLimit;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
 }
 
 void MLimit::Clear() {
@@ -198,7 +213,9 @@ void MLimit::Clear() {
 #undef ZR_
 
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
+  if (_internal_metadata_.have_unknown_fields()) {
+    mutable_unknown_fields()->Clear();
+  }
 }
 
 bool MLimit::MergePartialFromCodedStream(
@@ -275,7 +292,7 @@ void MLimit::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->value(), output);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
@@ -295,7 +312,7 @@ void MLimit::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->value(), target);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
@@ -303,26 +320,43 @@ void MLimit::SerializeWithCachedSizes(
   return target;
 }
 
+int MLimit::RequiredFieldsByteSizeFallback() const {
+  int total_size = 0;
+
+  if (has_type()) {
+    // required uint32 type = 1;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->type());
+  }
+
+  if (has_value()) {
+    // required uint32 value = 2;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->value());
+  }
+
+  return total_size;
+}
 int MLimit::ByteSize() const {
   int total_size = 0;
 
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+  if (((_has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
     // required uint32 type = 1;
-    if (has_type()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->type());
-    }
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->type());
 
     // required uint32 value = 2;
-    if (has_value()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->value());
-    }
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->value());
 
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
   }
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
@@ -334,7 +368,7 @@ int MLimit::ByteSize() const {
 }
 
 void MLimit::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   const MLimit* source =
     ::google::protobuf::internal::dynamic_cast_if_available<const MLimit*>(
       &from);
@@ -346,7 +380,7 @@ void MLimit::MergeFrom(const ::google::protobuf::Message& from) {
 }
 
 void MLimit::MergeFrom(const MLimit& from) {
-  GOOGLE_CHECK_NE(&from, this);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_type()) {
       set_type(from.type());
@@ -355,7 +389,9 @@ void MLimit::MergeFrom(const MLimit& from) {
       set_value(from.value());
     }
   }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  if (from._internal_metadata_.have_unknown_fields()) {
+    mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  }
 }
 
 void MLimit::CopyFrom(const ::google::protobuf::Message& from) {
@@ -377,13 +413,15 @@ bool MLimit::IsInitialized() const {
 }
 
 void MLimit::Swap(MLimit* other) {
-  if (other != this) {
-    std::swap(type_, other->type_);
-    std::swap(value_, other->value_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
+  if (other == this) return;
+  InternalSwap(other);
+}
+void MLimit::InternalSwap(MLimit* other) {
+  std::swap(type_, other->type_);
+  std::swap(value_, other->value_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata MLimit::GetMetadata() const {
@@ -402,7 +440,7 @@ const int MLimitlist::kLimitFieldNumber;
 #endif  // !_MSC_VER
 
 MLimitlist::MLimitlist()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::Message() , _internal_metadata_(NULL)  {
   SharedCtor();
   // @@protoc_insertion_point(constructor:db_proto.MLimitlist)
 }
@@ -411,7 +449,8 @@ void MLimitlist::InitAsDefaultInstance() {
 }
 
 MLimitlist::MLimitlist(const MLimitlist& from)
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
   SharedCtor();
   MergeFrom(from);
   // @@protoc_insertion_point(copy_constructor:db_proto.MLimitlist)
@@ -449,14 +488,20 @@ const MLimitlist& MLimitlist::default_instance() {
 
 MLimitlist* MLimitlist::default_instance_ = NULL;
 
-MLimitlist* MLimitlist::New() const {
-  return new MLimitlist;
+MLimitlist* MLimitlist::New(::google::protobuf::Arena* arena) const {
+  MLimitlist* n = new MLimitlist;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
 }
 
 void MLimitlist::Clear() {
   limit_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
+  if (_internal_metadata_.have_unknown_fields()) {
+    mutable_unknown_fields()->Clear();
+  }
 }
 
 bool MLimitlist::MergePartialFromCodedStream(
@@ -509,12 +554,12 @@ void MLimitlist::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:db_proto.MLimitlist)
   // repeated .db_proto.MLimit limit = 1;
-  for (int i = 0; i < this->limit_size(); i++) {
+  for (unsigned int i = 0, n = this->limit_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->limit(i), output);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
@@ -525,13 +570,13 @@ void MLimitlist::SerializeWithCachedSizes(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:db_proto.MLimitlist)
   // repeated .db_proto.MLimit limit = 1;
-  for (int i = 0; i < this->limit_size(); i++) {
+  for (unsigned int i = 0, n = this->limit_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         1, this->limit(i), target);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
@@ -550,7 +595,7 @@ int MLimitlist::ByteSize() const {
         this->limit(i));
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
@@ -562,7 +607,7 @@ int MLimitlist::ByteSize() const {
 }
 
 void MLimitlist::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   const MLimitlist* source =
     ::google::protobuf::internal::dynamic_cast_if_available<const MLimitlist*>(
       &from);
@@ -574,9 +619,11 @@ void MLimitlist::MergeFrom(const ::google::protobuf::Message& from) {
 }
 
 void MLimitlist::MergeFrom(const MLimitlist& from) {
-  GOOGLE_CHECK_NE(&from, this);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   limit_.MergeFrom(from.limit_);
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  if (from._internal_metadata_.have_unknown_fields()) {
+    mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  }
 }
 
 void MLimitlist::CopyFrom(const ::google::protobuf::Message& from) {
@@ -598,12 +645,14 @@ bool MLimitlist::IsInitialized() const {
 }
 
 void MLimitlist::Swap(MLimitlist* other) {
-  if (other != this) {
-    limit_.Swap(&other->limit_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
+  if (other == this) return;
+  InternalSwap(other);
+}
+void MLimitlist::InternalSwap(MLimitlist* other) {
+  limit_.UnsafeArenaSwap(&other->limit_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata MLimitlist::GetMetadata() const {

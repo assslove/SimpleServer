@@ -34,13 +34,16 @@ TableRouter::TableRouter(MysqlCli *mc_, const char* db_prename_, const char* tb_
 char* TableRouter::getTableName(uint32_t id)
 {
 	this->m_id = id;
+	int len;
 
 	switch (m_db_count) {
 		case 100:
-			sprintf(this->m_dbname, "%s_%02d", m_db_prename, id % 100);
+			len = sprintf(this->m_dbname, "%s_%02d", m_db_prename, id % 100);
+			this->m_dbname[len] = '\0';
 			break;
 		default:
-			sprintf(this->m_dbname, "%s", m_db_prename);
+			len = sprintf(this->m_dbname, "%s", m_db_prename);
+			this->m_dbname[len] = '\0';
 			break;
 	}
 
@@ -49,13 +52,16 @@ char* TableRouter::getTableName(uint32_t id)
 	//生成表名
 	switch (m_tb_count) {
 		case 10:
-			sprintf(this->m_db_tb_name, "%s.%s_%d", m_dbname, m_tb_prename, id / 100 % 10);
+			len = sprintf(this->m_db_tb_name, "%s.%s_%d", m_dbname, m_tb_prename, id / 100 % 10);
+			this->m_db_tb_name[len] = '\0';
 			break;
 		case 100:
-			sprintf(this->m_db_tb_name, "%s.%s_%02d", m_dbname, m_tb_prename, id / 100 % 100);
+			len = sprintf(this->m_db_tb_name, "%s.%s_%02d", m_dbname, m_tb_prename, id / 100 % 100);
+			this->m_db_tb_name[len] = '\0';
 			break;
 		default:
-			sprintf(this->m_db_tb_name, "%s.%s", m_dbname, m_tb_prename);
+			len = sprintf(this->m_db_tb_name, "%s.%s", m_dbname, m_tb_prename);
+			this->m_db_tb_name[len] = '\0';
 			break;
 	}
 

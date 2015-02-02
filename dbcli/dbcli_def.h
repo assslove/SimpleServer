@@ -87,6 +87,6 @@ inline uint64_t safe_atol(const char *str)
 		return DB_ERR;\
 	}
 
-#define GENSQL(fmt, arg...) this->m_sqllen = sprintf(this->m_sqlstr, fmt, ##arg);
+#define GENSQL(fmt, arg...) this->m_sqllen = sprintf(this->m_sqlstr, fmt, ##arg), this->m_sqlstr[this->m_sqllen] = '\0';
 
 #endif

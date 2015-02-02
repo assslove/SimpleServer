@@ -1,6 +1,6 @@
 
 CC = g++
-CXXFLAGS = -g -Wall -fPIC -shared
+CXXFLAGS = -g -Wall -fPIC -shared -DENABLE_TRACE_LOG
 LIBS = -L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lz -lm -ldl -lnanc
 INC = -I/usr/include/mysql -I/usr/local/include/libnanc
 INSTALL_DIR = /usr/local/include/dbcli

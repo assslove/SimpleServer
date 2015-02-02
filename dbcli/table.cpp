@@ -28,51 +28,56 @@ Table::Table(MysqlCli *mc_, const char* dbname_, const char* tbname_)
 	this->m_mc = mc_;	
 	strcpy(m_dbname, dbname_);
 	strcpy(m_tbname, tbname_);
+	m_res = NULL;
+	memset(m_sqlstr, 0, sizeof(m_sqlstr));
+	m_sqllen = 0;
+	m_id = 0;
+	m_affectedrows = 0;
+	m_ret = 0;
 }
 
-int Table::execUpdateSql(const char* sqlstr_, int len_, int *affectrows_)
+int Table::execUpdateSql()
 {
-	return this->m_mc->mysqlExecUpdate(sqlstr_, len_, affectrows_);
+	return this->m_mc->mysqlExecUpdate(m_sqlstr, m_sqllen, &m_affectedrows);
 }
 
-int Table::execInsertSql(const char* sqlstr_, int len_, int duplicate_)
+int Table::execInsertSql(int duplicate_)
 {
-	int affectrows, ret;
 	this->m_mc->mysqlSetId(m_id);
-	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
+	if ((m_ret = this->m_mc->mysqlExecUpdate(m_sqlstr, m_sqllen, &m_affectedrows)) == 0) {
 		return 0;
-	} else if (ret == ER_DUP_ENTRY) { //主键重复返回错误码
+	} else if (m_ret == ER_DUP_ENTRY) { //主键重复返回错误码
 		return duplicate_;
 	} 
 
-	return ret;
+	return m_ret;
 }
 
-int Table::execDeleteSql(const char* sqlstr_, int len_, int nofind_)
+int Table::execDeleteSql(int nofind_)
 {
-	int affectrows, ret;
 	this->m_mc->mysqlSetId(m_id);
-	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
-		if (affectrows == 0) { //没有删除指定的行 说明找不到
+	if ((m_ret = this->m_mc->mysqlExecUpdate(m_sqlstr, m_sqllen, &m_affectedrows)) == 0) {
+		if (m_affectedrows == 0) { //没有删除指定的行 说明找不到
 			return nofind_;
 		} else {
 			return 0;
 		}
 	} 
 
-	return ret;
+	return m_ret;
 }
 
-int Table::execInsertSqlAndGetLastId(const char* sqlstr_, int len_, int duplicate_, uint32_t *lastid_)
+int Table::execInsertSqlAndGetLastId(int duplicate_, uint32_t *lastid_)
 {
-	int affectrows, ret;	
 	this->m_mc->mysqlSetId(m_id);
-	if ((ret = this->m_mc->mysqlExecUpdate(sqlstr_, len_, &affectrows)) == 0) {
+	if ((m_ret = this->m_mc->mysqlExecUpdate(m_sqlstr, m_sqllen, &m_affectedrows)) == 0) {
 		*lastid_ = this->m_mc->mysqlGetLastId();
 		return 0;
-	} 
+	} else if (m_ret == ER_DUP_ENTRY) {
+		return duplicate_;
+	}
 
-	return ret;
+	return m_ret;
 }
 
 char* Table::getTableName(uint32_t id_)
@@ -85,10 +90,9 @@ char* Table::getTableName(uint32_t id_)
 
 int Table::execQuerySql(MYSQL_RES **res_, uint32_t *count_) 
 {
-	int ret;
 	this->m_mc->mysqlSetId(m_id);
-	if ((ret = this->m_mc->mysqlExecQuery(m_sqlstr, m_sqllen, res_))) {
-		return ret;
+	if ((m_ret = this->m_mc->mysqlExecQuery(m_sqlstr, m_sqllen, res_))) {
+		return m_ret;
 	} else {
 		*count_ = this->m_mc->mysqlGetAffectedRows(*res_);
 		return 0;

@@ -46,15 +46,24 @@ int User::getUser()
 
 void User::insertUser()
 {
-
+	GENSQL("insert into %s values(%u, '%s', %u)", this->getTableName(2000), 2000, "bin", 20);
+	if (int ret = this->execInsertSql(1)) {
+		ERROR(0, "cannot insert %u", ret);
+	}
 }
 
 void User::updateUser()
 {
-
+	GENSQL("update %s set score=%u", this->getTableName(2000), 1);
+	if (int ret = this->execUpdateSql()) {
+		ERROR(0, "cannot update %u", ret);
+	}
 }
 
 void User::deleteUser()
 {
-
+	GENSQL("delete from %s where user_id=%u", this->getTableName(2000), 2000);
+	if (int ret = this->execDeleteSql(2)) {
+		ERROR(0, "cannot update %u", ret);
+	}
 }
