@@ -60,7 +60,7 @@ inline uint64_t safe_atol(const char *str)
 //cpy int64
 #define INT64_NEXT_COL(val)  (val)=safe_atol(NEXT_COL)
 
-//拷贝字符串
+//拷贝字符串 二进制
 #define STR_NEXT_COL(val, max) \
 	++idx_;\
 	mysql_fetch_lengths(res); \
@@ -69,6 +69,26 @@ inline uint64_t safe_atol(const char *str)
 	} else {\
 		memcpy(val, row[idx_], max);\
 	}
+	
+//开始循环接收数据 protobuf
+//type指类型 msg 指protobuf msg, field指msg中的项 指带结构体的类型，
+//如果是普通类型见QUERY_MULTI_NORMAL_BEGIN
+#define QUERY_MULTI_BEGIN()  \
+	MYSQL_RES *res;\
+	MYSQL_ROW row;\
+	int count, ret;\
+	ret = this->execQuerySql(&res, &count);\
+	if (ret == 0) {\
+		while (row = mysql_fetch_row(res)) {\
+			int idx_ = -1;
 
+//结束循环接收数据
+#define QUERY_MULTI_END()\
+		}\
+		mysql_free_result(res);\
+		return 0;\
+	} else {\
+		return DB_ERR;\
+	}
 
 #endif
