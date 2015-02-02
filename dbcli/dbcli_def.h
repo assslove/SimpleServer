@@ -29,22 +29,20 @@ inline uint64_t safe_atol(const char *str)
 
 //开始单个查询开始
 #define QUERY_ONE_BEGIN(nofind_err)  \
-	MYSQL_RES *res; \
-	MYSQL_ROW row;\
 	uint32_t  count, ret;\
-	ret = this->execQuerySql(&res, &count);\
+	ret = this->execQuerySql(&m_res, &count);\
 	if (ret == 0) {\
 		if (count != 1) {\
-			mysql_free_result(res);\
+			mysql_free_result(m_res);\
 			DEBUG(0, "no record exist [%u]", nofind_err);\
 			return nofind_err;\
 		} else { \
-			row = mysql_fetch_row(res);	\
+			m_row = mysql_fetch_row(m_res);	\
 			int idx_ = -1;
 
 //开始单个查询结束
 #define QUERY_ONE_END() \
-			mysql_free_result(res); \
+			mysql_free_result(m_res); \
 			return 0;\
 		}\
 	} else {\
@@ -52,7 +50,7 @@ inline uint64_t safe_atol(const char *str)
 	}
 
 //下一行
-#define  NEXT_COL	(row[++idx_])
+#define  NEXT_COL	(m_row[++idx_])
 
 //cpy int 
 #define INT_NEXT_COL  safe_atoi(NEXT_COL)
@@ -63,29 +61,27 @@ inline uint64_t safe_atol(const char *str)
 //拷贝字符串 二进制
 #define STR_NEXT_COL(val, max) \
 	++idx_;\
-	mysql_fetch_lengths(res); \
-	if (res->lengths[idx_] < max) {\
-		memcpy(val, row[idx_], res->lengths[idx_]);\
+	mysql_fetch_lengths(m_res); \
+	if (m_res->lengths[idx_] < max) {\
+		memcpy(val, m_row[idx_], m_res->lengths[idx_]);\
 	} else {\
-		memcpy(val, row[idx_], max);\
+		memcpy(val, m_row[idx_], max);\
 	}
 	
 //开始循环接收数据 protobuf
 //type指类型 msg 指protobuf msg, field指msg中的项 指带结构体的类型，
 //如果是普通类型见QUERY_MULTI_NORMAL_BEGIN
 #define QUERY_MULTI_BEGIN()  \
-	MYSQL_RES *res;\
-	MYSQL_ROW row;\
 	uint32_t count, ret;\
-	ret = this->execQuerySql(&res, &count);\
+	ret = this->execQuerySql(&m_res, &count);\
 	if (ret == 0) {\
-		while (row = mysql_fetch_row(res)) {\
+		while (m_row = mysql_fetch_row(m_res)) {\
 			int idx_ = -1;
 
 //结束循环接收数据
 #define QUERY_MULTI_END()\
 		}\
-		mysql_free_result(res);\
+		mysql_free_result(m_res);\
 		return 0;\
 	} else {\
 		return DB_ERR;\

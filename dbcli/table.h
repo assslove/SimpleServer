@@ -57,6 +57,8 @@ class Table {
 		MysqlCli *m_mc; //底层数据库类
 		char m_sqlstr[SQLSTR_LEN];	//最大查询语句长度
 		int m_sqllen;				//sql语句长度
+		MYSQL_RES *m_res;			//中间变量
+		MYSQL_ROW m_row;			//中间变量
 		char m_dbname[32];			//db名字
 		char m_tbname[32];			//table名字
 		char m_db_tb_name[32];		//db_XX.tb_XX名字
