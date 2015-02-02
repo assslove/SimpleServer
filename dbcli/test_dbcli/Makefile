@@ -3,9 +3,8 @@ TARGET=dbserv
 INC = -I/usr/local/include/libnanc -I/usr/local/include/libnanc++ -I/usr/local/include/dbcli/ -I/usr/include/mysql -I./proto/lib
 LIBS = -L/usr/local/lib -lxml2 -lnanc -lnanc++ -ldbcli -L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lz -lm -ldl -lprotobuf
 CXXFLAGS = -g -Wall -D_GNU_SOURCE 
-#SRCS = $(wildcard *.cpp)
-#OBJS = $(patsubst %.cpp, %.o, $(SRCS))
-OBJS = dbserv.o dispatch.o user.o limit.o
+SRCS = $(wildcard *.cpp ./proto/lib/*.cpp)
+OBJS = $(patsubst %.cpp, %.o, $(SRCS))
 CC = g++
 
 all : $(TARGET) 

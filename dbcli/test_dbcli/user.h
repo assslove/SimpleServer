@@ -10,7 +10,7 @@ class User : public TableRouter
 		~User() {}
 
 	public:
-		void getUser();
+		int getUser();
 		void insertUser();
 		void updateUser();
 		void deleteUser();

@@ -18,32 +18,37 @@
 
 #include <dbcli/mysql_cli.h>
 #include <dbcli/table_router.h>
+#include <dbcli/dbcli_def.h>
 
 #include "user.h"
-#include "proto/lib/user.pb.h"
+//#include "proto/lib/user.pb.h"
 
-User::User(MysqlCli *mc_) :
-	TableRouter(mc_, "TEST", "t_user", 1, 1)
+User::User(MysqlCli *mc_) : TableRouter(mc_, "TEST", "t_user", 1, 1)
 {
 	
 }
 
-void User::getUser()
+int User::getUser()
 {
-	
+	GENSQL("select * from t_user where user_id=%u", 1000);		
+	QUERY_ONE_BEGIN(1) 
+		DEBUG(0, "user_id=%u", INT_NEXT_COL);	
+		DEBUG(0, "name=%s", NEXT_COL);	
+		DEBUG(0, "score=%u", INT_NEXT_COL);	
+	QUERY_ONE_END()
 }
 
 void User::insertUser()
 {
-	
+
 }
 
 void User::updateUser()
 {
-	
+
 }
 
 void User::deleteUser()
 {
-	
+
 }

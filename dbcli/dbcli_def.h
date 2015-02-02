@@ -31,13 +31,13 @@ inline uint64_t safe_atol(const char *str)
 #define QUERY_ONE_BEGIN(nofind_err) { \
 	MYSQL_RES *res; \
 	MYSQL_ROW row;\
-	int count, ret;\
+	uint32_t  count, ret;\
 	ret = this->execQuerySql(&res, &count);\
 	if (ret == 0) {\
 		if (count != 1) {\
 			mysql_free_result(res);\
 			DEBUG(0, "no record exist [%u]", nofind_err);\
-			return no_finderr;\
+			return nofind_err;\
 		} else { \
 			row = mysql_fetch_row(res);	\
 			int idx_ = -1;\
@@ -55,10 +55,10 @@ inline uint64_t safe_atol(const char *str)
 #define  NEXT_COL	(row[++idx_])
 
 //cpy int 
-#define INT_NEXT_COL(val)  (val)=safe_atoi(NEXT_COL)
+#define INT_NEXT_COL  safe_atoi(NEXT_COL)
 
 //cpy int64
-#define INT64_NEXT_COL(val)  (val)=safe_atol(NEXT_COL)
+#define INT64_NEXT_COL  safe_atol(NEXT_COL)
 
 //拷贝字符串 二进制
 #define STR_NEXT_COL(val, max) \
@@ -76,7 +76,7 @@ inline uint64_t safe_atol(const char *str)
 #define QUERY_MULTI_BEGIN()  \
 	MYSQL_RES *res;\
 	MYSQL_ROW row;\
-	int count, ret;\
+	uint32_t count, ret;\
 	ret = this->execQuerySql(&res, &count);\
 	if (ret == 0) {\
 		while (row = mysql_fetch_row(res)) {\
@@ -90,5 +90,7 @@ inline uint64_t safe_atol(const char *str)
 	} else {\
 		return DB_ERR;\
 	}
+
+#define GENSQL(fmt, arg...) this->m_sqllen = sprintf(this->m_sqlstr, fmt, ##arg);
 
 #endif
