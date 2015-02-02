@@ -21,7 +21,9 @@
 #include <dbcli/dbcli_def.h>
 
 #include "user.h"
-//#include "proto/lib/user.pb.h"
+#include "proto/lib/user.pb.h"
+
+using namespace db_proto;
 
 User::User(MysqlCli *mc_) : TableRouter(mc_, "TEST", "t_user", 1, 1)
 {
@@ -30,11 +32,15 @@ User::User(MysqlCli *mc_) : TableRouter(mc_, "TEST", "t_user", 1, 1)
 
 int User::getUser()
 {
-	GENSQL("select * from t_user where user_id=%u", 1000);		
+	GENSQL("select * from %s where user_id=%u", this->getTableName(1000), 1000);
+	DEBUG(0, "%s, %u", this->m_sqlstr, this->m_sqllen);
+	MUser user;
 	QUERY_ONE_BEGIN(1) 
-		DEBUG(0, "user_id=%u", INT_NEXT_COL);	
-		DEBUG(0, "name=%s", NEXT_COL);	
-		DEBUG(0, "score=%u", INT_NEXT_COL);	
+		user.set_userid(INT_NEXT_COL);
+		user.set_name(NEXT_COL);
+		user.set_score(INT_NEXT_COL);
+
+		DEBUG(0, "%u,%s,%u", user.userid(), user.name().c_str(), user.score());
 	QUERY_ONE_END()
 }
 

@@ -1,4 +1,4 @@
-package db_msg;
+package db_proto;
 
 message MUser 
 {

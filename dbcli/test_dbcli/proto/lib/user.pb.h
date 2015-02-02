@@ -26,7 +26,7 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
-namespace db_msg {
+namespace db_proto {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_user_2eproto();
@@ -116,7 +116,7 @@ class MUser : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 score() const;
   inline void set_score(::google::protobuf::uint32 value);
 
-  // @@protoc_insertion_point(class_scope:db_msg.MUser)
+  // @@protoc_insertion_point(class_scope:db_proto.MUser)
  private:
   inline void set_has_userid();
   inline void clear_has_userid();
@@ -161,13 +161,13 @@ inline void MUser::clear_userid() {
   clear_has_userid();
 }
 inline ::google::protobuf::uint32 MUser::userid() const {
-  // @@protoc_insertion_point(field_get:db_msg.MUser.userid)
+  // @@protoc_insertion_point(field_get:db_proto.MUser.userid)
   return userid_;
 }
 inline void MUser::set_userid(::google::protobuf::uint32 value) {
   set_has_userid();
   userid_ = value;
-  // @@protoc_insertion_point(field_set:db_msg.MUser.userid)
+  // @@protoc_insertion_point(field_set:db_proto.MUser.userid)
 }
 
 // required string name = 2;
@@ -187,7 +187,7 @@ inline void MUser::clear_name() {
   clear_has_name();
 }
 inline const ::std::string& MUser::name() const {
-  // @@protoc_insertion_point(field_get:db_msg.MUser.name)
+  // @@protoc_insertion_point(field_get:db_proto.MUser.name)
   return *name_;
 }
 inline void MUser::set_name(const ::std::string& value) {
@@ -196,7 +196,7 @@ inline void MUser::set_name(const ::std::string& value) {
     name_ = new ::std::string;
   }
   name_->assign(value);
-  // @@protoc_insertion_point(field_set:db_msg.MUser.name)
+  // @@protoc_insertion_point(field_set:db_proto.MUser.name)
 }
 inline void MUser::set_name(const char* value) {
   set_has_name();
@@ -204,7 +204,7 @@ inline void MUser::set_name(const char* value) {
     name_ = new ::std::string;
   }
   name_->assign(value);
-  // @@protoc_insertion_point(field_set_char:db_msg.MUser.name)
+  // @@protoc_insertion_point(field_set_char:db_proto.MUser.name)
 }
 inline void MUser::set_name(const char* value, size_t size) {
   set_has_name();
@@ -212,14 +212,14 @@ inline void MUser::set_name(const char* value, size_t size) {
     name_ = new ::std::string;
   }
   name_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:db_msg.MUser.name)
+  // @@protoc_insertion_point(field_set_pointer:db_proto.MUser.name)
 }
 inline ::std::string* MUser::mutable_name() {
   set_has_name();
   if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     name_ = new ::std::string;
   }
-  // @@protoc_insertion_point(field_mutable:db_msg.MUser.name)
+  // @@protoc_insertion_point(field_mutable:db_proto.MUser.name)
   return name_;
 }
 inline ::std::string* MUser::release_name() {
@@ -243,7 +243,7 @@ inline void MUser::set_allocated_name(::std::string* name) {
     clear_has_name();
     name_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   }
-  // @@protoc_insertion_point(field_set_allocated:db_msg.MUser.name)
+  // @@protoc_insertion_point(field_set_allocated:db_proto.MUser.name)
 }
 
 // optional uint32 score = 3;
@@ -261,19 +261,19 @@ inline void MUser::clear_score() {
   clear_has_score();
 }
 inline ::google::protobuf::uint32 MUser::score() const {
-  // @@protoc_insertion_point(field_get:db_msg.MUser.score)
+  // @@protoc_insertion_point(field_get:db_proto.MUser.score)
   return score_;
 }
 inline void MUser::set_score(::google::protobuf::uint32 value) {
   set_has_score();
   score_ = value;
-  // @@protoc_insertion_point(field_set:db_msg.MUser.score)
+  // @@protoc_insertion_point(field_set:db_proto.MUser.score)
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace db_msg
+}  // namespace db_proto
 
 #ifndef SWIG
 namespace google {

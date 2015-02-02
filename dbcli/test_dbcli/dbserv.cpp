@@ -24,6 +24,10 @@
 #include "user.h"
 #include "limit.h"
 
+#include "proto/lib/limit.pb.h"
+
+using namespace db_proto;
+
 int main(int argc, char* argv[]) 
 {
 	if (log_init("log", LOG_LV_TRACE, 10240, 1000, "db") == -1) {
@@ -41,11 +45,23 @@ int main(int argc, char* argv[])
 
 	Dispatch *dispatch = new Dispatch(mc);
 
+	MLimitlist list;
+	dispatch->m_limit->getLimit(&list);
+
+	for (int i = 0; i < list.limit_size(); ++i) {
+		DEBUG(0, "type=%u, value=%u", list.limit(i).type(), list.limit(i).value());
+	}
+
+	dispatch->m_limit->insertLimit();
+	dispatch->m_limit->updateLimit();
+	dispatch->m_limit->delLimit();
+
 	dispatch->m_user->insertUser();
 	dispatch->m_user->getUser();
 	dispatch->m_user->updateUser();
 	dispatch->m_user->deleteUser();
 
+	
 	delete dispatch;
 	dispatch = NULL;
 

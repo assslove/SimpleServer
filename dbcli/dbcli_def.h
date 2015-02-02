@@ -28,7 +28,7 @@ inline uint64_t safe_atol(const char *str)
 }
 
 //开始单个查询开始
-#define QUERY_ONE_BEGIN(nofind_err) { \
+#define QUERY_ONE_BEGIN(nofind_err)  \
 	MYSQL_RES *res; \
 	MYSQL_ROW row;\
 	uint32_t  count, ret;\
@@ -40,7 +40,7 @@ inline uint64_t safe_atol(const char *str)
 			return nofind_err;\
 		} else { \
 			row = mysql_fetch_row(res);	\
-			int idx_ = -1;\
+			int idx_ = -1;
 
 //开始单个查询结束
 #define QUERY_ONE_END() \

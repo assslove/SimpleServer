@@ -16,7 +16,7 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
-namespace db_msg {
+namespace db_proto {
 
 namespace {
 
@@ -80,8 +80,8 @@ void protobuf_AddDesc_user_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\nuser.proto\022\006db_msg\"4\n\005MUser\022\016\n\006userid\030"
-    "\001 \002(\r\022\014\n\004name\030\002 \002(\t\022\r\n\005score\030\003 \001(\r", 74);
+    "\n\nuser.proto\022\010db_proto\"4\n\005MUser\022\016\n\006useri"
+    "d\030\001 \002(\r\022\014\n\004name\030\002 \002(\t\022\r\n\005score\030\003 \001(\r", 76);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user.proto", &protobuf_RegisterTypes);
   MUser::default_instance_ = new MUser();
@@ -107,7 +107,7 @@ const int MUser::kScoreFieldNumber;
 MUser::MUser()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:db_msg.MUser)
+  // @@protoc_insertion_point(constructor:db_proto.MUser)
 }
 
 void MUser::InitAsDefaultInstance() {
@@ -117,7 +117,7 @@ MUser::MUser(const MUser& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:db_msg.MUser)
+  // @@protoc_insertion_point(copy_constructor:db_proto.MUser)
 }
 
 void MUser::SharedCtor() {
@@ -130,7 +130,7 @@ void MUser::SharedCtor() {
 }
 
 MUser::~MUser() {
-  // @@protoc_insertion_point(destructor:db_msg.MUser)
+  // @@protoc_insertion_point(destructor:db_proto.MUser)
   SharedDtor();
 }
 
@@ -194,7 +194,7 @@ bool MUser::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:db_msg.MUser)
+  // @@protoc_insertion_point(parse_start:db_proto.MUser)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -260,17 +260,17 @@ bool MUser::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:db_msg.MUser)
+  // @@protoc_insertion_point(parse_success:db_proto.MUser)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:db_msg.MUser)
+  // @@protoc_insertion_point(parse_failure:db_proto.MUser)
   return false;
 #undef DO_
 }
 
 void MUser::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:db_msg.MUser)
+  // @@protoc_insertion_point(serialize_start:db_proto.MUser)
   // required uint32 userid = 1;
   if (has_userid()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->userid(), output);
@@ -295,12 +295,12 @@ void MUser::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:db_msg.MUser)
+  // @@protoc_insertion_point(serialize_end:db_proto.MUser)
 }
 
 ::google::protobuf::uint8* MUser::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:db_msg.MUser)
+  // @@protoc_insertion_point(serialize_to_array_start:db_proto.MUser)
   // required uint32 userid = 1;
   if (has_userid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->userid(), target);
@@ -326,7 +326,7 @@ void MUser::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:db_msg.MUser)
+  // @@protoc_insertion_point(serialize_to_array_end:db_proto.MUser)
   return target;
 }
 
@@ -435,6 +435,6 @@ void MUser::Swap(MUser* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace db_msg
+}  // namespace db_proto
 
 // @@protoc_insertion_point(global_scope)
