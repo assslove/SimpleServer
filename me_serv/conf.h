@@ -11,19 +11,11 @@ void free_conf();
 
 /* @brief 加载工程文件
  */
-int load_simple_data();
+int load_me_data();
 
 /* @brief 打印工程配置
  */
-void print_simple_conf();
-
-/* @brief 加载work配置
- */
-int load_work_data();
-
-/* @brief 释放work配置
- */
-void free_work_data();
+void print_me_conf();
 
 /* @brief 获取字符串
  */

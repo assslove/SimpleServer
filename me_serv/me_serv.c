@@ -1,9 +1,9 @@
 /*
  * =====================================================================================
  *
- *       Filename:  main.c
+ *       Filename:  me_serv.c
  *
- *    Description:  epoll 	svr 
+ *    Description:  me_serv
  *					muti process
  *					provide some interface for man
  *
@@ -43,16 +43,17 @@
 int main(int argc, char* argv[]) 
 {	
 	int ret;
-	//log init
-	if (log_init("log", LOG_LV_TRACE, 10240000, 100000, "0") == -1) {
-		fprintf(stderr, "初始化日志失败");
-		return 0;
-	}
-
 	//load conf
 	if ((ret = load_conf()) == -1) {
 		return 0;
 	}
+
+	//log init
+	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, "0") == -1) {
+		fprintf(stderr, "初始化日志失败");
+		return 0;
+	}
+
 	//chg limit
 	init_rlimit();
 	//save args

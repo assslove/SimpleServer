@@ -4,6 +4,7 @@
  *       Filename:  out.c
  *
  *    Description:  用于动态调用so中函数，使业务逻辑能够嵌入到本网络框架中
+ *					本程序根据simple_server改造过来，所以结构上类似，处理上相对更加快
  *
  *        Version:  1.0
  *        Created:  2014年12月29日 16时30分55秒
@@ -82,14 +83,12 @@ int reg_so(const char* name, int flag)
 	DLFUNC(so.handle, so.on_cli_closed, "on_cli_closed");
 	DLFUNC(so.handle, so.on_serv_closed, "on_serv_closed");
 
-	//DLFUNC_NO_ERROR(so.handle,	so.proc_mcast_msg, "proc_mcast_msg");
-
 	ret_code = 0;
 
 out:
 	if (!flag) {
 		BOOT(ret_code, "dlopen %s", name);
-	} else {
+	} else { //重载
 		INFO(0, "RELOAD %s [%s]", name, (ret_code ? "FAIL" : "OK"));
 	}
 	return ret_code;

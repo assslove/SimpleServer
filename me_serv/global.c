@@ -46,10 +46,10 @@ svr_setting_t setting = {
 	1024 * 1024 * 10,  //10M
 	32 * 1024,		   //32k
 	1024 * 1024 * 10,  //10M
-	"SimpleServer"
+	"meServer"
 };
 //配置文件
-GHashTable *sim_data;
+GHashTable *me_data;
 //fd manager
 GHashTable *fds;
 //stop flag
