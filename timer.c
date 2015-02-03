@@ -17,3 +17,7 @@
  */
 
 
+#include "timer.h"
+
+struct tm cur_tm;
+struct timeval now:

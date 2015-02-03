@@ -6,49 +6,57 @@
 /* @breif 最小堆实现 ref libevent
  */
 
+/* @brief 回调函数定义
+ */
+typedef (*timer_callback_t)(void *owner, void *data);
+
 /*@ brief 自定义结构
  */
-typedef struct my_struct_t {
-	int data;	
+typedef struct heap_timer {
+	time_t expire;		//过期时间
+	void* owner;		//拥有者 一般为用户id
+	void* data;			//参数
+	timer_callback_t func; //回调函数
+	int timer_id;		//定时器类型
 	int min_heap_idx;
-} my_struct_t;
+} heap_timer_t;
 
 /* @brief 最小堆结构
  */
 typedef struct min_heap
 {
-	struct my_struct_t** p;  //数组
+	struct heap_timer_t** p;  //数组
 	unsigned n, a; //n-total a-current capacity
 } min_heap_t;
 
 inline void	     min_heap_ctor(min_heap_t* s);
 inline void	     min_heap_dtor(min_heap_t* s);
-inline void	     min_heap_elem_init(struct my_struct_t* e);
-inline int	     min_heap_elt_is_top(const struct my_struct_t *e);
-inline int	     min_heap_elem_greater(struct my_struct_t *a, struct my_struct_t *b);
+inline void	     min_heap_elem_init(struct heap_timer_t* e);
+inline int	     min_heap_elt_is_top(const struct heap_timer_t *e);
+inline int	     min_heap_elem_greater(struct heap_timer_t *a, struct heap_timer_t *b);
 inline int	     min_heap_empty(min_heap_t* s);
 inline unsigned	     min_heap_size(min_heap_t* s);
-inline struct my_struct_t*  min_heap_top(min_heap_t* s);
+inline struct heap_timer_t*  min_heap_top(min_heap_t* s);
 inline int	     min_heap_reserve(min_heap_t* s, unsigned n);
-inline int	     min_heap_push(min_heap_t* s, struct my_struct_t* e);
-inline struct my_struct_t*  min_heap_pop(min_heap_t* s);
-inline int	     min_heap_erase(min_heap_t* s, struct my_struct_t* e);
-inline void	     min_heap_shift_up_(min_heap_t* s, unsigned hole_index, struct my_struct_t* e);
-inline void	     min_heap_shift_down_(min_heap_t* s, unsigned hole_index, struct my_struct_t* e);
+inline int	     min_heap_push(min_heap_t* s, struct heap_timer_t* e);
+inline struct heap_timer_t*  min_heap_pop(min_heap_t* s);
+inline int	     min_heap_erase(min_heap_t* s, struct heap_timer_t* e);
+inline void	     min_heap_shift_up_(min_heap_t* s, unsigned hole_index, struct heap_timer_t* e);
+inline void	     min_heap_shift_down_(min_heap_t* s, unsigned hole_index, struct heap_timer_t* e);
 
-int min_heap_elem_greater(struct my_struct_t *a, struct my_struct_t *b)
+int min_heap_elem_greater(struct heap_timer_t *a, struct heap_timer_t *b)
 {
 	return a->data > b->data;
 }
 
 void min_heap_ctor(min_heap_t* s) { s->p = 0; s->n = 0; s->a = 0; }
 void min_heap_dtor(min_heap_t* s) { if (s->p) free(s->p); }
-void min_heap_elem_init(struct my_struct_t* e) { e->min_heap_idx = -1; }
+void min_heap_elem_init(struct heap_timer_t* e) { e->min_heap_idx = -1; }
 int min_heap_empty(min_heap_t* s) { return 0u == s->n; }
 unsigned min_heap_size(min_heap_t* s) { return s->n; }
-struct my_struct_t* min_heap_top(min_heap_t* s) { return s->n ? *s->p : 0; }
+struct heap_timer_t* min_heap_top(min_heap_t* s) { return s->n ? *s->p : 0; }
 
-int min_heap_push(min_heap_t* s, struct my_struct_t* e)
+int min_heap_push(min_heap_t* s, struct heap_timer_t* e)
 {
 	if (min_heap_reserve(s, s->n + 1))
 		return -1;
@@ -56,11 +64,11 @@ int min_heap_push(min_heap_t* s, struct my_struct_t* e)
 	return 0;
 }
 
-struct my_struct_t* min_heap_pop(min_heap_t* s)
+struct heap_timer_t* min_heap_pop(min_heap_t* s)
 {
 	if (s->n)
 	{
-		struct my_struct_t* e = *s->p;
+		struct heap_timer_t* e = *s->p;
 		min_heap_shift_down_(s, 0u, s->p[--s->n]);
 		e->min_heap_idx = -1;
 		return e;
@@ -68,16 +76,16 @@ struct my_struct_t* min_heap_pop(min_heap_t* s)
 	return 0;
 }
 
-int min_heap_elt_is_top(const struct my_struct_t *e)
+int min_heap_elt_is_top(const struct heap_timer_t *e)
 {
 	return e->min_heap_idx == 0;
 }
 
-int min_heap_erase(min_heap_t* s, struct my_struct_t* e)
+int min_heap_erase(min_heap_t* s, struct heap_timer_t* e)
 {
 	if (-1 != e->min_heap_idx)
 	{
-		struct my_struct_t *last = s->p[--s->n];
+		struct heap_timer_t *last = s->p[--s->n];
 		unsigned parent = (e->min_heap_idx - 1) / 2;
 		/* we replace e with the last element in the heap.  We might need to
 		   shift it upward if it is less than its parent, or downward if it is
@@ -98,11 +106,11 @@ int min_heap_reserve(min_heap_t* s, unsigned n)
 {
 	if (s->a < n)
 	{
-		struct my_struct_t** p;
+		struct heap_timer_t** p;
 		unsigned a = s->a ? s->a * 2 : 8;
 		if (a < n)
 			a = n;
-		if (!(p = (struct my_struct_t**)realloc(s->p, a * sizeof *p)))
+		if (!(p = (struct heap_timer_t**)realloc(s->p, a * sizeof *p)))
 			return -1;
 		s->p = p;
 		s->a = a;
@@ -110,7 +118,7 @@ int min_heap_reserve(min_heap_t* s, unsigned n)
 	return 0;
 }
 
-void min_heap_shift_up_(min_heap_t* s, unsigned hole_index, struct my_struct_t* e)
+void min_heap_shift_up_(min_heap_t* s, unsigned hole_index, struct heap_timer_t* e)
 {
 	unsigned parent = (hole_index - 1) / 2;
 	while (hole_index && min_heap_elem_greater(s->p[parent], e))
@@ -122,7 +130,7 @@ void min_heap_shift_up_(min_heap_t* s, unsigned hole_index, struct my_struct_t* 
 	(s->p[hole_index] = e)->min_heap_idx = hole_index;
 }
 
-void min_heap_shift_down_(min_heap_t* s, unsigned hole_index, struct my_struct_t* e)
+void min_heap_shift_down_(min_heap_t* s, unsigned hole_index, struct heap_timer_t* e)
 {
 	unsigned min_child = 2 * (hole_index + 1);
 	while (min_child <= s->n)
