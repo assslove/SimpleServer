@@ -3,7 +3,7 @@
  *
  *       Filename:  test_serv.cpp
  *
- *    Description:  对SimpleServer 的测试 echo 服务器
+ *    Description:  对mserver 的测试 echo 服务器
  *
  *        Version:  1.0
  *        Created:  12/23/2014 05:18:02 PM
@@ -31,8 +31,6 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-#include "switch.h"
 
 #ifdef __cplusplus 
 #define OUTER_FUNC extern "C"

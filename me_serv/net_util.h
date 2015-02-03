@@ -114,6 +114,13 @@ typedef struct svr_setting {
 	int raw_buf_len;	//socket buf 长度
 	char text_so[32];	//text_so
 	char data_so[32];	//data_so;
+	uint8_t worknum;	//工作进程个数
+	uint8_t log_level;  //日志级别
+	uint32_t log_maxfiles; //最大日志文件个数
+	uint32_t log_size;	//日志个数
+	char log_dir[32];	//日志目录
+	uint32_t bind_ip;	//ip
+	uint16_t bind_port; //port
 } svr_setting_t;
 
 /*	
