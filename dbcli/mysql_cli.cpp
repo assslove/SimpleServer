@@ -105,8 +105,8 @@ int MysqlCli::mysqlConnect()
 
 int MysqlCli::mysqlExec(const char *sqlstr_, int sqllen_)
 {
-#ifdef ENABLE_TRACE_LOG
-	TRACE(0, "SQL:%s", sqlstr_);
+#ifdef ENABLE_SQL
+	INFO(0, "SQL:%s", sqlstr_);
 #endif
 
 	m_ret = mysql_real_query(m_mysql, sqlstr_, sqllen_);

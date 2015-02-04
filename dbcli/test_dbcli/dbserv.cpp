@@ -52,14 +52,14 @@ int main(int argc, char* argv[])
 		DEBUG(0, "type=%u, value=%u", list.limit(i).type(), list.limit(i).value());
 	}
 
-	dispatch->m_limit->insertLimit();
-	dispatch->m_limit->updateLimit();
-	dispatch->m_limit->delLimit();
+	//dispatch->m_limit->insertLimit();
+	//dispatch->m_limit->updateLimit();
+	//dispatch->m_limit->delLimit();
 
 	dispatch->m_user->insertUser();
 	dispatch->m_user->getUser();
 	dispatch->m_user->updateUser();
-	dispatch->m_user->deleteUser();
+	//dispatch->m_user->deleteUser();
 
 	
 	delete dispatch;

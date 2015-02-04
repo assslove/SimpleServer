@@ -2,8 +2,8 @@
 TARGET=dbserv
 PROTO=libdbproto.a
 INC = -I/usr/local/include/libnanc -I/usr/local/include/libnanc++ -I/usr/local/include/dbcli/ -I/usr/include/mysql -I./proto/lib
-LIBS = -L/usr/local/lib -L./proto/lib/ -lxml2 -lnanc -lnanc++ -ldbcli -L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lz -lm -ldl -lprotobuf -ldbproto
-CXXFLAGS = -g -Wall -D_GNU_SOURCE 
+LIBS = -L/usr/local/lib -L./proto/lib/ -lxml2 -lnanc -lnanc++ -ldbcli -L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lz -lm -ldl -lprotobuf -ldbproto `pkg-config --cflags --libs glib-2.0`
+CXXFLAGS = -g -Wall -D_GNU_SOURCE  -DENABLE_TRACE_LOG
 SRCS = $(wildcard *.cpp ./proto/lib/*.cpp)
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))
 CC = g++
