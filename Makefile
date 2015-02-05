@@ -40,6 +40,8 @@ mcast_cli: mcast_cli.c
 	gcc -g mcast_cli.c -o mcast_cli
 test_pthread: test_pthread.c
 	gcc -g -Wall test_pthread.c -o test_pthread -lpthread
+test_sem: test_sem.c
+	gcc -g -Wall test_sem.c -o test_sem
 
 clean:
 	rm -rf *.o simple_svr simple_cli test_hashtb test_mq test_mq2 test_log test_load_conf test_serv.so
