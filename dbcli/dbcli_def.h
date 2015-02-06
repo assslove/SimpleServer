@@ -89,4 +89,6 @@ inline uint64_t safe_atol(const char *str)
 
 #define GENSQL(fmt, arg...) this->m_sqllen = sprintf(this->m_sqlstr, fmt, ##arg), this->m_sqlstr[this->m_sqllen] = '\0';
 
+
+#define MYSQL_REAL_ESCAPE_STRING(to, from, len) this->m_mc->mysqlRealEscapeString(to, from, len);
 #endif

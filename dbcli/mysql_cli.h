@@ -81,6 +81,13 @@ class MysqlCli {
 				ERROR(m_id, "mysql commit err [%s]", mysql_error(m_mysql));
 			}
 		}
+
+		/* @brief 将字符串转义
+		 */
+		void mysqlRealEscapeString(char *to, char *from, int len) {
+			mysql_real_escape_string(m_mysql, to, from, len);
+		}
+
 	private:
 
 		/* @brief 执行sql语句

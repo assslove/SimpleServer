@@ -53,8 +53,10 @@ class Table {
 		 */
 		virtual ~Table() {}
 		
-	protected:
+	public:
 		MysqlCli *m_mc; //底层数据库类
+
+	protected:
 		char m_sqlstr[SQLSTR_LEN];	//最大查询语句长度
 		int m_sqllen;				//sql语句长度
 		MYSQL_RES *m_res;			//中间变量

@@ -32,7 +32,7 @@ User::User(MysqlCli *mc_) : TableRouter(mc_, "TEST", "t_user", 1, 1)
 
 int User::getUser()
 {
-	GENSQL("select * from %s where user_id=%u", this->getTableName(1000), 1000);
+	GENSQL("select * from %s where user_id=%u", this->getTableName(1000), 2000);
 	DEBUG(0, "%s, %u", this->m_sqlstr, this->m_sqllen);
 	MUser user;
 	QUERY_ONE_BEGIN(1) 
@@ -46,7 +46,9 @@ int User::getUser()
 
 void User::insertUser()
 {
-	GENSQL("insert into %s values(%u, '%s', %u)", this->getTableName(2000), 2000, "bin", 20);
+	char name[1024];
+	MYSQL_REAL_ESCAPE_STRING(name, "小小鸟", strlen("小小鸟"));
+	GENSQL("insert into %s values(%u, '%s', %u)", this->getTableName(3000), 3000, name, 20);
 	if (int ret = this->execInsertSql(1)) {
 		ERROR(0, "cannot insert %u", ret);
 	}

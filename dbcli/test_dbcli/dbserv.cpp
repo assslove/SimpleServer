@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 
 	dispatch->m_user->insertUser();
 	dispatch->m_user->getUser();
-	dispatch->m_user->updateUser();
+//	dispatch->m_user->updateUser();
 	//dispatch->m_user->deleteUser();
 
 	
