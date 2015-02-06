@@ -18,63 +18,57 @@
 
 #include <unistd.h>
 #include <errno.h>
-#include <sys/types.h>
-#include <sys/sem.h>
-#include <sys/ipc.h>
 #include <stdio.h>
 #include <string.h>
-
-int sem_id;
-
-int sem_lock() 
-{
-	struct sembuf sem_p;
-	sem_p.sem_num = 0;
-	sem_p.sem_op = -1;
-	sem_p.sem_flg = SEM_UNDO;
-
-	if (semop(sem_id, &sem_p, 1) == -1) {
-		fprintf(stderr, "sem lock failed\n");		
-		return -1;
-	}
-
-	return 0;
-}
-
-int sem_unlock() 
-{
-	struct sembuf sem_v;
-	sem_v.sem_num = 0;
-	sem_v.sem_op = 1;
-	sem_v.sem_flg = SEM_UNDO;
-
-	if (semop(sem_id, &sem_v, 1) == -1) {
-		fprintf(stderr, "sem lock failed\n");		
-		return -1;
-	}
-
-	return 0;
-
-}
+#include <fcntl.h>           /*  For O_* constants */
+#include <sys/stat.h>        /*  For mode constants */
+#include <semaphore.h>
+#include <sys/mman.h>
+#include <time.h>
+#include <stdlib.h>
 
 int main(int argc, char* argv[])
 {
-	int semkey = 10000;
-	sem_id = semget(semkey, 1, IPC_CREAT | 0666);
-	if (sem_id == -1) {
-		fprintf(stderr, "%s\n", strerror(errno));
+	sem_t *sem = sem_open("bin123", O_CREAT, 0666, 1);
+	if (sem == SEM_FAILED) {
+		fprintf(stderr, "sem open error\n");
 		return 1;
 	}
 
+	int *ptr = mmap((void *)-1, 1024, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+	if (ptr == MAP_FAILED) {
+		fprintf(stderr, "mmap failed\n");
+		return 1;
+	}
+
+	*ptr = 0;
+
 	int pid = fork();
 	if (pid == 0) { 
-
+		while (1) {
+			sem_wait(sem);
+			++(*ptr);
+			printf("child %u\n", *ptr);
+			fflush(NULL);
+			sem_post(sem);
+		}
+		sem_close(sem);
+		munmap(ptr, 1024);
 		return 0;
 	} else if (pid > 0) { //父进程
-		
+		while (1) {
+			sem_wait(sem);
+			++(*ptr);
+			printf("parent %u\n", *ptr);
+			fflush(NULL);
+			sem_post(sem);
+		}
 	} else {
 		fprintf(stderr, "cannot fork\n");
 	}
 
+	sem_close(sem);
+	sem_unlink("bin123");
+	munmap(ptr, 1024);
 	return 0;
 }
