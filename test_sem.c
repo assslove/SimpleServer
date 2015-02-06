@@ -35,6 +35,15 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	int value;
+
+	sem_getvalue(sem, &value);
+	if (value == 0) {
+		printf("sem value is zero\n");
+		fflush(NULL);
+		sem_post(sem);
+	}
+
 	int *ptr = mmap((void *)-1, 1024, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 	if (ptr == MAP_FAILED) {
 		fprintf(stderr, "mmap failed\n");
