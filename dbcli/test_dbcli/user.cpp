@@ -32,7 +32,7 @@ User::User(MysqlCli *mc_) : TableRouter(mc_, "TEST", "t_user", 1, 1)
 
 int User::getUser()
 {
-	GENSQL("select * from %s where user_id=%u", this->getTableName(1000), 2000);
+	GENSQL("select * from %s where user_id=%u", this->getTableName(1000), 3000);
 	DEBUG(0, "%s, %u", this->m_sqlstr, this->m_sqllen);
 	MUser user;
 	QUERY_ONE_BEGIN(1) 
@@ -40,15 +40,18 @@ int User::getUser()
 		user.set_name(NEXT_COL);
 		user.set_score(INT_NEXT_COL);
 
-		DEBUG(0, "%u,%s,%u", user.userid(), user.name().c_str(), user.score());
+		int i = 0;
+		STR_NEXT_COL(&i, sizeof(i));
+		DEBUG(0, "%u,%s,%u, %u", user.userid(), user.name().c_str(), user.score(), i);
 	QUERY_ONE_END()
 }
 
 void User::insertUser()
 {
-	char name[1024];
-	MYSQL_REAL_ESCAPE_STRING(name, "小小鸟", strlen("小小鸟"));
-	GENSQL("insert into %s values(%u, '%s', %u)", this->getTableName(3000), 3000, name, 20);
+	char attr[10] = {'\0'};
+	int i = 5;
+	memcpy(attr, &i, sizeof(i));
+	GENSQL("insert into %s values(%u, '%s', %u, '%s')", this->getTableName(3000), 3000, "笑纳", 20, attr);
 	if (int ret = this->execInsertSql(1)) {
 		ERROR(0, "cannot insert %u", ret);
 	}
