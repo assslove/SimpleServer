@@ -21,8 +21,9 @@
 #include <string.h>
 #include <dlfcn.h>
 
+#include <libnanc/log.h>
+
 #include "outer.h"
-#include "log.h"
 
 serv_if_t so;
 
