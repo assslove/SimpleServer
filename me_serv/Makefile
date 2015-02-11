@@ -1,16 +1,26 @@
+# 生成多进程处理的网络服务器，可用于执行数据库操作等功能
+#
+
+INSTALL_DIR = /usr/local/include/meserv
+CFLAGS =  -g -Wall -Wunused-function -lpthread -ldl -DENABLE_TRACE
 LIBS = `pkg-config --cflags --libs glib-2.0`
+SRCS = $(wildcard *.c)
+OBJS = $(patsubst %.c, %.o, $(SRCS))
 
-all : simple_svr epoll_cli test_serv.so data.so
+all : meserv
 
-simple_svr: simple_svr.c net_util.c mem_queue.c conf.h log.c util.c master.c work.c global.c  fds.c outer.c
-	gcc -g -Wall -DENABLE_TRACE \
-		 -o simple_svr  simple_svr.c global.c net_util.c log.c util.c mem_queue.c conf.c master.c work.c  fds.c outer.c\
-		 `pkg-config --cflags --libs glib-2.0`  -ldl -rdynamic
-epoll_cli: epoll_cli.c
-	gcc -g -o epoll_cli epoll_cli.c
-test_serv.so: test_serv.cpp switch.cpp
-	g++ -g -shared -fPIC test_serv.cpp switch.cpp -o test_serv.so `pkg-config --cflags --libs glib-2.0` -I./ -D_GNU_SOURCE  -I./../../libnanc/src/
-data.so: data.c
-	gcc -g -shared -fPIC data.c -o data.so
+meserv : $(OBJS)
+	gcc $(OBJS) -o meserv
+
+%.o : %.c
+	gcc $(CFLAGS) $(LIBS) -c  $< -o $@
+
 clean:
-	rm -rf *.o simple_svr test_serv.so epoll_cli
+	-rm $(OBJECTS) meserv
+
+install:
+	sudo cp -r libnanc.a /usr/local/lib
+	sudo cp -r libnanc.so /usr/local/lib
+	sudo rm -rf $(INSTALL_DIR)
+	sudo mkdir $(INSTALL_DIR)
+	sudo cp -r *.h $(INSTALL_DIR) 

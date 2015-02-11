@@ -2,6 +2,7 @@
 #define MEM_QUEUE_H_
 
 #include <stdint.h>
+#include <semphore.h>
 
 /* @brief 内存块类型
  */
@@ -24,7 +25,7 @@ enum MEM_TYPE {
 typedef struct mem_head {
 	volatile int head;		//头部	
 	volatile int tail;		//尾部
-	volatile int blk_cnt;	//总共块数  不正确,估计
+	volatile int blk_cnt;	//总共块数  正确
 } __attribute__((packed)) mem_head_t;
 
 /* @brief 内存队列
@@ -32,8 +33,8 @@ typedef struct mem_head {
 typedef struct mem_queue {
 	mem_head_t *ptr;
 	int len;				//总长
-	int pipefd[2];			//通知
 	int8_t type;			//类型
+	sem_t *sem;				//信号量
 } __attribute__((packed)) mem_queue_t;
 
 /* @brief 内存块信息
@@ -50,27 +51,26 @@ typedef struct mem_block {
 extern const int blk_head_len;
 extern const int mem_head_len;
 
-/* @brief b放在q的尾部
+/* @brief b 放在q的尾部
  * @param q 共享内存队列
  * @param b 队列块
+ * @param data 队列中数据
+ * @param pipefd 通知的fd
  */
-int mq_push(mem_queue_t *q, mem_block_t *b, const void *data);
+int mq_push(mem_queue_t *q, const mem_block_t *b, const void *data, int pipefd);
 
 /* @brief q从尾部出来
+ * @return mem_block_t* 返回弹出的块
  */
-void mq_pop(mem_queue_t *q);
-
-/* @brief get mem_block_t
- */
-mem_block_t *mq_get(mem_queue_t *q);
+mem_block_t* mq_pop(mem_queue_t *q);
 
 /* @biref 创建共享队列
  */
-int mq_init(mem_queue_t *q, int size, int type);
+int mq_init(mem_queue_t *q, int size, int type, const char* semname);
 
 /* @brief 释放共享队列
  */
-int mq_fini(mem_queue_t *q, int size);
+int mq_fini(mem_queue_t *q, int size, const char* semname);
 
 /* @brief 尾块
  */
