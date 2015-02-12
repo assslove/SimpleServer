@@ -38,23 +38,25 @@ enum fd_type {
 	fd_type_null, //空类型
 };
 
+/* @brief 父子进程共享结构
+ */
+typedef struct msg_pipe {
+	mem_queue_t rq;			//接收队列
+	mem_queue_t sq;			//发送队列
+	int send_pipefd[2];		//消息发送通知管道
+} __attribute__((packed)) msg_pipe_t;
+
 /* @brief 工作进程配置项
  */
 typedef struct work {
-	uint32_t id;
-	uint16_t idx;
-	char ip[32];
-	uint16_t port;
-	uint8_t proto_type; 
-	mem_queue_t rq;	 //接收队列
-	mem_queue_t sq;  //发送队列
+	int recv_pipefd[2];  //消息接收通知管道 每个子进程都拥有一个
+	uint8_t id;			 //子进程编号
 }__attribute__((packed)) work_t;
 
 /* @brief work配置项
  */
 typedef struct work_mgr {
 	int nr_work;
-	int nr_used;
 	work_t *works; //配置项
 } __attribute__((packed)) work_mgr_t;
 

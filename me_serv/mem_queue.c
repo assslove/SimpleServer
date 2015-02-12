@@ -64,38 +64,62 @@ int mq_fini(mem_queue_t *q, int size, const char* semname)
 	return 0;
 }
 
-mem_block_t *mq_get(mem_queue_t *q)
+mem_block_t *mq_pop(mem_queue_t *q)
 {
-	mem_head_t *ptr = q->ptr;		
-get_again:
+	static mem_block_t *blk = NULL;
+	static mem_block_t *ptr = q;
+	safe_semwait(q->sem);
+pop_again:
 	if (ptr->head > ptr->tail) { 
-		if (ptr->head >= ptr->tail + blk_head_len) { 
-			return blk_tail(q);
+		if (likely(ptr->head >= ptr->tail + blk_head_len)) {  //大于一个空块的大小
+			goto pop_succ;
 		} else { //不会出现
-			TRACE(0, "queue is null");		
-			mq_display(q);
+			TRACE(0, "mem pop: queue is null");		
+			goto pop_fail;
 		}
 	} else if (ptr->head < ptr->tail) {
-		if (q->len < ptr->tail + blk_head_len) { //如果容纳不下一个块
+		if (q->len < ptr->tail + blk_head_len) { //如果容纳不下一个块, 已经到尾部
 			ptr->tail = mem_head_len;
 			goto get_again;
 		} else { //如果可以容纳一个块
-			mem_block_t *blk = blk_tail(q);
+			blk = blk_tail(q);
 			if (blk->type == BLK_ALIGN) { //如果是填充块 则调整位置
 				ptr->tail = mem_head_len;
-				goto get_again;
-			} else {
-				return blk;
+				goto pop_again;
+			} else { //成功弹出
+				goto pop_succ;
 			}
 		}
-	} 
+	} else { //相等队列空
+		goto pop_fail;
+	}
 
+pop_fail:
+#ifdef ENABLE_TRACE
+	mq_display(q);
+#endif
+	safe_sempost(q->sem);
 	return NULL;
+pop_succ:
+
+#ifdef ENABLE_TRACE
+	mq_display(q);
+#endif
+	blk = blk_tail(q);
+	ptr->tail += blk->len;
+	--ptr->blk_cnt;
+	safe_sempost(q->sem);
+	return blk;
 }
 
+/* @brief 利用goto 主要节省代码行数， 也可以不用goto来处理
+ * @note 空队列 head == tail 
+ *       满队列 head + xx >= tail push速度赶上pop速度
+ */
 int mq_push(mem_queue_t *q, const mem_block_t *b, const void *data, int pipefd)
 {
-	sem_wait(q->sem);
+	static mem_block_t *ptr = q; //每次都是一样的
+	safe_semwait(q->sem);
 push_again:
 	if (ptr->head >= ptr->tail) { 
 		if (ptr->head + b->len >= q->len) { //如果大于最大长度
@@ -106,49 +130,42 @@ push_again:
 			}
 
 			if (unlikely(mem_head_len == ptr->tail)) { //如果尾部还没有弹出 说明是满的状态
-				return -1;
+				goto push_fail;
 			} else {
 				ptr->head = mem_head_len;		//调整到头部
 				goto push_again;
 			}
 		} else {//完全可以容纳
-			mem_block_t *blk = blk_head(q);
-			memcpy(blk, b, blk_head_len); //复制块头
-			memcpy(blk->data, data, b->len - blk_head_len); //复制数据
-			ptr->head += b->len; //移动头部
-			++ptr->blk_cnt;
-			write(pipefd, q, 1);
+			goto push_succ;
 		}
 	} else if (ptr->head < ptr->tail) { 
-		if (ptr->head + b->len >= ptr->tail) {//full
-			return -1;	
+		if (unlikely(ptr->head + b->len >= ptr->tail)) {//full
+			goto push_fail;
 		} else {
-			mem_block_t *blk = blk_head(q);
-			memcpy(blk, b, blk_head_len);
-			memcpy(blk->data, data, b->len - blk_head_len);
-			ptr->head += b->len;
-			++ptr->blk_cnt;
-			write(pipefd, q, 1);
+			goto push_succ;
 		}
 	} 
 
+push_fail:
 #ifdef ENABLE_TRACE
 	mq_display(q);
 #endif
-	sem_post(q->sem); //释放锁
+	safe_sempost(q->sem);
+	return -1;
 
+push_succ:
+	mem_block_t *blk = blk_head(q);
+	memcpy(blk, b, blk_head_len);
+	memcpy(blk->data, data, b->len - blk_head_len);
+	ptr->head += b->len;
+	++ptr->blk_cnt;
+	write(pipefd, q, 1);
+
+#ifdef ENABLE_TRACE
+	mq_display(q);
+#endif
+	safe_sempost(q->sem); //释放锁
 	return 0;
-}
-
-void mq_pop(mem_queue_t *q)
-{
-	mem_head_t *ptr = q->ptr;
-	mem_block_t *b = blk_tail(q);
-	ptr->tail += b->len;
-	--ptr->blk_cnt;
-#ifdef ENABLE_TRACE
-	mq_display(q);
-#endif
 }
 
 mem_block_t* blk_head(mem_queue_t *q)

@@ -40,10 +40,10 @@ typedef struct mem_queue {
 /* @brief 内存块信息
  */
 typedef struct mem_block {
-	int id;					//server id
+	//int id;					//不需要，由于只有两个共享队列，不用管到底放在那个
 	int fd;					//fd
-	uint8_t type;			//类型
 	int len;				//长度
+	uint8_t type;			//类型
 	char data[];			//数据
 } __attribute__((packed)) mem_block_t;
 
@@ -52,6 +52,7 @@ extern const int blk_head_len;
 extern const int mem_head_len;
 
 /* @brief b 放在q的尾部
+ *
  * @param q 共享内存队列
  * @param b 队列块
  * @param data 队列中数据
