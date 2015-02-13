@@ -43,7 +43,7 @@ enum fd_type {
 typedef struct msg_pipe {
 	mem_queue_t rq;			//接收队列
 	mem_queue_t sq;			//发送队列
-	int send_pipefd[2];		//消息发送通知管道
+	int send_pipefd[2];		//消息发送通知管道 多个子进程共享管道
 } __attribute__((packed)) msg_pipe_t;
 
 /* @brief 工作进程配置项
