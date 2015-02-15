@@ -1,7 +1,7 @@
 # 用于创建proxy
 TARGET=proxy.so 
 DATA_TARGET=data.so
-INC = -I/usr/local/include/libnanc -I/usr/local/include/libnanc++
+INC = 
 LIBS = `pkg-config --cflags --libs glib-2.0 libxml-2.0` -L/usr/local/lib -lxml2 -lnanc -lnanc++
 CXXFLAGS = -g -Wall -fPIC -shared -D_GNU_SOURCE -DSERV_ONE 
 #SRCS = $(wildcard *.cpp)
