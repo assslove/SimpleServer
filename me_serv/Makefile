@@ -2,7 +2,7 @@
 #
 
 INSTALL_DIR = /usr/local/include/meserv
-CFLAGS =  -g -Wall -Wunused-function -lpthread -ldl -DENABLE_TRACE -I/usr/include/libnanc -L/usr/lib/libnanc -lnanc
+CFLAGS =  -g -Wall -Wunused-function -lpthread -ldl -L/usr/local/lib -lnanc -DENABLE_TRACE
 LIBS = `pkg-config --cflags --libs glib-2.0`
 SRCS = $(wildcard *.c)
 OBJS = $(patsubst %.c, %.o, $(SRCS))
@@ -10,13 +10,13 @@ OBJS = $(patsubst %.c, %.o, $(SRCS))
 all : meserv
 
 meserv : $(OBJS)
-	gcc $(OBJS) -o meserv
+	gcc $(OBJS) -o meserv $(LIBS) $(CFLAGS) 
 
 %.o : %.c
-	gcc $(CFLAGS) $(LIBS) -c  $< -o $@
+	gcc -c -o $@ $< $(LIBS) $(CFLAGS) 
 
 clean:
-	-rm -f $(OBJECTS) meserv
+	-rm -f $(OBJS) meserv
 
 install:
 	sudo rm -rf $(INSTALL_DIR)

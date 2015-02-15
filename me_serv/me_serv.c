@@ -46,12 +46,12 @@ int main(int argc, char* argv[])
 	int ret;
 	//load conf
 	if ((ret = load_conf("me.conf")) == -1) {
-		sprintf(stderr, "load me conf faild\n");
+		fprintf(stderr, "load me conf faild\n");
 		return 0;
 	}
 	//初始化配置信息
 	if (init_setting() == -1) {
-		sprintf("init meserv conf failed \n");
+		BOOT(0, "init meserv conf failed \n");
 		return 0;
 	}
 

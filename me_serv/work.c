@@ -68,19 +68,19 @@ int work_init(int i)
 		return -1;
 	}
 
-	if ((ret = add_fdinfo_to_epinfo(epinfo.msgq.rq.recv_pipefd[0], i, fd_type_pipe, 0, 0)) == -1) {  //用于接收主进程的读取
+	if (add_fdinfo_to_epinfo(workmgr.works[i].recv_pipefd[0], i, fd_type_pipe, 0, 0) == -1) {  //用于接收主进程的读取
 		return -1;
 	} 
 
 	//close mem_queue pipe
-	close(epinfo.msgq.rq.recv_pipefd[1]); //关闭读取队列的写管道
+	close(epinfo.msgq.send_pipefd[0]); //关闭发送管道的读
 	int k = 0;
 	for (; k < workmgr.nr_work; k++) {
 		if (k == i) {
-			close(work->send_pipefd[0]); //关闭发送队列的读端
+			close(workmgr.works[k].recv_pipefd[1]); //关闭接收队列的写端
 		} else { //其它都关闭
-			close(workmgr.works[k].send_pipefd[0]);
-			close(workmgr.works[k].send_pipefd[1]);
+			close(workmgr.works[k].recv_pipefd[0]);
+			close(workmgr.works[k].recv_pipefd[1]);
 		}
 	}
 
@@ -185,11 +185,10 @@ int work_fini(int i)
 	free(epinfo.fds);
 	close(epinfo.epfd);
 
-	close(epinfo.msgq.rq.recv_pipefd[0]);
+	close(epinfo.msgq.send_pipefd[1]);
 	
 	log_fini();
-	DEBUG(0, "work serv [id=%d] have stopped!", work->id);
-
+	DEBUG(0, "work serv [id=%d] have stopped!", workmgr.works[i].id);
 
 	return 0;	
 }
@@ -197,21 +196,21 @@ int work_fini(int i)
 int handle_mq_recv(int i)
 {
 	static mem_queue_t *recvq = &epinfo.msgq.rq;
-	static mem_queue_t *sendq = &epinfo.msgq.sq;
+	//static mem_queue_t *sendq = &epinfo.msgq.sq;
 	mem_block_t *tmpblk;
 
-	while ((tmpblk = mq_get(recvq)) != NULL) {
+	while ((tmpblk = mq_pop(recvq)) != NULL) {
 		switch (tmpblk->type) {
 			case BLK_DATA: //对客户端消息处理
 				do_blk_msg(tmpblk);
 				break;
-			case BLK_OPEN:
-				if (do_blk_open(tmpblk) == -1) { //处理块打开，如果打不到，则关闭
-					tmpblk->type = BLK_CLOSE;	
-					tmpblk->len = sizeof(mem_block_t);
-					mq_push(sendq, tmpblk, NULL);
-				}
-				break;
+			//case BLK_OPEN:
+				//if (do_blk_open(tmpblk) == -1) { //处理块打开，如果打不到，则关闭
+					//tmpblk->type = BLK_CLOSE;	
+					//tmpblk->len = sizeof(mem_block_t);
+					//mq_push(sendq, tmpblk, NULL);
+				//}
+				//break;
 			case BLK_CLOSE:
 				do_blk_close(tmpblk); //处理关闭
 				break;
@@ -323,16 +322,16 @@ int do_proc_pipe(int fd)
 
 void close_cli(int fd)
 {
-	fdsess_t *sess = get_fd(fd);
-	if (!sess) {
-		return ;
-	}
+	//fdsess_t *sess = get_fd(fd);
+	//if (!sess) {
+		//return ;
+	//}
 
-	mem_block_t blk;
-	blk.id = sess->id;
-	blk.len = blk_head_len;
-	blk.type = BLK_CLOSE;
-	blk.fd = fd;
-	mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
-	do_blk_close(&blk); //不要重复执行
+	//mem_block_t blk;
+	//blk.id = sess->id;
+	//blk.len = blk_head_len;
+	//blk.type = BLK_CLOSE;
+	//blk.fd = fd;
+	//mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
+	//do_blk_close(&blk); //不要重复执行
 }

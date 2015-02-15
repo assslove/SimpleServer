@@ -4,7 +4,7 @@
  *       Filename:  mem_queue.c
  *
  *    Description:  共享队列设计 与simple_server不同，主要在于本共享队列涉及到多进程的处理
- *    本共享对列利用POSIX来解决同步问题 push时候必须获得锁，pop时间也得获得锁，每次pop需要传出信息,
+ *    本共享队列利用POSIX信号量来解决同步问题 push时候必须获得锁，pop时间也得获得锁，每次pop需要传出信息,
  *    push时候也得把信息赋值进去。
  *
  *        Version:  1.0
@@ -18,20 +18,22 @@
  * =====================================================================================
  */
 
-#include <sys/mman.h>
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <sys/mman.h>
 
 #include <libnanc/log.h>
 #include <libnanc/posix_lock.h>
 
 #include "mem_queue.h"
 #include "util.h"
+#include "net_util.h"
 
 const int blk_head_len = sizeof(mem_block_t);
 const int mem_head_len = sizeof(mem_head_t);
+extern struct svr_setting setting;
 
 int mq_init(mem_queue_t *q, int size, int type, const char* semname)
 {
@@ -46,7 +48,7 @@ int mq_init(mem_queue_t *q, int size, int type, const char* semname)
 	q->ptr->head = mem_head_len;
 	q->ptr->tail = mem_head_len;
 
-	if ((q->sem == safe_semopen(semname, 1)) == SEM_FAILED) {
+	if ((q->sem = safe_semopen(semname, 1)) == SEM_FAILED) {
 		return -1;
 	}
 
@@ -60,19 +62,19 @@ int mq_fini(mem_queue_t *q, int size, const char* semname)
 {
 	munmap(q->ptr, size);	
 	//关闭信号量
-	safe_semclose(q->sem, senname);
+	safe_semclose(q->sem, semname);
 	return 0;
 }
 
 mem_block_t *mq_pop(mem_queue_t *q)
 {
-	static mem_block_t *blk = (mem_block_t *)malloc(setting.max_msg_len);
+	mem_block_t *blk = (mem_block_t *)malloc(setting.max_msg_len);
+	mem_head_t *ptr = q->ptr;
 	if (unlikely(!blk)) {
 		ERROR(0, "pop blk is null");
 		return NULL;
 	}
 
-	static mem_block_t *ptr = q;
 	safe_semwait(q->sem);
 pop_again:
 	if (ptr->head > ptr->tail) { 
@@ -85,7 +87,7 @@ pop_again:
 	} else if (ptr->head < ptr->tail) {
 		if (q->len < ptr->tail + blk_head_len) { //如果容纳不下一个块, 已经到尾部
 			ptr->tail = mem_head_len;
-			goto get_again;
+			goto pop_again;
 		} else { //如果可以容纳一个块
 			blk = blk_tail(q);
 			if (blk->type == BLK_ALIGN) { //如果是填充块 则调整位置
@@ -123,13 +125,14 @@ pop_succ:
  */
 int mq_push(mem_queue_t *q, const mem_block_t *b, const void *data, int pipefd)
 {
-	static mem_block_t *ptr = q; //每次都是一样的
+	mem_head_t *ptr = q->ptr;
+	mem_block_t *blk = NULL;
 	safe_semwait(q->sem);
 push_again:
 	if (ptr->head >= ptr->tail) { 
 		if (ptr->head + b->len >= q->len) { //如果大于最大长度
 			if (ptr->head + blk_head_len <= q->len) { //如果容下一个块头//填充
-				mem_block_t *blk = blk_head(q);
+				blk = blk_head(q);
 				blk->type = BLK_ALIGN;
 				blk->len = q->len - ptr->head; 
 			}
@@ -159,7 +162,7 @@ push_fail:
 	return -1;
 
 push_succ:
-	mem_block_t *blk = blk_head(q);
+	blk = blk_head(q);
 	memcpy(blk, b, blk_head_len);
 	memcpy(blk->data, data, b->len - blk_head_len);
 	ptr->head += b->len;

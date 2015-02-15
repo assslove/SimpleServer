@@ -2,7 +2,7 @@
 CC = g++
 CXXFLAGS = -g -Wall -fPIC -shared -DENABLE_SQL
 LIBS = -L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lz -lm -ldl -lnanc
-INC = -I/usr/include/mysql -I/usr/local/include/libnanc
+INC = -I/usr/include/mysql 
 INSTALL_DIR = /usr/local/include/dbcli
 SRCS = $(wildcard *.cpp)
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))

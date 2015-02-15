@@ -269,14 +269,14 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events)
 
 int send_to_cli(struct fdsess *sess, const void *msg, int const len)
 {
-	mem_block_t blk;
+	static mem_block_t blk;
 
 	blk.id = sess->id;
 	blk.fd = sess->fd;
 	blk.type = BLK_DATA;
 	blk.len = len + blk_head_len;
 
-	if (mq_push(&workmgr.works[blk.id].sq, &blk, msg) == -1) {
+	if (mq_push(&epinfo.msgq.sq, &blk, msg, epinfo.msgq.send_pipefd[1]) == -1) {
 		ERROR(0, "%s error [len=%d]", __func__, len);
 		return -1;
 	}
@@ -419,14 +419,14 @@ int do_fd_close(int fd, int ismaster)
 	}
 
 	if (ismaster) { //通知子进程
-		mem_block_t blk;
-		blk.id = epinfo.fds[fd].idx;
-		blk.fd = fd;
-		blk.type = BLK_CLOSE;
-		blk.len = blk_head_len;
-		if (mq_push(&workmgr.works[blk.id].rq, &blk, NULL) == -1) {
-			ERROR(0, "mq is full noti child failed [fd=%d]", fd);
-		};
+		//mem_block_t blk;
+		//blk.id = epinfo.fds[fd].idx;
+		//blk.fd = fd;
+		//blk.type = BLK_CLOSE;
+		//blk.len = blk_head_len;
+		//if (mq_push(&.rq, &blk, NULL) == -1) {
+			//ERROR(0, "mq is full noti child failed [fd=%d]", fd);
+		//};
 	} else if (ismaster == 0) { //子进程自己处理逻辑
 		if (so.on_serv_closed) {
 			so.on_serv_closed(fd);

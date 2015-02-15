@@ -16,8 +16,8 @@ enum MEM_BLOCK_TYPE {
 /* @brief 共享内存类型
  */
 enum MEM_TYPE {
-	MEM_TYPE_RECV = 0, 
-	MEM_TYPE_SEND = 1
+	MEM_TYPE_RECV = 0,  //接收队列
+	MEM_TYPE_SEND = 1	//发送队列
 };
 
 /* @brief 共享内存首部,用于记录队列信息
@@ -66,22 +66,30 @@ int mq_push(mem_queue_t *q, const mem_block_t *b, const void *data, int pipefd);
 mem_block_t* mq_pop(mem_queue_t *q);
 
 /* @biref 创建共享队列
+ *
+ * @param q 队列指针
+ * @param size 队列大小
+ * @param type 队列类型
+ * @param semname 信号名字
  */
 int mq_init(mem_queue_t *q, int size, int type, const char* semname);
 
 /* @brief 释放共享队列
+ *
+ * @param size 队列大小
+ * @param semname 信号名字
  */
 int mq_fini(mem_queue_t *q, int size, const char* semname);
 
-/* @brief 尾块
+/* @brief 返回尾块
  */
 inline mem_block_t* blk_tail(mem_queue_t *q);
 
-/* @brief 头部块
+/* @brief 返回头部块
  */
 inline mem_block_t* blk_head(mem_queue_t *q);
 
-/* @brief 打印调试信息
+/* @brief 打印队列调试信息
  */
 void mq_display(mem_queue_t *q);
 
