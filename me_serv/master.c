@@ -98,6 +98,7 @@ int master_init()
 
 	//初始化变量信息
 	workmgr.nr_work = setting.worknum;
+	workmgr.works = (work_t *)malloc(sizeof(work_t) * workmgr.nr_work);
 	return 0;
 }
 

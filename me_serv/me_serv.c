@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 {	
 	int ret;
 	//load conf
-	if ((ret = load_conf("me.conf")) == -1) {
+	if ((ret = load_conf("etc/me.conf")) == -1) {
 		fprintf(stderr, "load me conf faild\n");
 		return 0;
 	}
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 	//chg serv name
 	chg_proc_title(setting.srv_name);
 	//daemon mode
-	daemon(1, 0);
+	//daemon(1, 0);
 	//handle signal
 	if (handle_signal()) {
 		return 0;

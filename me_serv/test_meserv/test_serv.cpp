@@ -24,10 +24,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "log.h"
-#include "net_util.h"
-#include "conf.h"
-#include "fds.h"
+#include <libnanc/log.h>
+#include <libnanc/conf.h>
+#include <libnanc/proto_head.h>
+#include <meserv/net_util.h>
+#include <meserv/fds.h>
 #ifdef __cplusplus
 }
 #endif
@@ -38,8 +39,6 @@ extern "C" {
 #define OUTER_FUNC 
 #endif 
 
-
-int switch_fd = -1;
 
 OUTER_FUNC void handle_timer()
 {
@@ -55,24 +54,11 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
 
-	//if (switch_fd == -1) {
-		//switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
-	//}
-
-	//if (switch_fd == -1) {
-		//ERROR(0, "cannot connect to switch");
-	//}
-
 	return send_to_cli(sess, cli, pkg->len);
-	//return send_to_serv(switch_fd, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)
 {
-	if (fd == switch_fd) {
-		handle_switch(fd, msg, len);
-	}
-
 	return 0;
 }
 
@@ -84,11 +70,6 @@ OUTER_FUNC int on_cli_closed(int fd)
 
 OUTER_FUNC int on_serv_closed(int fd)
 {
-	if (fd == switch_fd) {
-		switch_fd  = -1;
-		ERROR(0, "switch fd closed [fd=%d]", fd);
-	}
-
 	return 0;
 }
 
@@ -96,14 +77,6 @@ OUTER_FUNC int serv_init(int ismaster)
 {
 	INFO(0, "%s init", ismaster ? "master" : "work");
 
-	if (switch_fd == -1) {
-		switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
-	}
-
-	if (switch_fd == -1) {
-		ERROR(0, "cannot connect to switch");
-	}
-	
 	return 0;
 }
 
