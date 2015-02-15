@@ -83,13 +83,13 @@ int main(int argc, char* argv[])
 
 	int i = 0;
 	for (; i < setting.worknum; i++) { //创建子进程用于处理父进程的逻辑
-		master_recv_pipe_create(i);
+		master_recv_pipe_create(i); //创建父进程通知子进程管道
 		int pid = fork();
 		if (pid < 0) {
 			ERROR(0, "create work fail[%d][%s]", i, strerror(errno));
 			goto fail;	
 		} else if (pid == 0) { //child
-			int ret = work_init(i);
+			int ret = work_init(i); //初始化子进程
 			if (ret == -1) {
 				ERROR(0, "err work init [%s]", strerror(errno));
 				exit(0);

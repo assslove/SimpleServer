@@ -255,7 +255,8 @@ push_again:
 	if (buff->rlen >= buff->msglen) {
 		mem_block_t blk;		
 		raw2blk(fd, &blk);
-		if (mq_push(&workmgr.works[epinfo.fds[fd].idx].rq, &blk, tmp_ptr)) { //push error if close cli fd return -1 or 0
+		if (mq_push(&epinfo.msgq.rq, &blk, tmp_ptr, \
+					workmgr.works[++epinfo.msg_size % setting.worknum].recv_pipefd[1])) { //push error if close cli fd return -1 or 0
 			ERROR(0, "mq is full, push failed [fd=%d]", fd);
 			return -1;
 		}
@@ -326,16 +327,18 @@ int do_fd_open(int fd)
 						cliaddr.sin_addr.s_addr, cliaddr.sin_port)) == -1) {
 			return 0;
 		}
+		
+		DEBUG(0, "recv listen [fd=%u]", fd);
+		//由于只有一个监听，所以不需要通知主进程 子进程只负责处理
+		//mem_block_t blk;
+		//blk.id = epinfo.fds[newfd].idx;
+		//blk.fd = newfd;
+		//blk.type = BLK_OPEN;
+		//blk.len = blk_head_len + sizeof(fd_addr_t);
 
-		mem_block_t blk;
-		blk.id = epinfo.fds[newfd].idx;
-		blk.fd = newfd;
-		blk.type = BLK_OPEN;
-		blk.len = blk_head_len + sizeof(fd_addr_t);
-
-		if ((mq_push(&workmgr.works[blk.id].rq, &blk, &epinfo.fds[newfd].addr)) == -1) {
-			do_fd_close(fd, 2); //不需要通知客户端 
-		}
+		//if ((mq_push(&workmgr.works[blk.id].rq, &blk, &epinfo.fds[newfd].addr)) == -1) {
+			//do_fd_close(fd, 2); //不需要通知客户端 
+		//}
 	}  
 
 	return newfd;

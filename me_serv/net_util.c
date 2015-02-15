@@ -500,10 +500,10 @@ void do_del_from_closelist(int fd)
 int handle_read(int fd)
 {
 #ifdef ENABLE_TRACE
-	TRACE(0, "%s", __func__);
+	TRACE(0, "%s begin", __func__);
 #endif
 	fd_buff_t *buff = &epinfo.fds[fd].buff;
-	if (!buff->rbf) {
+	if (!buff->rbf) { //申请接收缓存区空间
 		buff->msglen = 0;
 		buff->rlen = 0;
 		buff->rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 

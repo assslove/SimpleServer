@@ -101,6 +101,7 @@ typedef struct epoll_info {
 	int maxev;
 	uint32_t seq; 
 	uint32_t count;
+	uint32_t msg_size;		//已收到消息个数
 	list_head_t readlist;   //待读取链表
 	list_head_t closelist;  //待关闭链表
 	msg_queue_t msgq;		//读写消息队列

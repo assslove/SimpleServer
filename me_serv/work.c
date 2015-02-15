@@ -33,20 +33,22 @@ int work_init(int i)
 {
 	log_fini();
 	//log init
-	char pre_buf[16] = {'\0'};
-	sprintf(pre_buf, "%d", workmgr.works[i].id);
-	if (log_init("log", LOG_LV_TRACE, 10240000, 100000, pre_buf) == -1) {
-		fprintf(stderr, "初始化日志失败");
+	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, "1") == -1) {
+		fprintf(stderr, "init log failed\n");
 		return 0;
 	}
 
 	work_t *work = &workmgr.works[i];
 	//chg title
-	chg_proc_title("%s-%d", setting.srv_name, work->id);
+	chg_proc_title("%s-WORK-%d", setting.srv_name, work->id);
 	//release master resource
-	close(epinfo.epfd);
 	free(epinfo.evs);
+	free(epinfo.fds);
+	close(epinfo.epfd);
 	
+	//子进程epinfo主要用于接收父进程的管道通知
+	setting.nr_max_event = 20;
+	setting.nr_max_fd = 20;
 	epinfo.epfd = epoll_create(setting.nr_max_event);
 	if (epinfo.epfd == -1) {
 		ERROR(0, "create epfd error: %s", strerror(errno));
@@ -64,18 +66,20 @@ int work_init(int i)
 		ERROR(0, "create epoll fds error: %s", strerror(errno));
 		return -1;
 	}
-	
+
+	if ((ret = add_fdinfo_to_epinfo(workmgr.works[i].recv_pipefd[0], i, fd_type_pipe, 0, 0)) == -1) {  //用于接收主进程的读取
+		return -1;
+	} 
+
 	//close mem_queue pipe
+	close(epinfo.msgq.rq.recv_pipefd[1]); //关闭读取队列的写管道
 	int k = 0;
 	for (; k < workmgr.nr_used; k++) {
 		if (k == i) {
-			close(work->rq.pipefd[1]);
-			close(work->sq.pipefd[0]);
+			close(work->send_pipefd[0]); //关闭发送队列的读端
 		} else { //其它都关闭
-			close(workmgr.works[k].rq.pipefd[0]);
-			close(workmgr.works[k].rq.pipefd[1]);
-			close(workmgr.works[k].sq.pipefd[0]);
-			close(workmgr.works[k].sq.pipefd[1]);
+			close(workmgr.works[k].send_pipefd[0]);
+			close(workmgr.works[k].send_pipefd[1]);
 		}
 	}
 
@@ -83,10 +87,8 @@ int work_init(int i)
 	init_fds();
 
 	stop = 0;
-	//清楚chl_pids;
+	//清除chl_pids;
 	memset(chl_pids, 0, sizeof(chl_pids));
-	//初始化log
-	sprintf(log_file, "log/%s_%d.log", setting.srv_name, work->id);
 	
 	//初始化子进程
 	if (so.serv_init && so.serv_init(0)) {
@@ -195,8 +197,8 @@ int work_fini(int i)
 
 int handle_mq_recv(int i)
 {
-	mem_queue_t *recvq = &workmgr.works[i].rq;
-	mem_queue_t *sendq = &workmgr.works[i].sq;
+	static mem_queue_t *recvq = &epinfo.msgq.rq;
+	static mem_queue_t *sendq = &epinfo.msgq.sq;
 	mem_block_t *tmpblk;
 
 	while ((tmpblk = mq_get(recvq)) != NULL) {
@@ -215,7 +217,6 @@ int handle_mq_recv(int i)
 				do_blk_close(tmpblk); //处理关闭
 				break;
 		}
-		mq_pop(recvq);
 	}
 	return 0;
 }
