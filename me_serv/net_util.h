@@ -40,17 +40,17 @@ enum fd_type {
 
 /* @brief 父子进程共享结构
  */
-typedef struct msg_pipe {
+typedef struct msg_queue {
 	mem_queue_t rq;			//接收队列
 	mem_queue_t sq;			//发送队列
 	int send_pipefd[2];		//消息发送通知管道 多个子进程共享管道
-} __attribute__((packed)) msg_pipe_t;
+} __attribute__((packed)) msg_queue_t;
 
 /* @brief 工作进程配置项
  */
 typedef struct work {
 	int recv_pipefd[2];  //消息接收通知管道 每个子进程都拥有一个
-	uint8_t id;			 //子进程编号
+	uint8_t id;			 //子进程编号 从0开始 依次命名
 }__attribute__((packed)) work_t;
 
 /* @brief work配置项
@@ -101,8 +101,9 @@ typedef struct epoll_info {
 	int maxev;
 	uint32_t seq; 
 	uint32_t count;
-	list_head_t readlist; //待读取链表
-	list_head_t closelist; //待关闭链表
+	list_head_t readlist;   //待读取链表
+	list_head_t closelist;  //待关闭链表
+	msg_queue_t msgq;		//读写消息队列
 }__attribute__((packed)) epoll_info_t;
 
 typedef struct svr_setting {
@@ -121,8 +122,10 @@ typedef struct svr_setting {
 	uint32_t log_maxfiles; //最大日志文件个数
 	uint32_t log_size;	//日志个数
 	char log_dir[32];	//日志目录
-	uint32_t bind_ip;	//ip
+	char bind_ip[17];	//ip
 	uint16_t bind_port; //port
+	char recv_semname[32];	//接收队列信号量
+	char send_semname[32];	//发送队列信号量
 } svr_setting_t;
 
 /*	

@@ -4,7 +4,7 @@
  *       Filename:  me_serv.c
  *
  *    Description:  me_serv
- *					muti process
+ *					muti process one parent multi child
  *					provide some interface for man
  *
  *        Version:  1.0
@@ -31,10 +31,11 @@
 #include <sys/mman.h>
 #include <arpa/inet.h>
 
+#include <libnanc/log.h>
+#include <libnanc/conf.h>
+
 #include "net_util.h"
 #include "mem_queue.h"
-#include "log.h"
-#include "conf.h"
 #include "global.h"
 #include "util.h"
 #include "master.h"
@@ -44,13 +45,19 @@ int main(int argc, char* argv[])
 {	
 	int ret;
 	//load conf
-	if ((ret = load_conf()) == -1) {
+	if ((ret = load_conf("me.conf")) == -1) {
+		sprintf(stderr, "load me conf faild\n");
+		return 0;
+	}
+	//初始化配置信息
+	if (init_setting() == -1) {
+		sprintf("init meserv conf failed \n");
 		return 0;
 	}
 
 	//log init
 	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, "0") == -1) {
-		fprintf(stderr, "初始化日志失败");
+		fprintf(stderr, "init log failed");
 		return 0;
 	}
 
@@ -58,11 +65,6 @@ int main(int argc, char* argv[])
 	init_rlimit();
 	//save args
 	save_args(argc, argv);
-	//初始化配置信息
-	ret = init_setting();
-	if (ret == -1) {
-		return 0;
-	}
 	//chg serv name
 	chg_proc_title(setting.srv_name);
 	//daemon mode
@@ -80,11 +82,8 @@ int main(int argc, char* argv[])
 	}
 
 	int i = 0;
-	for (; i < workmgr.nr_used; i++) {
-		ret = master_mq_create(i);
-		if (ret == -1) {
-			return 0;
-		}
+	for (; i < setting.worknum; i++) { //创建子进程用于处理父进程的逻辑
+		master_recv_pipe_create(i);
 		int pid = fork();
 		if (pid < 0) {
 			ERROR(0, "create work fail[%d][%s]", i, strerror(errno));
@@ -99,13 +98,14 @@ int main(int argc, char* argv[])
 			work_fini(i);
 			exit(0);
 		} else { //parent
-			ret = master_listen(i);
-			if (ret == -1) {
-				ERROR(0, "%s", strerror(errno));
-				goto fail;
-			}
 			chl_pids[i] = pid;
 		}
+	}
+	//只有一个监听 用于负责读取与发送数据
+	ret = master_listen();
+	if (ret == -1) {
+		ERROR(0, "%s", strerror(errno));
+		goto fail;
 	}
 
 	BOOT(0, "%s have started", setting.srv_name);

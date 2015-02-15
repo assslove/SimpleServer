@@ -66,7 +66,12 @@ int mq_fini(mem_queue_t *q, int size, const char* semname)
 
 mem_block_t *mq_pop(mem_queue_t *q)
 {
-	static mem_block_t *blk = NULL;
+	static mem_block_t *blk = (mem_block_t *)malloc(setting.max_msg_len);
+	if (unlikely(!blk)) {
+		ERROR(0, "pop blk is null");
+		return NULL;
+	}
+
 	static mem_block_t *ptr = q;
 	safe_semwait(q->sem);
 pop_again:
@@ -100,12 +105,12 @@ pop_fail:
 #endif
 	safe_sempost(q->sem);
 	return NULL;
-pop_succ:
 
+pop_succ:
 #ifdef ENABLE_TRACE
 	mq_display(q);
 #endif
-	blk = blk_tail(q);
+	memcpy(blk, blk_tail(q), blk->len);
 	ptr->tail += blk->len;
 	--ptr->blk_cnt;
 	safe_sempost(q->sem);

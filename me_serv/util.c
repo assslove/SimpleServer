@@ -26,7 +26,7 @@ int init_rlimit()
 {
 	struct rlimit rlim;
 	rlim.rlim_cur = rlim.rlim_max = RLIM_INFINITY;
-	setrlimit(RLIMIT_CORE, &rlim);
+	setrlimit(RLIMIT_CORE, &rlim); //设置core文件大小无穷大
 	return 0;
 }
 

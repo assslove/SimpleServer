@@ -77,61 +77,65 @@ int master_init()
 
 	reg_data_so(setting.data_so);
 
-	//初始化log
-	sprintf(log_file, "log/%s.log", setting.srv_name);
+	//msg_queue init
+	msg_queue_t *msgq = &epinfo.msgq;
+	if ((ret = mq_init(&(msgq->rq), setting.mem_queue_len, MEM_TYPE_RECV)) == -1) {
+		ERROR(0, "init rq fail");
+		return -1;
+	}
+	//发送队列
+	if ((ret = mq_init(&(msg->sq), setting.mem_queue_len, MEM_TYPE_SEND)) == -1) {
+		ERROR(0, "init wq fail");
+		return -1;
+	}
+
+	//初始化发送队列通知管道
+	pipe(msgq->send_pipefd);
+	if ((ret = add_fdinfo_to_epinfo(msgq->send_pipefd[0], i, fd_type_pipe, 0, 0)) == -1) {  //用于接收子进程的读取
+		return -1;
+	} 
+
+	//初始化变量信息
+	workmgr.nr_used = setting.worknum;
 	return 0;
 }
 
-int master_listen(int i)
+int master_listen()
 {
-	work_t *work = &workmgr.works[i];
-	int listenfd = safe_socket_listen(work->ip, work->port, SOCK_STREAM, 1024, setting.raw_buf_len);
+	int listenfd = safe_socket_listen(setting->bind_ip, setting->bind_port, SOCK_STREAM, 1024, setting.raw_buf_len);
 	if (listenfd == -1) {
 		ERROR(0, "listen error[i][%s]", i, strerror(errno));
 		return -1;
 	}
 
 	int ret = 0;
-	if ((ret = add_fdinfo_to_epinfo(listenfd, i, fd_type_listen, inet_addr(work->ip), work->port)) == -1) {
+	if ((ret = add_fdinfo_to_epinfo(listenfd, i, fd_type_listen, inet_addr(setting.bind_ip), setting->bind_port)) == -1) {
 		return -1;
 	}
 	//close pipe
-	close(work->rq.pipefd[0]); //接收管道关闭读
-	close(work->sq.pipefd[1]); //发送管理关闭写
+	close(epinfo->msgq.sq.pipefd[1]); //主进程发送管道关闭写 等待子进程写
+	int i = 0;
+	for (; i < setting.worknum; ++i) {
+		work_t *work = &workmgr.works[i];
+		close(work->recv_pipefd[0]); //接收管道关闭读 主要用于写，通知子进程
+	}
 
-	if (so.serv_init && so.serv_init(1)) {
+	if (so.serv_init && so.serv_init(1)) { //主进程初始化
 		ERROR(0, "parent serv init failed");
 		return -1;
 	}
 
-	INFO(0, "serv [%d] have listened", work->id);
+	INFO(0, "master have listened [%s:%d]", setting.bind_ip, setting.bind_port);
 
 	return 0;
 }
 
 
-int master_mq_create(int i) 
+int master_recv_pipe_create(int i) 
 {
 	work_t *work = &workmgr.works[i];
-	int ret;
-	//mem_queue init
-	if ((ret = mq_init(&(work->rq), setting.mem_queue_len, MEM_TYPE_RECV)) == -1) {
-		ERROR(0, "init rq fail");
-		return -1;
-	}
-
-	if ((ret = mq_init(&(work->sq), setting.mem_queue_len, MEM_TYPE_SEND)) == -1) {
-		ERROR(0, "init wq fail");
-		return -1;
-	}
-
-	if ((ret = add_fdinfo_to_epinfo(work->rq.pipefd[1], i, fd_type_pipe, 0, 0)) == -1) {
-		return -1;
-	}
-
-	if ((ret = add_fdinfo_to_epinfo(work->sq.pipefd[0], i, fd_type_pipe, 0, 0)) == -1) { 
-		return -1;
-	} 
+	work->id = i; //编号从0开始
+	pipe(work->recv_pipefd);
 	return 0;
 }
 
@@ -157,10 +161,10 @@ int master_dispatch()
 		for (i = 0; i < n; i++) {
 			fd = epinfo.evs[i].data.fd;
 			//判断异常状态
-			//if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
-				//ERROR(0, "master wait failed fd=%d", fd);
-				//continue;
-			//}
+			if (fd > epinfo.maxfd || epinfo.fds[fd].fd != fd) {
+				ERROR(0, "master wait failed fd=%d", fd);
+				continue;
+			}
 
 			if (epinfo.evs[i].events & EPOLLIN) { // read
 				switch (epinfo.fds[fd].type) {
@@ -201,15 +205,18 @@ int master_dispatch()
 
 int master_fini()
 {
-	if (so.serv_fini && so.serv_fini(1)) {
+	if (so.serv_fini && so.serv_fini(1)) { //主进程清理资源
 		ERROR(0, "child serv fini failed");
 	}
 
+	mq_fini(&(epinfo.msgq->rq), setting.mem_queue_len);
+	mq_fini(&(epinfo.msgq->sq), setting.mem_queue_len);
+	close(epinfo.msgq.send_pipefd[0]);
+
 	int i = 0;
-	for (; i < workmgr.nr_used; ++i) {
+	for (; i < workmgr.nr_used; ++i) { //关闭管道
 		work_t *work = &workmgr.works[i];
-		mq_fini(&work->rq, setting.mem_queue_len);
-		mq_fini(&work->sq, setting.mem_queue_len);
+		close(work->recv_pipefd[1]);
 	}
 
 	for (i = 0; i < epinfo.maxfd; ++i) {
@@ -281,7 +288,7 @@ int handle_pipe(fd)
 			ERROR(0, "mmap error");
 			return -1;
 		}
-	
+
 	}
 	read(fd, epinfo.fds[fd].buff.rbf, setting.max_msg_len);
 	return 0;
@@ -290,16 +297,9 @@ int handle_pipe(fd)
 
 void handle_mq_send()
 {
-	mem_queue_t *tmpq;	
-	mem_block_t *tmpblk;
-
-	int i = 0;
-	for ( ; i < workmgr.nr_used; ++i) {
-		tmpq = &workmgr.works[i].sq;
-		while ((tmpblk = mq_get(tmpq)) != NULL) { //获取消息
-			do_blk_send(tmpblk);
-			mq_pop(tmpq); //删除	
-		}
+	mem_block_t *tmpblk = NULL;
+	while ((tmpblk = mq_pop(&epinfo.msgq.sq)) != NULL) { //获取块
+		do_blk_send(tmpblk); //发送块
 	}
 }
 
@@ -356,47 +356,45 @@ int init_setting()
 	setting.raw_buf_len = conf_get_int("raw_buf_len");
 
 	const char *data_so = conf_get_str("data_so");
+	setting.data_so = NULL;
 	if (data_so != NULL) {
 		memcpy(setting.data_so, data_so, sizeof(setting.data_so));
 	}
 
 	const char *text_so = conf_get_str("text_so");
 	if (text_so == NULL) {
-		ERROR(0, "load text_so error");
+		fprintf(stderr, "load text_so error\n");
 		return -1;
 	}
-
 	memcpy(setting.text_so, text_so, sizeof(setting.text_so));
-	return 0;
-}
 
+	setting.worknum = conf_get_int("work_num");
+	setting.log_level = conf_get_int("log_level");
+	setting.log_maxfiles = conf_get_int("log_maxfiles");
+	setting.log_dir = conf_get_int("log_dir");
+	setting.log_size = conf_get_int("log_size");
 
-int master_init_for_work(int id) 
-{
-	int ret;
-	ret = mq_init(&workmgr.works[id].sq, setting.mem_queue_len, MEM_TYPE_RECV);
-	if (ret == -1) {
-		ERROR(0, "map sendq failed[id=%d,err=%s]", id, strerror(errno));
+	const char* bind_ip = conf_get_str("bind_ip");
+	if (bind_ip == NULL) {
+		fprintf(stderr, "load bind ip failed \n");
 		return -1;
 	}
+	memcpy(setting.bind_ip, bind_ip, sizeof(setting.bind_ip));
 
-	ret = mq_init(&workmgr.works[id].rq, setting.mem_queue_len, MEM_TYPE_SEND);
-	if (ret == -1) {
-		ERROR(0, "map recvq failed[id=%d,err=%s]", id, strerror(errno));
+	setting.bind_port = conf_get_int("bind_port");
+	const char* recv_semname = conf_get_str("recv_semname");
+	if (recv_semname == NULL) {
+		fprintf(stderr, "recv sem read error\n");
 		return -1;
 	}
+	memcpy(setting.recv_semname, recv_semname, sizeof(setting,recv_semname));
 
-	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) { //发送队列关闭写管道
-		return -1;
-	} 
-
-	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].rq.pipefd[1], id, fd_type_pipe, 0, 0)) == -1) { //接收队列关闭读管道
+	const char* send_semname = conf_get_str("send_semname");
+	if (send_semname == NULL) {
+		fprintf(stderr, "send sem read error\n");
 		return -1;
 	}
-
-	//close unused pipefd
-	close(workmgr.works[id].sq.pipefd[1]);
-	close(workmgr.works[id].rq.pipefd[0]);
+	memcpy(setting.send_semname, send_semname, sizeof(setting,send_semname));
 
 	return 0;
 }

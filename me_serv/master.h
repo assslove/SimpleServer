@@ -8,11 +8,14 @@ struct mem_block;
  */
 int master_init();
 
-/* @brief 
+/* @brief  负责主进程读取网络数据 或者将发送管理数据发送给具体的子进程
  */
-int master_listen(int i);
+int master_listen();
 
-int master_mq_create(int i); 
+/* @brief 主进程通知子进程的管道
+ * @note 接收消息按照一定规则来通知
+ */
+int master_recv_pipe_create(int i); 
 
 /* @brief 
  */
@@ -50,10 +53,6 @@ int do_fd_open(int fd);
 /* @brief 初始化配置信息
  */
 int init_setting();
-
-/* @brief master为work进程初始化 用于通信
- */
-int master_init_for_work(int id);
 
 /* @brief  将消息转化为blk
  */
