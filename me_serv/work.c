@@ -67,7 +67,7 @@ int work_init(int i)
 		return -1;
 	}
 
-	if ((ret = add_fdinfo_to_epinfo(workmgr.works[i].recv_pipefd[0], i, fd_type_pipe, 0, 0)) == -1) {  //用于接收主进程的读取
+	if ((ret = add_fdinfo_to_epinfo(epinfo.msgq.rq.recv_pipefd[0], i, fd_type_pipe, 0, 0)) == -1) {  //用于接收主进程的读取
 		return -1;
 	} 
 
@@ -180,17 +180,15 @@ int work_fini(int i)
 		ERROR(0, "child serv fini failed");
 	}
 
-	work_t *work = &workmgr.works[i];
-	mq_fini(&(work->rq), setting.mem_queue_len);
-	mq_fini(&(work->sq), setting.mem_queue_len);
-
 	free(epinfo.evs);
 	free(epinfo.fds);
 	close(epinfo.epfd);
 
+	close(epinfo.msgq.rq.recv_pipefd[0]);
+	
+	log_fini();
 	DEBUG(0, "work serv [id=%d] have stopped!", work->id);
 
-	log_fini();
 
 	return 0;	
 }

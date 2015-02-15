@@ -230,6 +230,8 @@ int master_fini()
 	free(epinfo.fds);
 	close(epinfo.epfd);
 
+	log_fini();
+
 	DEBUG(0, "master serv have stopped!");
 
 	return 0;	
