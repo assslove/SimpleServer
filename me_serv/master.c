@@ -32,15 +32,16 @@
 
 #include <glib.h>
 
+#include <libnanc/log.h>
+#include <libnanc/conf.h>
+#include <libnanc/list.h>
+
 #include "global.h"
 #include "master.h"
-#include "log.h"
-#include "list.h"
 #include "mem_queue.h"
 #include "net_util.h"
 #include "util.h"
 #include "outer.h"
-#include "conf.h"
 #include "work.h"
 
 
@@ -79,41 +80,41 @@ int master_init()
 
 	//msg_queue init
 	msg_queue_t *msgq = &epinfo.msgq;
-	if ((ret = mq_init(&(msgq->rq), setting.mem_queue_len, MEM_TYPE_RECV)) == -1) {
+	if ((ret = mq_init(&(msgq->rq), setting.mem_queue_len, MEM_TYPE_RECV, setting.recv_semname)) == -1) {
 		ERROR(0, "init rq fail");
 		return -1;
 	}
 	//发送队列
-	if ((ret = mq_init(&(msg->sq), setting.mem_queue_len, MEM_TYPE_SEND)) == -1) {
+	if ((ret = mq_init(&(msgq->sq), setting.mem_queue_len, MEM_TYPE_SEND, setting.send_semname) == -1)) {
 		ERROR(0, "init wq fail");
 		return -1;
 	}
 
 	//初始化发送队列通知管道
 	pipe(msgq->send_pipefd);
-	if ((ret = add_fdinfo_to_epinfo(msgq->send_pipefd[0], i, fd_type_pipe, 0, 0)) == -1) {  //用于接收子进程的读取
+	if ((ret = add_fdinfo_to_epinfo(msgq->send_pipefd[0], 0, fd_type_pipe, 0, 0)) == -1) {  //用于接收子进程的读取
 		return -1;
 	} 
 
 	//初始化变量信息
-	workmgr.nr_used = setting.worknum;
+	workmgr.nr_work = setting.worknum;
 	return 0;
 }
 
 int master_listen()
 {
-	int listenfd = safe_socket_listen(setting->bind_ip, setting->bind_port, SOCK_STREAM, 1024, setting.raw_buf_len);
+	int listenfd = safe_socket_listen(setting.bind_ip, setting.bind_port, SOCK_STREAM, 1024, setting.raw_buf_len);
 	if (listenfd == -1) {
-		ERROR(0, "listen error[i][%s]", i, strerror(errno));
+		ERROR(0, "listen error[%s]", strerror(errno));
 		return -1;
 	}
 
 	int ret = 0;
-	if ((ret = add_fdinfo_to_epinfo(listenfd, i, fd_type_listen, inet_addr(setting.bind_ip), setting->bind_port)) == -1) {
+	if ((ret = add_fdinfo_to_epinfo(listenfd, 0, fd_type_listen, inet_addr(setting.bind_ip), setting.bind_port)) == -1) {
 		return -1;
 	}
 	//close pipe
-	close(epinfo->msgq.sq.pipefd[1]); //主进程发送管道关闭写 等待子进程写
+	close(epinfo.msgq.send_pipefd[1]); //主进程发送管道关闭写 等待子进程写
 	int i = 0;
 	for (; i < setting.worknum; ++i) {
 		work_t *work = &workmgr.works[i];
@@ -209,12 +210,12 @@ int master_fini()
 		ERROR(0, "child serv fini failed");
 	}
 
-	mq_fini(&(epinfo.msgq->rq), setting.mem_queue_len);
-	mq_fini(&(epinfo.msgq->sq), setting.mem_queue_len);
+	mq_fini(&(epinfo.msgq.rq), setting.mem_queue_len, setting.recv_semname);
+	mq_fini(&(epinfo.msgq.sq), setting.mem_queue_len, setting.send_semname);
 	close(epinfo.msgq.send_pipefd[0]);
 
 	int i = 0;
-	for (; i < workmgr.nr_used; ++i) { //关闭管道
+	for (; i < workmgr.nr_work; ++i) { //关闭管道
 		work_t *work = &workmgr.works[i];
 		close(work->recv_pipefd[1]);
 	}
@@ -361,7 +362,7 @@ int init_setting()
 	setting.raw_buf_len = conf_get_int("raw_buf_len");
 
 	const char *data_so = conf_get_str("data_so");
-	setting.data_so = NULL;
+	memset(setting.data_so, 0, sizeof(setting.data_so));
 	if (data_so != NULL) {
 		memcpy(setting.data_so, data_so, sizeof(setting.data_so));
 	}
@@ -376,7 +377,12 @@ int init_setting()
 	setting.worknum = conf_get_int("work_num");
 	setting.log_level = conf_get_int("log_level");
 	setting.log_maxfiles = conf_get_int("log_maxfiles");
-	setting.log_dir = conf_get_int("log_dir");
+	const char* log_dir = conf_get_str("log_dir");
+	if (log_dir == NULL) {
+		BOOT(0, "log dir error\n");
+		return -1;
+	}
+	strcpy(setting.log_dir, log_dir);
 	setting.log_size = conf_get_int("log_size");
 
 	const char* bind_ip = conf_get_str("bind_ip");
@@ -392,21 +398,21 @@ int init_setting()
 		fprintf(stderr, "recv sem read error\n");
 		return -1;
 	}
-	memcpy(setting.recv_semname, recv_semname, sizeof(setting,recv_semname));
+	memcpy(setting.recv_semname, recv_semname, sizeof(setting.recv_semname));
 
 	const char* send_semname = conf_get_str("send_semname");
 	if (send_semname == NULL) {
 		fprintf(stderr, "send sem read error\n");
 		return -1;
 	}
-	memcpy(setting.send_semname, send_semname, sizeof(setting,send_semname));
+	memcpy(setting.send_semname, send_semname, sizeof(setting.send_semname));
 
 	return 0;
 }
 
 void raw2blk(int fd, mem_block_t *blk)
 {
-	blk->id = epinfo.fds[fd].idx;
+	//blk->id = epinfo.fds[fd].idx;
 	blk->len = epinfo.fds[fd].buff.msglen + blk_head_len;
 	blk->fd = fd;
 	blk->type = BLK_DATA;
@@ -418,7 +424,7 @@ void handle_sigchld(int signo)
 	while ((pid = waitpid(-1, &status, WNOHANG)) > 0) { //回收僵尸进程, 如果没有hang 立即返回
 		ERROR(0, "%d have stop", pid);
 		int i;
-		for (i = 0; i < workmgr.nr_used; i++) { //清零
+		for (i = 0; i < workmgr.nr_work; i++) { //清零
 			if (chl_pids[i] == pid) {
 				chl_pids[i] = 0;
 				break;
@@ -446,7 +452,7 @@ void handle_term(int signo)
 	int ppid = getpid();
 	int isparent = 1;
 	int i;	
-	for (i = 0; i < workmgr.nr_used; i++) {
+	for (i = 0; i < workmgr.nr_work; i++) {
 		if (chl_pids[i] == ppid) {
 			isparent = 0;
 			break;
@@ -455,7 +461,7 @@ void handle_term(int signo)
 	
 	if (isparent) {
 		stop = 1; //终止主进程
-		for (i = 0; i < workmgr.nr_used; i++) { //终止子进程
+		for (i = 0; i < workmgr.nr_work; i++) { //终止子进程
 			if (chl_pids[i]) {
 				chl_pids[i] = 0;
 				kill(chl_pids[i], signo);
@@ -470,17 +476,7 @@ void handle_hup(int fd)
 	int idx = epinfo.fds[fd].idx;
 	ERROR(0, "fd have closed [fd=%d,servid=%d]", fd, workmgr.works[idx].id);
 
-	//释放资源
 	work_t *work = &workmgr.works[idx];
-	mq_fini(&work->rq, setting.mem_queue_len);
-	mq_fini(&work->sq, setting.mem_queue_len);
-
-	//创建共享内存
-	int ret = master_mq_create(idx);
-	if (ret == -1) {
-		ERROR(0, "err create mq");
-		return ;
-	}
 	//重启子进程
 	int pid = fork();
 	if (pid < 0) { //

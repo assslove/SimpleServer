@@ -2,7 +2,7 @@
 #
 
 INSTALL_DIR = /usr/local/include/meserv
-CFLAGS =  -g -Wall -Wunused-function -lpthread -ldl -DENABLE_TRACE
+CFLAGS =  -g -Wall -Wunused-function -lpthread -ldl -DENABLE_TRACE -I/usr/include/libnanc -L/usr/lib/libnanc -lnanc
 LIBS = `pkg-config --cflags --libs glib-2.0`
 SRCS = $(wildcard *.c)
 OBJS = $(patsubst %.c, %.o, $(SRCS))
@@ -16,11 +16,9 @@ meserv : $(OBJS)
 	gcc $(CFLAGS) $(LIBS) -c  $< -o $@
 
 clean:
-	-rm $(OBJECTS) meserv
+	-rm -f $(OBJECTS) meserv
 
 install:
-	sudo cp -r libnanc.a /usr/local/lib
-	sudo cp -r libnanc.so /usr/local/lib
 	sudo rm -rf $(INSTALL_DIR)
 	sudo mkdir $(INSTALL_DIR)
 	sudo cp -r *.h $(INSTALL_DIR) 

@@ -20,11 +20,12 @@
 #include <sys/epoll.h>
 #include <malloc.h>
 
+#include <libnanc/log.h>
+
 #include "net_util.h"
 #include "util.h"
 #include "global.h"
 #include "work.h"
-#include "log.h"
 #include "outer.h"
 #include "fds.h"
 #include "mem_queue.h"
@@ -74,7 +75,7 @@ int work_init(int i)
 	//close mem_queue pipe
 	close(epinfo.msgq.rq.recv_pipefd[1]); //关闭读取队列的写管道
 	int k = 0;
-	for (; k < workmgr.nr_used; k++) {
+	for (; k < workmgr.nr_work; k++) {
 		if (k == i) {
 			close(work->send_pipefd[0]); //关闭发送队列的读端
 		} else { //其它都关闭

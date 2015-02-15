@@ -19,8 +19,9 @@
 #include <fcntl.h>
 #include <sys/prctl.h>
 
+#include <libnanc/log.h>
+
 #include "util.h"
-#include "log.h"
 
 int init_rlimit()
 {

@@ -17,11 +17,12 @@
  */
 
 
+#include <libnanc/list.h>
+
 #include "global.h"
 #include "fds.h"
 #include "net_util.h"
 #include "master.h"
-#include "list.h"
 #include "outer.h"
 
 

@@ -7,8 +7,9 @@
 #include <sys/epoll.h>
 #include <stdint.h>
 
+#include <libnanc/list.h>
+
 #include "mem_queue.h"
-#include "list.h"
 
 struct fdsess;
 

@@ -2,7 +2,7 @@
 #define MEM_QUEUE_H_
 
 #include <stdint.h>
-#include <semphore.h>
+#include <semaphore.h>
 
 /* @brief 内存块类型
  */
@@ -40,7 +40,7 @@ typedef struct mem_queue {
 /* @brief 内存块信息
  */
 typedef struct mem_block {
-	//int id;					//不需要，由于只有两个共享队列，不用管到底放在那个
+	int id;					//不需要，由于只有两个共享队列，不用管到底放在那个
 	int fd;					//fd
 	int len;				//长度
 	uint8_t type;			//类型
