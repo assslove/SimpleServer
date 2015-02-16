@@ -99,6 +99,8 @@ int master_init()
 	//初始化变量信息
 	workmgr.nr_work = setting.worknum;
 	workmgr.works = (work_t *)malloc(sizeof(work_t) * workmgr.nr_work);
+
+	epinfo.msg_size = 0;
 	return 0;
 }
 
@@ -257,7 +259,7 @@ push_again:
 
 	//push
 	if (buff->rlen >= buff->msglen) {
-		mem_block_t blk;		
+		static mem_block_t blk;		
 		raw2blk(fd, &blk);
 		if (mq_push(&epinfo.msgq.rq, &blk, tmp_ptr, \
 					workmgr.works[++epinfo.msg_size % setting.worknum].recv_pipefd[1])) { //push error if close cli fd return -1 or 0
@@ -321,6 +323,8 @@ int do_blk_send(mem_block_t *blk)
 
 
 
+/* @brief 由于只有一个监听，所以不需要通知子进程，由父进程负责监听与fd管理,子进程只负责业务逻辑处理
+ */
 int do_fd_open(int fd) 
 {
 	struct sockaddr_in cliaddr;
@@ -333,7 +337,6 @@ int do_fd_open(int fd)
 		}
 		
 		DEBUG(0, "recv listen [fd=%u]", fd);
-		//由于只有一个监听，所以不需要通知主进程 子进程只负责处理
 		//mem_block_t blk;
 		//blk.id = epinfo.fds[newfd].idx;
 		//blk.fd = newfd;
@@ -413,7 +416,7 @@ int init_setting()
 
 void raw2blk(int fd, mem_block_t *blk)
 {
-	//blk->id = epinfo.fds[fd].idx;
+//	blk->id = epinfo.fds[fd].idx;
 	blk->len = epinfo.fds[fd].buff.msglen + blk_head_len;
 	blk->fd = fd;
 	blk->type = BLK_DATA;

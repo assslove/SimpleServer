@@ -9,7 +9,7 @@
  */
 typedef struct fdsess {
 	int fd;
-	int id; //work idx
+//	int id; //work idx
 	int ip;
 	int port;
 } fdsess_t;

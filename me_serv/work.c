@@ -33,8 +33,10 @@
 int work_init(int i)
 {
 	log_fini();
+	char buf[10] = {'\0'};
+	sprintf(buf, "%02d", i);
 	//log init
-	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, "1") == -1) {
+	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, buf) == -1) {
 		fprintf(stderr, "init log failed\n");
 		return 0;
 	}
@@ -116,7 +118,7 @@ int work_dispatch(int i)
 	int k = 0;
 	int fd = 0;
 	while (!stop) {
-		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
+		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 2000);
 		if (nr == -1 && errno != EINTR) {
 			ERROR(0, "epoll wait [id=%d,err=%s]", i, strerror(errno));
 			return 0;
@@ -133,6 +135,7 @@ int work_dispatch(int i)
 				switch (epinfo.fds[fd].type) {
 					case fd_type_pipe:
 						do_proc_pipe(fd);
+						INFO(0, "wait event [fd=%d,events=%d,pipe]", fd, epinfo.evs[k].events);
 						break;
 					case fd_type_svr:
 						if (do_proc_svr(fd) == -1) {
@@ -165,7 +168,9 @@ int work_dispatch(int i)
 		}
 
 		//handle memqueue read
-		handle_mq_recv(i);	
+		if (nr) { //有事件触发读取收队列事件
+			handle_mq_recv(i);	
+		}
 		//handle timer callback
 		if (so.handle_timer) {
 			so.handle_timer();
@@ -226,13 +231,13 @@ int do_blk_msg(mem_block_t *blk)
 		return 0;
 	}
 
-	fdsess_t *fdsess = get_fd(blk->fd);
-	if (fdsess) {
-		if (so.proc_cli_msg(blk->data, blk->len - blk_head_len, fdsess)) {
-			close_cli(blk->fd); //断开连接
-		}
-	}
-	return 0;
+	//fdsess_t *fdsess = get_fd(blk->fd);
+	//if (fdsess) {
+	//if (so.proc_cli_msg(blk->data, blk->len - blk_head_len, fdsess)) { //处理客户端消息
+	//close_cli(blk->fd); //断开连接
+	//}
+	//}
+	return so.proc_cli_msg(blk->data, blk->len - blk_head_len, blk->fd);
 }
 
 int do_blk_open(mem_block_t *blk)
@@ -244,7 +249,7 @@ int do_blk_open(mem_block_t *blk)
 	} else {
 		fdsess_t *sess = g_slice_alloc(sizeof(fdsess_t));
 		sess->fd = blk->fd;
-		sess->id = blk->id;
+		//sess->id = blk->id;
 		fd_addr_t *addr = (fd_addr_t *)blk->data;
 		sess->ip = addr->ip;
 		sess->port = addr->port;
@@ -264,7 +269,7 @@ int do_blk_close(mem_block_t *blk)
 	}
 	//处理接口关闭回调
 	so.on_cli_closed(blk->fd);
-	
+
 	remove_fd(blk->fd);
 
 	TRACE(0, "work remove fd [fd=%d]", blk->fd);
@@ -281,7 +286,7 @@ int do_proc_mcast(int fd)
 int do_proc_svr(int fd) 
 {
 	fd_buff_t *buff = &epinfo.fds[fd].buff;
-	
+
 	if (handle_read(fd) == -1) {
 		return -1;
 	}
@@ -324,7 +329,7 @@ void close_cli(int fd)
 {
 	//fdsess_t *sess = get_fd(fd);
 	//if (!sess) {
-		//return ;
+	//return ;
 	//}
 
 	//mem_block_t blk;

@@ -267,12 +267,12 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events)
 }
 
 
-int send_to_cli(struct fdsess *sess, const void *msg, int const len)
+int send_to_cli(int fd, const void *msg, int const len)
 {
 	static mem_block_t blk;
 
-	blk.id = sess->id;
-	blk.fd = sess->fd;
+	//blk.id = sess->id;
+	blk.fd = fd;
 	blk.type = BLK_DATA;
 	blk.len = len + blk_head_len;
 

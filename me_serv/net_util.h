@@ -182,7 +182,7 @@ int mod_pfd_to_epinfo(int epfd, void *pfd, int events);
 /* @brief work进程向客户端发送信息调用的接口
  * @note 保证发送的包长小于共享队列长度
  */
-int send_to_cli(struct fdsess *sess, const void *msg, int const len);
+int send_to_cli(int fd, const void *msg, int const len);
 
 /* @brief work进程向所连服务器发送调用
  * @note 保证发送缓冲区满时进行缓冲

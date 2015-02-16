@@ -146,13 +146,14 @@ int main(int argc, char* argv[])
 					while (readlen < len) {
 						char*  ptr = recvbuf;
 						proto_pkg_t *msg = (proto_pkg_t *)(ptr + readlen);
-						printf("recv: %d,%d,%d,%d,%d,%s\n", 
+						printf("recv: %d,%d,%d,%d,%d,%s:%lu\n", 
 								msg->id, 
 								msg->cmd, 
 								msg->seq,
 								msg->ret, 
 								msg->len,
-								msg->data
+								msg->data,
+								msg->len - sizeof(proto_pkg_t)
 							  );
 						readlen += msg->len;
 					}
@@ -169,7 +170,6 @@ int main(int argc, char* argv[])
 		int num = rand() % 200+ 1;
 		//int num = 30;
 		gen_str(input, num);
-		printf("send: %s:%lu\n\n", input, strlen(input));
 		//		scanf("%s", input);
 		for (i = 0; i < 1; ++i) {
 			char buf[1024];
@@ -184,9 +184,10 @@ int main(int argc, char* argv[])
 			memcpy(pkg->data, input, strlen(input) + 1);
 
 			send(fd, buf, pkg->len, 0);
+			printf("send: id=%u,cmd=%u,seq=%u,ret=%u,%s:%lu\n\n", pkg->id, pkg->cmd, pkg->seq, pkg->ret, input, strlen(input) + 1);
 		}
 		//if (rand() % 2) {
-			sleep(1);
+//			sleep(1);
 			//}
 	}
 

@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 	//chg serv name
 	chg_proc_title(setting.srv_name);
 	//daemon mode
-	//daemon(1, 0);
+	daemon(1, 0);
 	//handle signal
 	if (handle_signal()) {
 		return 0;

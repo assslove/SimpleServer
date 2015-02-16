@@ -44,17 +44,17 @@ OUTER_FUNC void handle_timer()
 {
 }
 
-OUTER_FUNC int proc_cli_msg(void *msg, int len, fdsess_t *sess)
+OUTER_FUNC int proc_cli_msg(void *msg, int len, int fd)
 {
 	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
 
-	DEBUG(pkg->id, "online len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
+	TRACE(pkg->id, "online fd=%u, len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", fd, pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
 
 	//pkg->seq = sess->fd;
 	uint32_t  cli[1024];
 	memcpy(cli, msg, pkg->len);
 
-	return send_to_cli(sess, cli, pkg->len);
+	return send_to_cli(fd, cli, pkg->len);
 }
 
 OUTER_FUNC int proc_serv_msg(int fd, void *msg, int len)

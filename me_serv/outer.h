@@ -1,7 +1,7 @@
 #ifndef OUT_H_
 #define OUT_H_
 
-#include "fds.h"
+//#include "fds.h"
 
 /* @brief 提供对业务逻辑的接口
 */
@@ -20,7 +20,7 @@ extern "C" {
 
 		/* @brief 处理客户端消息
 		 */
-		int		(*proc_cli_msg)(void* msg, int len, fdsess_t* fdsess);
+		int		(*proc_cli_msg)(void* msg, int len, int fd);
 
 		/* @brief 处理服务端消息
 		 */
