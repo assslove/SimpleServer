@@ -109,6 +109,11 @@ int master_init()
 
 	epinfo.msg_size = 0;
 
+	int i = 0;
+	for (; i < workmgr.nr_work; ++i) {
+		master_recv_pipe_create(i); //创建父进程通知子进程管道
+	}
+
 	return 0;
 }
 
@@ -433,20 +438,40 @@ void raw2blk(int fd, mem_block_t *blk)
 void handle_sigchld(int signo) 
 {
 	int pid, status;
+	int i;
 	while ((pid = waitpid(-1, &status, WNOHANG)) > 0) { //回收僵尸进程, 如果没有hang 立即返回
 		ERROR(0, "%d have stop", pid);
-		int i;
 		for (i = 0; i < workmgr.nr_work; i++) { //清零
 			if (chl_pids[i] == pid) {
 				chl_pids[i] = 0;
 				break;
 			}
 		}
+
+		if (i != workmgr.nr_work) { //重启子进程
+			//重启子进程
+			work_t *work = &workmgr.works[i];
+			//重启子进程
+			pid = fork();
+			if (pid < 0) { //
+				ERROR(0, "serv [%d] restart failed", work->id);
+				return ;
+			} else if (pid == 0) { //child
+				int ret = work_init(i);
+				if (ret == -1) {
+					ERROR(0, "err work init [%s]", strerror(errno));
+					exit(0);
+				}
+				work_dispatch(i);
+				work_fini(i);
+				exit(0);
+			}
+		}
 	}
 }
 
 /* @brief 结束主进程
- */
+*/
 void handle_term(int signo)
 {
 	switch (signo) {
@@ -470,7 +495,7 @@ void handle_term(int signo)
 			break;
 		}
 	}
-	
+
 	if (isparent) {
 		stop = 1; //终止主进程
 		for (i = 0; i < workmgr.nr_work; i++) { //终止子进程
@@ -523,13 +548,9 @@ void  handle_epipe(int signo)
 
 int handle_signal()
 {
-	//设置子进程结束信号
 	struct sigaction sa;
 	sa.sa_flags = SA_RESTART | SA_SIGINFO;	
 	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = handle_sigchld;
-	sigaction(SIGCHLD, &sa, NULL);
-
 	sa.sa_handler = handle_epipe;
 	sigaction(SIGPIPE, &sa, NULL);
 
@@ -548,6 +569,10 @@ int handle_signal()
 	sigaddset(&sset, SIGCHLD);
 	sigaddset(&sset, SIGFPE);
 	sigprocmask(SIG_UNBLOCK, &sset, &sset); //删除
+
+	//设置子进程结束信号
+	sa.sa_handler = handle_sigchld;
+	sigaction(SIGCHLD, &sa, NULL);
 
 	return 0;
 }

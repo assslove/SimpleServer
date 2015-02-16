@@ -69,11 +69,7 @@ int main(int argc, char* argv[])
 	chg_proc_title(setting.srv_name);
 	//daemon mode
 	daemon(1, 0);
-	//handle signal
-	if (handle_signal()) {
-		return 0;
-	}
-	
+		
 	//master_init
 	ret = master_init();
 	if (ret == -1) {
@@ -81,9 +77,13 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+	//handle signal
+	if (handle_signal()) {
+		return 0;
+	}
+
 	int i = 0;
 	for (; i < setting.worknum; i++) { //创建子进程用于处理父进程的逻辑
-		master_recv_pipe_create(i); //创建父进程通知子进程管道
 		int pid = fork();
 		if (pid < 0) {
 			ERROR(0, "create work fail[%d][%s]", i, strerror(errno));
