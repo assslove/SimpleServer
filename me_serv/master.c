@@ -303,7 +303,7 @@ int handle_pipe(fd)
 
 void handle_mq_send()
 {
-	mem_block_t *tmpblk = NULL;
+	static mem_block_t *tmpblk = NULL;
 	while ((tmpblk = mq_pop(&epinfo.msgq.sq)) != NULL) { //获取块
 		do_blk_send(tmpblk); //发送块
 	}
