@@ -12,7 +12,7 @@ struct svr_setting;
 enum CONST_DEF {
 	MAX_WORKS = 1024,  //最大工作进程数
 	MCAST_MSG_LEN = 4096, 
-	PIPE_MSG_LEN = 1024 //管道消息长度
+	PIPE_MSG_LEN = 10240 //管道消息长度
 };
 
 /* @brief 返回类型

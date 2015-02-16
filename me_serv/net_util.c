@@ -552,7 +552,6 @@ int handle_readlist(int ismaster)
 
 	fd_wrap_t *pfd, *tmpfd;
 	list_for_each_entry_safe(pfd, tmpfd, &epinfo.readlist, node) {
-		DEBUG(0, "%s [fd=%u]", __func__, pfd->fd);
 		if (unlikely(pfd->type == fd_type_listen)) { //打开连接 只有主进程才打开连接
 			while(do_fd_open(pfd->fd)) {}	 //应该不会执行
 		} else if (func[ismaster](pfd->fd) == -1) { //处理客户端的请求 读取

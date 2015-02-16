@@ -172,12 +172,12 @@ push_succ:
 	memcpy(blk->data, data, b->len - blk_head_len);
 	ptr->head += b->len;
 	++ptr->blk_cnt;
-	write(pipefd, q, 1);
 
 #ifdef ENABLE_TRACE
 	mq_display(q);
 #endif
 	safe_sempost(q->sem); //释放锁
+	write(pipefd, q, 1);
 	return 0;
 }
 

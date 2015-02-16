@@ -102,10 +102,6 @@ int master_init()
 
 	epinfo.msg_size = 0;
 
-	int k = 0;
-	for (; k < workmgr.nr_work; ++k) {
-		set_io_nonblock(workmgr.works[k].recv_pipefd[1], 1); //写设置为非阻塞
-	}
 	return 0;
 }
 
@@ -129,6 +125,7 @@ int master_listen()
 		close(work->recv_pipefd[0]); //接收管道关闭读 主要用于写，通知子进程
 	}
 
+
 	if (so.serv_init && so.serv_init(1)) { //主进程初始化
 		ERROR(0, "parent serv init failed");
 		return -1;
@@ -145,6 +142,9 @@ int master_recv_pipe_create(int i)
 	work_t *work = &workmgr.works[i];
 	work->id = i; //编号从0开始
 	pipe(work->recv_pipefd);
+	//设置非阻塞
+	set_io_nonblock(work->recv_pipefd[1], 1);
+
 	return 0;
 }
 
@@ -291,18 +291,9 @@ push_again:
 
 int handle_pipe(fd)
 {
-	//申请空间 TODO
-	if (!epinfo.fds[fd].buff.rbf) {
-		epinfo.fds[fd].buff.msglen = 0;
-		epinfo.fds[fd].buff.rlen = 0;
-		epinfo.fds[fd].buff.rbf = mmap(0, setting.max_msg_len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
-		if (epinfo.fds[fd].buff.rbf == MAP_FAILED) {
-			ERROR(0, "mmap error");
-			return -1;
-		}
+	static char pipe_buf[PIPE_MSG_LEN];
+	while (read(fd, pipe_buf, PIPE_MSG_LEN) == PIPE_MSG_LEN) {}
 
-	}
-	read(fd, epinfo.fds[fd].buff.rbf, setting.max_msg_len);
 	return 0;
 }
 
