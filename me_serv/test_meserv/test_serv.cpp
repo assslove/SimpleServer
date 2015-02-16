@@ -48,7 +48,7 @@ OUTER_FUNC int proc_cli_msg(void *msg, int len, int fd)
 {
 	proto_pkg_t *pkg = reinterpret_cast<proto_pkg_t *>(msg);
 
-	TRACE(pkg->id, "online fd=%u, len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", fd, pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
+	DEBUG(pkg->id, "online fd=%u, len=%u,id=%u,seq=%u,cmd=%u,ret=%u, msg=%s", fd, pkg->len, pkg->id, pkg->seq, pkg->cmd, pkg->ret, (char *)pkg->data);
 
 	//pkg->seq = sess->fd;
 	uint32_t  cli[1024];
