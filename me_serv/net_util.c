@@ -516,7 +516,7 @@ int handle_read(int fd)
 
 	//判断缓存区是否已满
 	if (setting.max_msg_len <= buff->rlen) {
-		ERROR(0, "recv buff full [fd=%u]", fd);
+		ERROR(0, "recv buff full [fd=%u, rlen=%u, beginlen=%u]", fd, buff->rlen, *(uint32_t *)buff->rbf);
 		return 0;
 	}
 

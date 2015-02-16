@@ -35,6 +35,7 @@
 #include <libnanc/log.h>
 #include <libnanc/conf.h>
 #include <libnanc/list.h>
+#include <libnanc/util.h>
 
 #include "global.h"
 #include "master.h"
@@ -259,7 +260,9 @@ int handle_cli(int fd)
 push_again:
 	if (buff->msglen == 0 && buff->rlen > 0) { //获取长度
 		buff->msglen = so.get_msg_len(fd, tmp_ptr, buff->rlen, SERV_MASTER);
+#ifdef ENABLE_TRACE
 		TRACE(0, "recv [fd=%u][rlen=%u][msglen=%u]", fd, buff->rlen, buff->msglen);
+#endif
 	}
 
 	//push
@@ -375,6 +378,10 @@ int init_setting()
 	memcpy(setting.text_so, text_so, sizeof(setting.text_so));
 
 	setting.worknum = conf_get_int("work_num");
+	if (setting.worknum == 0) {
+		setting.worknum = get_cpu_num() - 1; //留一个给主进程
+	}
+
 	setting.log_level = conf_get_int("log_level");
 	setting.log_maxfiles = conf_get_int("log_maxfiles");
 	const char* log_dir = conf_get_str("log_dir");

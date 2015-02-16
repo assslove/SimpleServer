@@ -89,7 +89,7 @@ int work_init(int i)
 	}
 
 	//初始化fd-map
-	init_fds();
+//	init_fds();
 
 	stop = 0;
 	//清除chl_pids;
@@ -137,7 +137,6 @@ int work_dispatch(int i)
 				switch (epinfo.fds[fd].type) {
 					case fd_type_pipe:
 						do_proc_pipe(fd);
-						INFO(0, "wait event [fd=%d,events=%d,pipe]", fd, epinfo.evs[k].events);
 						break;
 					case fd_type_svr:
 						if (do_proc_svr(fd) == -1) {
