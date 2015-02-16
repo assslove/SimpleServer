@@ -32,9 +32,9 @@
 
 typedef struct proto_pkg {
 	int len;
+	uint16_t cmd;
 	int id;
 	int seq;
-	int cmd;
 	int ret;
 	char data[];
 } __attribute__((packed))proto_pkg_t;
@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
 		//int num = 30;
 		gen_str(input, num);
 		//		scanf("%s", input);
-		for (i = 0; i < 100; ++i) {
+		for (i = 0; i < 200; ++i) {
 			char buf[1024];
 			proto_pkg_t *pkg = (proto_pkg_t *)buf;	
 			pkg->id =  i;
@@ -187,7 +187,7 @@ int main(int argc, char* argv[])
 			printf("send: id=%u,cmd=%u,seq=%u,ret=%u,%s:%lu\n\n", pkg->id, pkg->cmd, pkg->seq, pkg->ret, input, strlen(input) + 1);
 		}
 		//if (rand() % 2) {
-//			sleep(1);
+//		sleep(1);
 			//}
 	}
 
