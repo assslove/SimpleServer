@@ -15,6 +15,7 @@ extern "C" {
 		void*   handle;		  //代码段打开so 
 
 		/* @brief 处理定时器
+		 * @note 现每隔2秒循环一次
 		 */
 		void	(*handle_timer)(); 
 
