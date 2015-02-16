@@ -34,7 +34,7 @@ char *argv_start;
 char *argv_end;
 char *env_end;
 
-int chl_pids[1024] = {0};
+int chl_pids[MAX_WORKS] = {0};
 
 //work进程管理
 work_mgr_t  workmgr;
@@ -42,9 +42,7 @@ work_mgr_t  workmgr;
 epoll_info_t epinfo;
 //配置信息
 svr_setting_t setting;
-//fd manager
+//fd manager 没有用处
 GHashTable *fds;
 //stop flag
 int stop;
-//log filename
-char log_file[64] = "log/temp.log";

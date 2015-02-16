@@ -10,7 +10,7 @@ struct svr_setting;
 /* 定义的一些常量
  */
 enum CONST_DEF {
-	MAX_WORKS = 1024,  //最大工作进程数
+	MAX_WORKS = 32,  //最大工作进程数
 	MCAST_MSG_LEN = 4096, 
 	PIPE_MSG_LEN = 10240 //管道消息长度
 };

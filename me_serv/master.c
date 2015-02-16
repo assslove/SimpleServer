@@ -81,6 +81,7 @@ int master_init()
 
 	//msg_queue init
 	msg_queue_t *msgq = &epinfo.msgq;
+	//接收队列
 	if ((ret = mq_init(&(msgq->rq), setting.mem_queue_len, MEM_TYPE_RECV, setting.recv_semname)) == -1) {
 		ERROR(0, "init rq fail");
 		return -1;
@@ -93,13 +94,18 @@ int master_init()
 
 	//初始化发送队列通知管道
 	pipe(msgq->send_pipefd);
-	if ((ret = add_fdinfo_to_epinfo(msgq->send_pipefd[0], 0, fd_type_pipe, 0, 0)) == -1) {  //用于接收子进程的读取
+	if ((ret = add_fdinfo_to_epinfo(msgq->send_pipefd[0], MAX_WORKS, fd_type_pipe, 0, 0)) == -1) {  //用于接收子进程的读取
 		return -1;
 	} 
 
-	//初始化变量信息
+	//初始化工作进程信息
 	workmgr.nr_work = setting.worknum;
 	workmgr.works = (work_t *)malloc(sizeof(work_t) * workmgr.nr_work);
+	
+	if (workmgr.works == NULL) {
+		ERROR(0, "malloc works failed");
+		return -1;
+	}
 
 	epinfo.msg_size = 0;
 
@@ -122,8 +128,7 @@ int master_listen()
 	close(epinfo.msgq.send_pipefd[1]); //主进程发送管道关闭写 等待子进程写
 	int i = 0;
 	for (; i < setting.worknum; ++i) {
-		work_t *work = &workmgr.works[i];
-		close(work->recv_pipefd[0]); //接收管道关闭读 主要用于写，通知子进程
+		close(workmgr.works[i].recv_pipefd[0]); //接收管道关闭读 主要用于写，通知子进程
 	}
 
 
@@ -481,6 +486,12 @@ void handle_hup(int fd)
 {
 	//相应管道被关闭
 	int idx = epinfo.fds[fd].idx;
+
+	if (idx >= MAX_WORKS) {
+		ERROR(0, "parent fd have closed [fd=%d]");
+		return ;
+	}
+
 	ERROR(0, "fd have closed [fd=%d,servid=%d]", fd, workmgr.works[idx].id);
 
 	work_t *work = &workmgr.works[idx];
