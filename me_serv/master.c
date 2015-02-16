@@ -101,6 +101,11 @@ int master_init()
 	workmgr.works = (work_t *)malloc(sizeof(work_t) * workmgr.nr_work);
 
 	epinfo.msg_size = 0;
+
+	int k = 0;
+	for (; k < workmgr.nr_work; ++k) {
+		set_io_nonblock(workmgr.works[k].recv_pipefd[1], 1); //写设置为非阻塞
+	}
 	return 0;
 }
 

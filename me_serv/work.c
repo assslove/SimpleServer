@@ -76,6 +76,8 @@ int work_init(int i)
 
 	//close mem_queue pipe
 	close(epinfo.msgq.send_pipefd[0]); //关闭发送管道的读
+	set_io_nonblock(epinfo.msgq.send_pipefd[1], 1);
+
 	int k = 0;
 	for (; k < workmgr.nr_work; k++) {
 		if (k == i) {

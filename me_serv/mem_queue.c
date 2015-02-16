@@ -93,8 +93,8 @@ pop_again:
 			ptr->tail = mem_head_len;
 			goto pop_again;
 		} else { //如果可以容纳一个块
-			blk = blk_tail(q);
-			if (blk->type == BLK_ALIGN) { //如果是填充块 则调整位置
+			tmp_blk = blk_tail(q);
+			if (tmp_blk->type == BLK_ALIGN) { //如果是填充块 则调整位置
 				ptr->tail = mem_head_len;
 				goto pop_again;
 			} else { //成功弹出
