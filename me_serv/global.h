@@ -33,7 +33,6 @@ extern int chl_pids[MAX_WORKS];
 extern struct work_mgr workmgr;
 extern struct epoll_info  epinfo;
 extern struct svr_setting  setting;
-extern GHashTable *me_data;
 extern GHashTable *fds;
 extern int stop;
 extern char log_file[64];
