@@ -130,29 +130,28 @@ pop_succ:
  */
 int mq_push(mem_queue_t *q, const mem_block_t *b, const void *data, int pipefd)
 {
-	mem_head_t *ptr = q->ptr;
-	mem_block_t *blk = NULL;
+	static mem_block_t *blk = NULL;
 	safe_semwait(q->sem);
 push_again:
-	if (ptr->head >= ptr->tail) { 
-		if (ptr->head + b->len >= q->len) { //如果大于最大长度
-			if (ptr->head + blk_head_len <= q->len) { //如果容下一个块头//填充
+	if (q->ptr->head >= q->ptr->tail) { 
+		if (q->ptr->head + b->len >= q->len) { //如果大于最大长度
+			if (q->ptr->head + blk_head_len <= q->len) { //如果容下一个块头//填充
 				blk = blk_head(q);
 				blk->type = BLK_ALIGN;
-				blk->len = q->len - ptr->head; 
+				blk->len = q->len - q->ptr->head; 
 			}
 
-			if (unlikely(mem_head_len == ptr->tail)) { //如果尾部还没有弹出 说明是满的状态
+			if (unlikely(mem_head_len == q->ptr->tail)) { //如果尾部还没有弹出 说明是满的状态
 				goto push_fail;
 			} else {
-				ptr->head = mem_head_len;		//调整到头部
+				q->ptr->head = mem_head_len;		//调整到头部
 				goto push_again;
 			}
 		} else {//完全可以容纳
 			goto push_succ;
 		}
-	} else if (ptr->head < ptr->tail) { 
-		if (unlikely(ptr->head + b->len >= ptr->tail)) {//full
+	} else if (q->ptr->head < q->ptr->tail) { 
+		if (unlikely(q->ptr->head + b->len >= q->ptr->tail)) {//full
 			goto push_fail;
 		} else {
 			goto push_succ;
@@ -170,8 +169,8 @@ push_succ:
 	blk = blk_head(q);
 	memcpy(blk, b, blk_head_len);
 	memcpy(blk->data, data, b->len - blk_head_len);
-	ptr->head += b->len;
-	++ptr->blk_cnt;
+	q->ptr->head += b->len;
+	++q->ptr->blk_cnt;
 
 #ifdef ENABLE_TRACE
 	mq_display(q);

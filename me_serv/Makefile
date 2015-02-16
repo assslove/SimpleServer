@@ -2,8 +2,8 @@
 #
 
 INSTALL_DIR = /usr/local/include/meserv
-#CFLAGS =  -g -Wall -Wunused-function -rdynamic -lpthread -ldl -L/usr/local/lib -lnanc -DENABLE_TRACE
-CFLAGS =  -g -Wall -Wunused-function -rdynamic -lpthread -ldl -L/usr/local/lib -lnanc
+CFLAGS =  -g -Wall -Wunused-function -rdynamic -lpthread -ldl -L/usr/local/lib -lnanc -DENABLE_TRACE
+#CFLAGS =  -g -Wall -Wunused-function -rdynamic -lpthread -ldl -L/usr/local/lib -lnanc
 LIBS = `pkg-config --cflags --libs glib-2.0`
 SRCS = $(wildcard *.c)
 OBJS = $(patsubst %.c, %.o, $(SRCS))
