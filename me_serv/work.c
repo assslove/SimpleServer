@@ -34,9 +34,9 @@ int work_init(int i)
 {
 	log_fini();
 	char buf[10] = {'\0'};
-	sprintf(buf, "%02d", i);
+	sprintf(buf, "%d", i + 1);
 	//log init
-	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, "1") == -1) {
+	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, buf) == -1) {
 		fprintf(stderr, "init log failed\n");
 		return 0;
 	}

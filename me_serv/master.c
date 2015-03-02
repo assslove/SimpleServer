@@ -280,7 +280,7 @@ push_again:
 		static mem_block_t blk;		
 		raw2blk(fd, &blk);
 		if (mq_push(&epinfo.msgq.rq, &blk, tmp_ptr, \
-					workmgr.works[++epinfo.msg_size % setting.worknum].recv_pipefd[1])) { //push error if close cli fd return -1 or 0
+					workmgr.works[epinfo.msg_size++ % setting.worknum].recv_pipefd[1])) { //push error if close cli fd return -1 or 0
 			ERROR(0, "mq is full, push failed [fd=%d]", fd);
 			return -1;
 		}
@@ -440,13 +440,15 @@ void handle_sigchld(int signo)
 	int pid, status;
 	int i;
 	while ((pid = waitpid(-1, &status, WNOHANG)) > 0) { //回收僵尸进程, 如果没有hang 立即返回
-		ERROR(0, "%d have stop", pid);
+		ERROR(0, "%s %d have stop", __func__, pid);
 		for (i = 0; i < workmgr.nr_work; i++) { //清零
 			if (chl_pids[i] == pid) {
 				chl_pids[i] = 0;
 				break;
 			}
 		}
+
+		master_recv_pipe_create(i);
 
 		if (i != workmgr.nr_work) { //重启子进程
 			//重启子进程
@@ -465,6 +467,9 @@ void handle_sigchld(int signo)
 				work_dispatch(i);
 				work_fini(i);
 				exit(0);
+			} else { //parent
+				chl_pids[i] = pid;
+				close(workmgr.works[i].recv_pipefd[0]); //接收管道关闭读 主要用于写，通知子进程
 			}
 		}
 	}
