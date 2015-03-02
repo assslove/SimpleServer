@@ -35,5 +35,4 @@ extern struct epoll_info  epinfo;
 extern struct svr_setting  setting;
 extern GHashTable *fds;
 extern int stop;
-extern char log_file[64];
 #endif
