@@ -451,9 +451,7 @@ void handle_sigchld(int signo)
 		master_recv_pipe_create(i);
 
 		if (i != workmgr.nr_work) { //重启子进程
-			//重启子进程
 			work_t *work = &workmgr.works[i];
-			//重启子进程
 			pid = fork();
 			if (pid < 0) { //
 				ERROR(0, "serv [%d] restart failed", work->id);
@@ -470,6 +468,7 @@ void handle_sigchld(int signo)
 			} else { //parent
 				chl_pids[i] = pid;
 				close(workmgr.works[i].recv_pipefd[0]); //接收管道关闭读 主要用于写，通知子进程
+				usleep(200000);
 			}
 		}
 	}

@@ -50,7 +50,7 @@ typedef struct msg_queue {
 /* @brief 工作进程配置项
  */
 typedef struct work {
-	int recv_pipefd[2];  //消息接收通知管道 每个子进程都拥有一个
+	int recv_pipefd[2];  //消息接收通知管道 每个子进程都拥有一个 重启时候更新
 	uint8_t id;			 //子进程编号 从0开始 依次命名
 }__attribute__((packed)) work_t;
 
