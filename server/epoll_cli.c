@@ -185,6 +185,8 @@ int main(int argc, char* argv[])
 
 			send(fd, buf, pkg->len, 0);
 			printf("send: id=%u,cmd=%u,seq=%u,ret=%u,%s:%lu\n\n", pkg->id, pkg->cmd, pkg->seq, pkg->ret, input, strlen(input) + 1);
+
+			getchar();
 		}
 		//if (rand() % 2) {
 //		sleep(1);
