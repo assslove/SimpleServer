@@ -447,7 +447,7 @@ void handle_sigchld(int signo)
 				break;
 			}
 		}
-
+		close(workmgr.works[i].recv_pipefd[1]);
 		master_recv_pipe_create(i);
 
 		if (i != workmgr.nr_work) { //重启子进程
