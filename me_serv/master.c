@@ -435,10 +435,38 @@ void raw2blk(int fd, mem_block_t *blk)
 	blk->type = BLK_DATA;
 }
 
+void start_work(int i)
+{
+	int pid;
+	close(workmgr.works[i].recv_pipefd[1]);
+	master_recv_pipe_create(i);
+	if (i != workmgr.nr_work) { //重启子进程
+		work_t *work = &workmgr.works[i];
+		pid = fork();
+		if (pid < 0) { //
+			ERROR(0, "serv [%d] restart failed", work->id);
+			return ;
+		} else if (pid == 0) { //child
+			int ret = work_init(i);
+			if (ret == -1) {
+				ERROR(0, "err work init [%s]", strerror(errno));
+				exit(0);
+			}
+			work_dispatch(i);
+			work_fini(i);
+			exit(0);
+		} else { //parent
+			chl_pids[i] = pid;
+			close(workmgr.works[i].recv_pipefd[0]); //接收管道关闭读 主要用于写，通知子进程
+			usleep(200000);
+			INFO(0, "serv [%d] restart success", work->id);
+		}
+	}
+}
+
 void handle_sigchld(int signo) 
 {
-	int pid, status;
-	int i;
+	int status, i, pid;
 	while ((pid = waitpid(-1, &status, WNOHANG)) > 0) { //回收僵尸进程, 如果没有hang 立即返回
 		ERROR(0, "%s %d have stop", __func__, pid);
 		for (i = 0; i < workmgr.nr_work; i++) { //清零
@@ -447,30 +475,8 @@ void handle_sigchld(int signo)
 				break;
 			}
 		}
-		close(workmgr.works[i].recv_pipefd[1]);
-		master_recv_pipe_create(i);
 
-		if (i != workmgr.nr_work) { //重启子进程
-			work_t *work = &workmgr.works[i];
-			pid = fork();
-			if (pid < 0) { //
-				ERROR(0, "serv [%d] restart failed", work->id);
-				return ;
-			} else if (pid == 0) { //child
-				int ret = work_init(i);
-				if (ret == -1) {
-					ERROR(0, "err work init [%s]", strerror(errno));
-					exit(0);
-				}
-				work_dispatch(i);
-				work_fini(i);
-				exit(0);
-			} else { //parent
-				chl_pids[i] = pid;
-				close(workmgr.works[i].recv_pipefd[0]); //接收管道关闭读 主要用于写，通知子进程
-				usleep(200000);
-			}
-		}
+		start_work(i);
 	}
 }
 
@@ -523,26 +529,8 @@ void handle_hup(int fd)
 
 	ERROR(0, "fd have closed [fd=%d,servid=%d]", fd, workmgr.works[idx].id);
 
-	work_t *work = &workmgr.works[idx];
-	//重启子进程
-	int pid = fork();
-	if (pid < 0) { //
-		ERROR(0, "serv [%d] restart failed", work->id);
-		return ;
-	} else if (pid == 0) { //child
-		int ret = work_init(idx);
-		if (ret == -1) {
-			ERROR(0, "err work init [%s]", strerror(errno));
-			exit(0);
-		}
-		work_dispatch(idx);
-		work_fini(idx);
-		exit(0);
-	}
+	start_work(idx);
 
-	chl_pids[idx] = pid;
-
-	INFO(0, "serv [%d] restart success", work->id);
 }
 
 void  handle_epipe(int signo)
