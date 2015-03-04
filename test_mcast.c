@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 	mcast_sa.sin_addr.s_addr = inet_addr("239.0.0.2");
 
 	struct in_addr local_addr;
-	local_addr.s_addr = inet_addr("172.21.174.115");
+	local_addr.s_addr = inet_addr("192.168.1.101");
 
 	int ret = set_mcast_if(sockfd, &local_addr);
 

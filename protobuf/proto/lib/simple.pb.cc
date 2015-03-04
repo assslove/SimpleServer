@@ -38,16 +38,16 @@ void protobuf_AssignDesc_simple_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Simple, id_),
   };
   Simple_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
       Simple_descriptor_,
       Simple::default_instance_,
       Simple_offsets_,
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Simple, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Simple, _unknown_fields_),
       -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Simple));
+      -1,
+      sizeof(Simple),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Simple, _internal_metadata_),
+      -1);
 }
 
 namespace {
@@ -61,7 +61,7 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Simple_descriptor_, &Simple::default_instance());
+      Simple_descriptor_, &Simple::default_instance());
 }
 
 }  // namespace
@@ -94,6 +94,16 @@ struct StaticDescriptorInitializer_simple_2eproto {
   }
 } static_descriptor_initializer_simple_2eproto_;
 
+namespace {
+
+static void MergeFromFail(int line) GOOGLE_ATTRIBUTE_COLD;
+static void MergeFromFail(int line) {
+  GOOGLE_CHECK(false) << __FILE__ << ":" << line;
+}
+
+}  // namespace
+
+
 // ===================================================================
 
 #ifndef _MSC_VER
@@ -101,7 +111,7 @@ const int Simple::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 Simple::Simple()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::Message() , _internal_metadata_(NULL)  {
   SharedCtor();
   // @@protoc_insertion_point(constructor:test.Simple)
 }
@@ -110,7 +120,8 @@ void Simple::InitAsDefaultInstance() {
 }
 
 Simple::Simple(const Simple& from)
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
   SharedCtor();
   MergeFrom(from);
   // @@protoc_insertion_point(copy_constructor:test.Simple)
@@ -148,14 +159,20 @@ const Simple& Simple::default_instance() {
 
 Simple* Simple::default_instance_ = NULL;
 
-Simple* Simple::New() const {
-  return new Simple;
+Simple* Simple::New(::google::protobuf::Arena* arena) const {
+  Simple* n = new Simple;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
 }
 
 void Simple::Clear() {
   id_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
+  if (_internal_metadata_.have_unknown_fields()) {
+    mutable_unknown_fields()->Clear();
+  }
 }
 
 bool Simple::MergePartialFromCodedStream(
@@ -218,7 +235,7 @@ void Simple::SerializeWithCachedSizes(
       1, this->id(i), output);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
@@ -234,7 +251,7 @@ void Simple::SerializeWithCachedSizes(
       WriteInt32ToArray(1, this->id(i), target);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
@@ -255,7 +272,7 @@ int Simple::ByteSize() const {
     total_size += 1 * this->id_size() + data_size;
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
@@ -267,7 +284,7 @@ int Simple::ByteSize() const {
 }
 
 void Simple::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   const Simple* source =
     ::google::protobuf::internal::dynamic_cast_if_available<const Simple*>(
       &from);
@@ -279,9 +296,11 @@ void Simple::MergeFrom(const ::google::protobuf::Message& from) {
 }
 
 void Simple::MergeFrom(const Simple& from) {
-  GOOGLE_CHECK_NE(&from, this);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   id_.MergeFrom(from.id_);
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  if (from._internal_metadata_.have_unknown_fields()) {
+    mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  }
 }
 
 void Simple::CopyFrom(const ::google::protobuf::Message& from) {
@@ -302,12 +321,14 @@ bool Simple::IsInitialized() const {
 }
 
 void Simple::Swap(Simple* other) {
-  if (other != this) {
-    id_.Swap(&other->id_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Simple::InternalSwap(Simple* other) {
+  id_.UnsafeArenaSwap(&other->id_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Simple::GetMetadata() const {
