@@ -37,7 +37,7 @@ int work_init(int i)
 	char pre_buf[16] = {'\0'};
 	sprintf(pre_buf, "%d", workmgr.works[i].id);
 	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, pre_buf) == -1) {
-		fprintf(stderr, "初始化日志失败");
+		fprintf(stderr, "init log failed\n");
 		return 0;
 	}
 

@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
 	//log init
 	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, "0") == -1) {
-		fprintf(stderr, "初始化日志失败");
+		fprintf(stderr, "init log failed\n");
 		return 0;
 	}
 

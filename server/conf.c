@@ -32,7 +32,6 @@
 
 #include "conf.h"
 #include "global.h"
-#include "log.h"
 #include "net_util.h"
 
 static void do_free_item(void* item)
