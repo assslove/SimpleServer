@@ -107,7 +107,7 @@ void free_sim_data()
 
 void print(void *key, void *value, void *userdata)
 {
-	BOOT(0, "%s-%s\n", (char *)key, (char *)value);
+	BOOT(0, "%s-%s", (char *)key, (char *)value);
 }
 
 void print_simple_conf()
