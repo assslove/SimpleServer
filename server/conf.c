@@ -28,6 +28,8 @@
 
 #include <glib.h>
 
+#include <libnanc/log.h>
+
 #include "conf.h"
 #include "global.h"
 #include "log.h"

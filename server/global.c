@@ -16,12 +16,12 @@
  * =====================================================================================
  */
 
+#include <libnanc/list.h>
 
 #include "global.h"
 #include "fds.h"
 #include "net_util.h"
 #include "master.h"
-#include "list.h"
 #include "outer.h"
 
 
@@ -54,5 +54,3 @@ GHashTable *sim_data;
 GHashTable *fds;
 //stop flag
 int stop;
-//log filename
-char log_file[64] = "log/temp.log";

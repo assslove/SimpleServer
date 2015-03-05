@@ -7,9 +7,8 @@
 #include <sys/epoll.h>
 #include <stdint.h>
 
-#include <libnanc/list.h>
-
 #include "mem_queue.h"
+#include "list.h"
 
 struct fdsess;
 
@@ -115,10 +114,6 @@ typedef struct svr_setting {
 	int raw_buf_len;	//socket buf 长度
 	char text_so[32];	//text_so
 	char data_so[32];	//data_so;
-	uint8_t log_level;  //日志级别
-	uint32_t log_maxfiles; //最大日志文件个数
-	uint32_t log_size;	//日志个数
-	char log_dir[32];	//日志目录
 } svr_setting_t;
 
 /*	
@@ -133,14 +128,6 @@ int set_sock_snd_timmo(int sockfd, int millisec);
 /* @brief 设置sock recv time out
  */
 int set_sock_rcv_timeo(int sockfd, int millisec);
-
-/* @brief 设置发送缓存区
- */
-int set_sock_sndbuf_size(int sockfd, int size);
-
-/* @brief 设置接收缓存区
- */
-int set_sock_rcvbuf_size(int sockfd, int size);
 
 /* @brief 接收total字节数据到buf
  */
@@ -222,7 +209,7 @@ void do_del_from_closelist(int fd);
 
 /*  @brief 连接某个服务器 用于work进程
  */
-int connect_to_serv(const char *ip, int port, int bufsize, int timeout);
+int connect_to_serv(char *ip, int port, int bufsize, int timeout);
 
 /* @brief  handle read
  */

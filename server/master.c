@@ -32,10 +32,11 @@
 
 #include <glib.h>
 
+#include <libnanc/log.h>
+#include <libnanc/list.h>
+
 #include "global.h"
 #include "master.h"
-#include "log.h"
-#include "list.h"
 #include "mem_queue.h"
 #include "net_util.h"
 #include "util.h"
@@ -77,8 +78,6 @@ int master_init()
 
 	reg_data_so(setting.data_so);
 
-	//初始化log
-	sprintf(log_file, "log/%s.log", setting.srv_name);
 	return 0;
 }
 
@@ -367,6 +366,17 @@ int init_setting()
 	}
 
 	memcpy(setting.text_so, text_so, sizeof(setting.text_so));
+	//加载日志
+	setting.log_level = conf_get_int("log_level");
+	setting.log_maxfiles = conf_get_int("log_maxfiles");
+	const char* log_dir = conf_get_str("log_dir");
+	if (log_dir == NULL) {
+		BOOT(0, "log dir error\n");
+		return -1;
+	}
+	strcpy(setting.log_dir, log_dir);
+	setting.log_size = conf_get_int("log_size");
+
 	return 0;
 }
 

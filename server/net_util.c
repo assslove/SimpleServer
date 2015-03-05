@@ -28,10 +28,11 @@
 #include <sys/mman.h>
 #include <sys/socket.h>
 
+#include <libnanc/log.h>
+
 #include "net_util.h"
 #include "util.h"
 #include "fds.h"
-#include "log.h"
 #include "global.h"
 #include "outer.h"
 

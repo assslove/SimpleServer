@@ -26,9 +26,10 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+#include <libnanc/log.h>
+
 #include "mem_queue.h"
 #include "util.h"
-#include "log.h"
 
 const int blk_head_len = sizeof(mem_block_t);
 const int mem_head_len = sizeof(mem_head_t);

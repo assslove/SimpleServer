@@ -20,11 +20,12 @@
 #include <sys/epoll.h>
 #include <malloc.h>
 
+#include <libnanc/log.h>
+
 #include "net_util.h"
 #include "util.h"
 #include "global.h"
 #include "work.h"
-#include "log.h"
 #include "outer.h"
 #include "fds.h"
 #include "mem_queue.h"
@@ -35,7 +36,7 @@ int work_init(int i)
 	//log init
 	char pre_buf[16] = {'\0'};
 	sprintf(pre_buf, "%d", workmgr.works[i].id);
-	if (log_init("log", LOG_LV_TRACE, 10240000, 100000, pre_buf) == -1) {
+	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, pre_buf) == -1) {
 		fprintf(stderr, "初始化日志失败");
 		return 0;
 	}
@@ -85,8 +86,6 @@ int work_init(int i)
 	stop = 0;
 	//清楚chl_pids;
 	memset(chl_pids, 0, sizeof(chl_pids));
-	//初始化log
-	sprintf(log_file, "log/%s_%d.log", setting.srv_name, work->id);
 	
 	//初始化子进程
 	if (so.serv_init && so.serv_init(0)) {

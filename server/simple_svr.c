@@ -31,9 +31,10 @@
 #include <sys/mman.h>
 #include <arpa/inet.h>
 
+#include <libnanc/log.h>
+
 #include "net_util.h"
 #include "mem_queue.h"
-#include "log.h"
 #include "conf.h"
 #include "global.h"
 #include "util.h"
@@ -43,25 +44,26 @@
 int main(int argc, char* argv[]) 
 {	
 	int ret;
-	//log init
-	if (log_init("log", LOG_LV_TRACE, 10240000, 100000, "0") == -1) {
-		fprintf(stderr, "初始化日志失败");
-		return 0;
-	}
-
 	//load conf
 	if ((ret = load_conf()) == -1) {
 		return 0;
 	}
-	//chg limit
-	init_rlimit();
-	//save args
-	save_args(argc, argv);
 	//初始化配置信息
 	ret = init_setting();
 	if (ret == -1) {
 		return 0;
 	}
+
+	//log init
+	if (log_init(setting.log_dir, setting.log_level, setting.log_size, setting.log_maxfiles, "0") == -1) {
+		fprintf(stderr, "初始化日志失败");
+		return 0;
+	}
+
+	//chg limit
+	init_rlimit();
+	//save args
+	save_args(argc, argv);
 	//chg serv name
 	chg_proc_title(setting.srv_name);
 	//daemon mode
