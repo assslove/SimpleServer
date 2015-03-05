@@ -424,6 +424,9 @@ int init_setting()
 	}
 	memcpy(setting.send_semname, send_semname, sizeof(setting.send_semname));
 
+#ifdef ENABLE_TRACE
+	print_simple_conf();	
+#endif
 	return 0;
 }
 
