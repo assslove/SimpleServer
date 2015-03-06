@@ -8,6 +8,39 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
+/* @brief 组播类型定义
+ */
+enum MCAST_CMD {
+	MCAST_SERV_NOTI = 1, //服务发现
+	MCAST_RELOAD_SO = 2, //重载业务逻辑
+	MCAST_RELOAD_CONF = 3 //重载配置文件
+};
+
+/* @brief 组播包格式定义
+ */
+typedef struct mcast_pkg {
+	int len;			//协议长度
+	uint8_t mcast_type; //组播类型,见MCAST_TYPE
+	uint8_t data[];		//协议数据
+} __attribute__((packed)) mcast_pkg_t;
+
+typedef struct serv_noti {
+	uint32_t ip;	//服务ip
+	uint16_t port;	//服务端口号
+	uint16_t id;	//服务id
+	char servname[32]; //服务名称
+} __attribute__((packed)) serv_noti_t;
+
+typedef struct reload_so {
+	uint16_t id;	 //服务器id 0表示所有进程
+	char soname[32]; //so文件名字
+} __attribute__((packed)) reload_so_t;
+
+typedef struct reload_conf {
+	uint16_t id;		//服务器id 0表示所有进程
+	uint16_t conf_id;	//conf文件id;
+} __attribute__((packed)) reload_conf_t;
+
 /* @brief 设置组播ttl
  */
 inline int set_mcast_ttl(int fd, int ttl)
