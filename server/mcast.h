@@ -83,7 +83,7 @@ inline int leave_mcast(int fd, struct ip_mreq *req)
 }
 
 
-/* @brief 初始化组播接口
+/* @brief 初始化组播客户端接口
  * @param mcast_ip 组播ip
  * @param mcast_port 组播端口号
  * @param local_ip 本地ip
@@ -92,4 +92,14 @@ inline int leave_mcast(int fd, struct ip_mreq *req)
  */
 int mcast_cli_init(char *mcast_ip, uint16_t mcast_port, char *local_ip); 
 
+
+/* @brief 发送数据给组播
+ * @param mcast_ip 组播ip
+ * @param mcast_port 组播端口号
+ * @param local_ip 本地ip
+ * @param mcast_type
+ * @param len 
+ * @param data
+ */
+int send_pkg_to_mcast(char *mcast_ip, uint16_t mcast_port, char *local_ip, int mcast_type, int len, char *data);
 #endif

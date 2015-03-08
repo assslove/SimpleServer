@@ -73,3 +73,52 @@ int mcast_cli_init(char *mcast_ip, uint16_t mcast_port, char *local_ip)
 
 	return sockfd;
 }
+
+int send_pkg_to_mcast(char *mcast_ip, uint16_t mcast_port, char *local_ip, int mcast_type, int len, char *data)
+{
+	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (sockfd == -1) {
+		ERROR(0, "create serv socket failed [%s]", strerror(errno));
+		return -1;
+	}
+
+	if (set_mcast_ttl(sockfd, 1) == -1) {
+		ERROR(0, "set mcast ttl failed [%s]", strerror(errno));
+		return -1;
+	}
+
+	if (set_mcast_loop(sockfd, 1) == -1) {
+		ERROR(0, "set mcast loop failed [%s]", strerror(errno));
+		return -1;
+	}
+
+	struct sockaddr_in mcast_sa;
+	mcast_sa.sin_family = AF_INET;
+	mcast_sa.sin_port = htons(mcast_port);
+	mcast_sa.sin_addr.s_addr = inet_addr(mcast_ip);
+
+	struct in_addr local_addr;
+	local_addr.s_addr = inet_addr(local_ip);
+	if (set_mcast_if(sockfd, local_addr) == -1) {
+		ERROR(0, "set mcast if failed [%s]", strerror(errno));
+		return -1;
+	}
+
+	char buff[1024] = {'\0'};
+	mcast_pkg_t *pkg = (mcast_pkg_t *)buff;
+	pkg->len = len + sizeof(mcast_pkg_t);
+	pkg->mcast_type = mcast_type;
+	memcpy(pkg->data, data, len);
+
+	int size = sendto(sockfd, buff, pkg->len, 0, (struct sockaddr*)&mcast_sa, sizeof(struct sockaddr_in));
+	if (size != pkg->len) {
+		ERROR(0, "send error[sendsize=%u][realsize=%u]", size, pkg->len);
+		return -1;
+	}
+
+	DEBUG(0, "send to [%s:%u][type=%u]", mcast_ip, mcast_port, mcast_type);
+
+	close(sockfd);
+
+	return 0;	
+}
