@@ -96,6 +96,8 @@ int work_init(int i)
 	INIT_LIST_HEAD(&epinfo.readlist);				
 	INIT_LIST_HEAD(&epinfo.closelist);				
 
+	//组播
+
 	INFO(0, "child serv[id=%d] have started", workmgr.works[i].id);
 
 	return 0;

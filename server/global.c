@@ -23,6 +23,7 @@
 #include "net_util.h"
 #include "master.h"
 #include "outer.h"
+#include "mcast.h"
 
 
 /* @brief 用于修改进进程名字用
@@ -54,3 +55,5 @@ GHashTable *sim_data;
 GHashTable *fds;
 //stop flag
 int stop;
+//服务管理
+servcach_t g_servs;

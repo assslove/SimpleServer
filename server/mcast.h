@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <glib.h>
 
 /* @brief 组播类型定义
  */
@@ -47,40 +48,40 @@ typedef struct reload_conf {
 	uint16_t conf_id;	//conf文件id;
 } __attribute__((packed)) reload_conf_t;
 
-/* @brief 设置组播ttl
+/* @brief 缓冲地址结构体
  */
-inline int set_mcast_ttl(int fd, int ttl)
-{
-	return setsockopt(fd, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
-}
+typedef struct addrcach {
+	int serv_id;		//服务id
+	uint32_t ip;		//ip
+	uint16_t port;		//port
+	uint32_t last_syn;  //上一次同步时间
+} __attribute__((packed)) addrcach_t;
+
+
+typedef struct servcach {
+	char serv_name[16]; //服务名字
+	GHashTable *addrs;	//所有服务地址
+} __attribute__((packed)) servcach_t;
+
+/* @brief 设置组播ttl
+*/
+int set_mcast_ttl(int fd, int ttl);
 
 /* @brief 设置组播loop
- */
-inline int set_mcast_loop(int fd, int loop)
-{
-	return setsockopt(fd, IPPROTO_IP, IP_MULTICAST_LOOP, &loop, sizeof(loop));
-}
+*/
+int set_mcast_loop(int fd, int loop);
 
 /* @brief 设置组播接口
- */
-inline int set_mcast_if(int fd, struct in_addr in)
-{
-	return setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &in, sizeof(struct in_addr));
-}
+*/
+int set_mcast_if(int fd, struct in_addr in);
 
 /* @brief 加入组播
- */
-inline int join_mcast(int fd, struct ip_mreq *req)
-{
-	return setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, req, sizeof(struct ip_mreq));
-}
+*/
+int join_mcast(int fd, struct ip_mreq *req);
 
 /* @brief 离开组播
- */
-inline int leave_mcast(int fd, struct ip_mreq *req)
-{
-	return setsockopt(fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, req, sizeof(struct ip_mreq));
-}
+*/
+int leave_mcast(int fd, struct ip_mreq *req);
 
 
 /* @brief 初始化组播客户端接口
@@ -92,7 +93,6 @@ inline int leave_mcast(int fd, struct ip_mreq *req)
  */
 int mcast_cli_init(char *mcast_ip, uint16_t mcast_port, char *local_ip); 
 
-
 /* @brief 发送数据给组播
  * @param mcast_ip 组播ip
  * @param mcast_port 组播端口号
@@ -102,4 +102,5 @@ int mcast_cli_init(char *mcast_ip, uint16_t mcast_port, char *local_ip);
  * @param data
  */
 int send_pkg_to_mcast(char *mcast_ip, uint16_t mcast_port, char *local_ip, int mcast_type, int len, char *data);
+
 #endif

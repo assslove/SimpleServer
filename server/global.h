@@ -6,6 +6,7 @@
 struct work_mgr;
 struct epoll_info;
 struct svr_setting;
+struct servcach;
 
 /* 定义的一些常量
  */
@@ -36,4 +37,5 @@ extern struct svr_setting  setting;
 extern GHashTable *sim_data;
 extern GHashTable *fds;
 extern int stop;
+extern struct servcach g_servs;
 #endif
