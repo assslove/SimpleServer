@@ -24,6 +24,8 @@ typedef struct mcast_pkg {
 	uint8_t data[];		//协议数据
 } __attribute__((packed)) mcast_pkg_t;
 
+/* @brief 服务通知信息
+ */
 typedef struct serv_noti {
 	uint32_t ip;	//服务ip
 	uint16_t port;	//服务端口号
@@ -31,11 +33,15 @@ typedef struct serv_noti {
 	char servname[32]; //服务名称
 } __attribute__((packed)) serv_noti_t;
 
+/* @brief 重载业务逻辑信息
+ */
 typedef struct reload_so {
 	uint16_t id;	 //服务器id 0表示所有进程
-	char soname[32]; //so文件名字
+	char servname[32]; //服务名字
 } __attribute__((packed)) reload_so_t;
 
+/* @brief 重载业务逻辑名字
+ */
 typedef struct reload_conf {
 	uint16_t id;		//服务器id 0表示所有进程
 	uint16_t conf_id;	//conf文件id;
@@ -50,31 +56,40 @@ inline int set_mcast_ttl(int fd, int ttl)
 
 /* @brief 设置组播loop
  */
-int set_mcast_loop(int fd, int loop)
+inline int set_mcast_loop(int fd, int loop)
 {
 	return setsockopt(fd, IPPROTO_IP, IP_MULTICAST_LOOP, &loop, sizeof(loop));
 }
 
 /* @brief 设置组播接口
  */
-int set_mcast_if(int fd, struct in_addr in)
+inline int set_mcast_if(int fd, struct in_addr in)
 {
 	return setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &in, sizeof(struct in_addr));
 }
 
 /* @brief 加入组播
  */
-int join_mcast(int fd, struct ip_mreq *req)
+inline int join_mcast(int fd, struct ip_mreq *req)
 {
 	return setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, req, sizeof(struct ip_mreq));
 }
 
 /* @brief 离开组播
  */
-int leave_mcast(int fd, struct ip_mreq *req)
+inline int leave_mcast(int fd, struct ip_mreq *req)
 {
 	return setsockopt(fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, req, sizeof(struct ip_mreq));
 }
 
+
+/* @brief 初始化组播接口
+ * @param mcast_ip 组播ip
+ * @param mcast_port 组播端口号
+ * @param local_ip 本地ip
+ *
+ * @return >0 组播fd -1 error
+ */
+int mcast_cli_init(char *mcast_ip, uint16_t mcast_port, char *local_ip); 
 
 #endif

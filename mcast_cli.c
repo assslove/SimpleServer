@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 
 	struct ip_mreq req;
 	req.imr_multiaddr.s_addr = inet_addr("239.0.0.2");
-	req.imr_interface.s_addr = inet_addr("192.168.1.101"); //必须为本地接口 ip
+	req.imr_interface.s_addr = inet_addr("127.0.0.1"); //必须为本地接口 ip
 
 	if (join_mcast(sockfd, &req) == -1) {
 		printf("join mcast error\n");
