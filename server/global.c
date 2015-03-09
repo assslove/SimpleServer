@@ -56,4 +56,4 @@ GHashTable *fds;
 //stop flag
 int stop;
 //服务管理
-servcach_t g_servs;
+GHashTable *g_servs;

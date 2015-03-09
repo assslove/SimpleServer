@@ -37,5 +37,5 @@ extern struct svr_setting  setting;
 extern GHashTable *sim_data;
 extern GHashTable *fds;
 extern int stop;
-extern struct servcach g_servs;
+extern GHashTable *g_servs;
 #endif
