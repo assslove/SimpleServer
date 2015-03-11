@@ -305,14 +305,32 @@ int do_blk_close(mem_block_t *blk)
 
 int do_proc_mcast(int fd)
 {
-	//static char buf[MCAST_MSG_LEN];
+	static char buf[MCAST_MSG_LEN];
+	int len = 0;
+	while ((len = recv(fd, buf, MCAST_MSG_LEN, MSG_DONTWAIT)) > 0) {
+		if (len < sizeof(mcast_pkg_t)) {
+			ERROR(0, "error mcast pkg size [%u]", len);
+		}
+
+		mcast_pkg_t *pkg = (mcast_pkg_t *)buf;	
+		switch(pkg->mcast_type) {
+			case MCAST_SERV_NOTI:
+				//do_mcast_serv_noti();
+				break;
+			case MCAST_RELOAD_SO:
+				//do_mcast_realod_so();
+				break;
+			case MCAST_RELOAD_CONF:
+				break;
+		}
+	}
 	return 0;
 }
 
 int do_proc_svr(int fd) 
 {
 	fd_buff_t *buff = &epinfo.fds[fd].buff;
-	
+
 	if (handle_read(fd) == -1) {
 		return -1;
 	}
@@ -376,7 +394,7 @@ void  do_syn_serv_addr()
 	memcpy(serv.servname, setting.srv_name, 32);
 	//发送服务通知请求
 	send_pkg_to_mcast(setting.mcast_ip, setting.mcast_port, setting.mcast_out_ip, \
-		MCAST_SERV_NOTI, sizeof(serv_noti_t), &serv);
+			MCAST_SERV_NOTI, sizeof(serv_noti_t), &serv);
 }
 
 uint32_t get_serv_ip()
