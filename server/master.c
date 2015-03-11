@@ -145,7 +145,7 @@ int master_dispatch()
 		handle_mq_send();
 
 		int i, fd;
-		int n = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
+		int n = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 5000);
 
 		if (n == -1 && errno != EINTR) {
 			ERROR(0, "master epoll wait error[err=%s]", strerror(errno));
@@ -377,6 +377,22 @@ int init_setting()
 	strcpy(setting.log_dir, log_dir);
 	setting.log_size = conf_get_int("log_size");
 
+	const char* mcast_ip = conf_get_str("mcast_ip");
+	if (mcast_ip == NULL) {
+		BOOT(0, "log dir error\n");
+		return -1;
+	}
+	strcpy(setting.mcast_ip, mcast_ip);
+
+	setting.mcast_port = conf_get_int("mcast_port");
+
+	const char* mcast_out_ip = conf_get_str("mcast_out_ip");
+	if (mcast_out_ip == NULL) {
+		BOOT(0, "log dir error\n");
+		return -1;
+	}
+	strcpy(setting.mcast_out_ip, mcast_out_ip);
+
 	return 0;
 }
 
@@ -399,10 +415,6 @@ int master_init_for_work(int id)
 	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) { //发送队列关闭写管道
 		return -1;
 	} 
-
-	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].rq.pipefd[1], id, fd_type_pipe, 0, 0)) == -1) { //接收队列关闭读管道
-		return -1;
-	}
 
 	//close unused pipefd
 	close(workmgr.works[id].sq.pipefd[1]);

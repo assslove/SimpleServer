@@ -74,7 +74,7 @@ int mcast_cli_init(char *mcast_ip, uint16_t mcast_port, char *local_ip)
 	return sockfd;
 }
 
-int send_pkg_to_mcast(char *mcast_ip, uint16_t mcast_port, char *local_ip, int mcast_type, int len, char *data)
+int send_pkg_to_mcast(char *mcast_ip, uint16_t mcast_port, char *local_ip, int mcast_type, int len, void *data)
 {
 	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sockfd == -1) {
@@ -104,7 +104,7 @@ int send_pkg_to_mcast(char *mcast_ip, uint16_t mcast_port, char *local_ip, int m
 		return -1;
 	}
 
-	char buff[1024] = {'\0'};
+	static char buff[1024] = {'\0'};
 	mcast_pkg_t *pkg = (mcast_pkg_t *)buff;
 	pkg->len = len + sizeof(mcast_pkg_t);
 	pkg->mcast_type = mcast_type;

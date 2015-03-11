@@ -101,6 +101,6 @@ int mcast_cli_init(char *mcast_ip, uint16_t mcast_port, char *local_ip);
  * @param len 
  * @param data
  */
-int send_pkg_to_mcast(char *mcast_ip, uint16_t mcast_port, char *local_ip, int mcast_type, int len, char *data);
+int send_pkg_to_mcast(char *mcast_ip, uint16_t mcast_port, char *local_ip, int mcast_type, int len, void *data);
 
 #endif

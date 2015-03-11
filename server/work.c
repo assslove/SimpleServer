@@ -29,6 +29,10 @@
 #include "outer.h"
 #include "fds.h"
 #include "mem_queue.h"
+#include "mcast.h"
+
+//子进程idx;
+int work_idx = 0;
 
 int work_init(int i)
 {
@@ -80,6 +84,10 @@ int work_init(int i)
 		}
 	}
 
+	if (add_fdinfo_to_epinfo(workmgr.works[i].rq.pipefd[0], i, fd_type_pipe, 0, 0) == -1) { //接收队列读加入epoll
+		return -1;
+	}
+
 	//初始化fd-map
 	init_fds();
 
@@ -97,7 +105,19 @@ int work_init(int i)
 	INIT_LIST_HEAD(&epinfo.closelist);				
 
 	//组播
+	int mcast_fd = mcast_cli_init(setting.mcast_ip, setting.mcast_port, setting.mcast_out_ip);
+	if (mcast_fd == -1) {
+		ERROR(0, "mcast init failed");
+		return -1;
+	}
+	if (add_fdinfo_to_epinfo(mcast_fd, i, fd_type_mcast, 0, 0) == -1) {
+		return -1;
+	}
 
+	//初始化地址更新时间
+	work->next_syn_addr = 0xffffffff;
+	work->next_del_expire_addr = 0xffffffff;
+	
 	INFO(0, "child serv[id=%d] have started", workmgr.works[i].id);
 
 	return 0;
@@ -114,7 +134,7 @@ int work_dispatch(int i)
 	int k = 0;
 	int fd = 0;
 	while (!stop) {
-		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 10);
+		int nr = epoll_wait(epinfo.epfd, epinfo.evs, setting.nr_max_event, 5000);
 		if (nr == -1 && errno != EINTR) {
 			ERROR(0, "epoll wait [id=%d,err=%s]", i, strerror(errno));
 			return 0;
@@ -167,6 +187,15 @@ int work_dispatch(int i)
 		//handle timer callback
 		if (so.handle_timer) {
 			so.handle_timer();
+		}
+
+		uint32_t now = time(NULL);
+		if (now > workmgr.works[i].next_syn_addr) { //服务通知
+			do_syn_serv_addr(i);
+		}
+
+		if (now > workmgr.works[i].next_del_expire_addr) { //过期地址
+			//do_del_expire_addr();
 		}
 	}
 
@@ -336,4 +365,36 @@ void close_cli(int fd)
 	blk.fd = fd;
 	mq_push(&workmgr.works[blk.id].sq, &blk, NULL);
 	do_blk_close(&blk); //不要重复执行
+}
+
+void  do_syn_serv_addr()
+{
+	serv_noti_t serv;
+	serv.ip = get_serv_ip();
+	serv.port = get_serv_port();
+	serv.id = get_serv_id();
+	memcpy(serv.servname, setting.srv_name, 32);
+	//发送服务通知请求
+	send_pkg_to_mcast(setting.mcast_ip, setting.mcast_port, setting.mcast_out_ip, \
+		MCAST_SERV_NOTI, sizeof(serv_noti_t), &serv);
+}
+
+uint32_t get_serv_ip()
+{
+	return inet_addr(workmgr.works[work_idx].ip);	
+}
+
+uint16_t get_serv_port()
+{
+	return workmgr.works[work_idx].port;	
+}
+
+uint32_t get_serv_id()
+{
+	return workmgr.works[work_idx].id;	
+}
+
+const char* get_serv_ipstr()
+{
+	return workmgr.works[work_idx].ip;	
 }

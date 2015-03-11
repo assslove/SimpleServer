@@ -42,13 +42,16 @@ enum fd_type {
 /* @brief 工作进程配置项
  */
 typedef struct work {
-	uint32_t id;
-	uint16_t idx;
+	uint32_t id;  //配置id
+	uint16_t idx; //索引
 	char ip[32];
 	uint16_t port;
 	uint8_t proto_type; 
 	mem_queue_t rq;	 //接收队列
 	mem_queue_t sq;  //发送队列
+
+	uint32_t next_syn_addr;			//下一次更新地址时间
+	uint32_t next_del_expire_addr;  //下一次删除过期地址时间
 }__attribute__((packed)) work_t;
 
 /* @brief work配置项
@@ -119,6 +122,9 @@ typedef struct svr_setting {
 	uint32_t log_maxfiles; //最大日志文件个数
 	uint32_t log_size;	//日志个数
 	char log_dir[32];	//日志目录
+	char mcast_ip[16];  //组播地址
+	uint16_t mcast_port; //组播端口号
+	char mcast_out_ip[16]; //组播出口地址
 } svr_setting_t;
 
 /*	
