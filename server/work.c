@@ -47,9 +47,9 @@ int work_init(int i)
 	//chg title
 	chg_proc_title("%s-%d", setting.srv_name, work->id);
 	//release master resource
-	close(epinfo.epfd);
 	free(epinfo.fds);
 	free(epinfo.evs);
+	close(epinfo.epfd);
 	
 	epinfo.epfd = epoll_create(setting.nr_max_event);
 	if (epinfo.epfd == -1) {
@@ -68,7 +68,24 @@ int work_init(int i)
 		ERROR(0, "create epoll fds error: %s", strerror(errno));
 		return -1;
 	}
-	
+
+	if (add_fdinfo_to_epinfo(work->rq.pipefd[0], i, fd_type_pipe, 0, 0) == -1) { //接收队列读加入epoll
+		ERROR(0, "[%s] add pipefd to epinfo failed", __func__);
+		return -1;
+	}
+
+	//组播
+	//int mcast_fd = mcast_cli_init(setting.mcast_ip, setting.mcast_port, setting.mcast_out_ip);
+	//if (mcast_fd == -1) {
+		//ERROR(0, "mcast init failed");
+		//return -1;
+	//}
+
+	//if (add_fdinfo_to_epinfo(mcast_fd, i, fd_type_mcast, 0, 0) == -1) {
+		//ERROR(0, "[%s] add mcast fd to epinfo failed", __func__);
+		//return -1;
+	//}
+
 	//close mem_queue pipe
 	int k = 0;
 	for (; k < workmgr.nr_used; ++k) {
@@ -82,12 +99,7 @@ int work_init(int i)
 			close(workmgr.works[k].sq.pipefd[1]);
 		}
 	}
-
-	if (add_fdinfo_to_epinfo(work->rq.pipefd[0], i, fd_type_pipe, 0, 0) == -1) { //接收队列读加入epoll
-		ERROR(0, "[%s] add pipefd to epinfo failed", __func__);
-		return -1;
-	}
-
+	
 	//初始化fd-map
 	init_fds();
 
@@ -104,18 +116,7 @@ int work_init(int i)
 	INIT_LIST_HEAD(&epinfo.readlist);				
 	INIT_LIST_HEAD(&epinfo.closelist);				
 
-	//组播
-	int mcast_fd = mcast_cli_init(setting.mcast_ip, setting.mcast_port, setting.mcast_out_ip);
-	if (mcast_fd == -1) {
-		ERROR(0, "mcast init failed");
-		return -1;
-	}
-
-	if (add_fdinfo_to_epinfo(mcast_fd, i, fd_type_mcast, 0, 0) == -1) {
-		ERROR(0, "[%s] add mcast fd to epinfo failed", __func__);
-		return -1;
-	}
-
+	
 	//初始化地址更新时间
 	work->next_syn_addr = 0xffffffff;
 	work->next_del_expire_addr = 0xffffffff;
