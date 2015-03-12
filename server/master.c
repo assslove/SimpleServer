@@ -53,6 +53,7 @@ int master_init()
 		return -1;
 	}
 
+	DEBUG(0, "epfd=%u", epinfo.epfd);
 	epinfo.evs = (struct epoll_event *)calloc(setting.nr_max_event, sizeof(struct epoll_event));		
 	if (epinfo.evs == NULL) {
 		ERROR(0, "create epoll events error: %s", strerror(errno));

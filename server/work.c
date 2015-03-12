@@ -84,7 +84,7 @@ int work_init(int i)
 	}
 
 	if (add_fdinfo_to_epinfo(work->rq.pipefd[0], i, fd_type_pipe, 0, 0) == -1) { //接收队列读加入epoll
-		ERROR(0, "[%s] add fd to epinfo failed", __func__);
+		ERROR(0, "[%s] add pipefd to epinfo failed", __func__);
 		return -1;
 	}
 
@@ -110,8 +110,9 @@ int work_init(int i)
 		ERROR(0, "mcast init failed");
 		return -1;
 	}
+
 	if (add_fdinfo_to_epinfo(mcast_fd, i, fd_type_mcast, 0, 0) == -1) {
-		ERROR(0, "[%s] add mcastfd to epinfo failed", __func__);
+		ERROR(0, "[%s] add mcast fd to epinfo failed", __func__);
 		return -1;
 	}
 
