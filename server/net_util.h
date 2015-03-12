@@ -30,7 +30,7 @@ enum CACHE_TYPE {
 /* fd 类型
  */
 enum fd_type {
-	fd_type_listen,
+	fd_type_listen = 0,
 	fd_type_connect,
 	fd_type_mcast, 
 	fd_type_pipe, 

@@ -84,7 +84,7 @@ int work_init(int i)
 		}
 	}
 
-	if (add_fdinfo_to_epinfo(workmgr.works[i].rq.pipefd[0], i, fd_type_pipe, 0, 0) == -1) { //接收队列读加入epoll
+	if (add_fdinfo_to_epinfo(work->rq.pipefd[0], i, fd_type_pipe, 0, 0) == -1) { //接收队列读加入epoll
 		return -1;
 	}
 

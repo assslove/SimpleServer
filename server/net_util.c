@@ -610,7 +610,7 @@ int add_fdinfo_to_epinfo(int fd, int idx, int type, int ip, uint16_t port)
 
 	int ret = epoll_ctl(epinfo.epfd, EPOLL_CTL_ADD, fd, &event);	
 	if (ret == -1) {
-		ERROR(0, "err ctl add [fd=%u][%s]", fd, strerror(errno));
+		ERROR(0, "err ctl add [fd=%u][type=%u][%s]", fd, type, strerror(errno));
 		return -1;
 	}
 

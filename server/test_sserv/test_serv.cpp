@@ -98,13 +98,13 @@ OUTER_FUNC int serv_init(int ismaster)
 {
 	INFO(0, "%s init", ismaster ? "master" : "work");
 
-	if (switch_fd == -1) {
-		switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
-	}
+	//if (switch_fd == -1) {
+		//switch_fd = connect_to_serv(conf_get_str("switch_ip"), conf_get_int("switch_port"), 1024, 1000); 
+	//}
 
-	if (switch_fd == -1) {
-		ERROR(0, "cannot connect to switch");
-	}
+	//if (switch_fd == -1) {
+		//ERROR(0, "cannot connect to switch");
+	//}
 	
 	return 0;
 }
