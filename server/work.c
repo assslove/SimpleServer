@@ -47,9 +47,9 @@ int work_init(int i)
 	//chg title
 	chg_proc_title("%s-%d", setting.srv_name, work->id);
 	//release master resource
+	close(epinfo.epfd);
 	free(epinfo.fds);
 	free(epinfo.evs);
-	close(epinfo.epfd);
 	
 	epinfo.epfd = epoll_create(setting.nr_max_event);
 	if (epinfo.epfd == -1) {
