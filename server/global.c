@@ -50,3 +50,6 @@ GHashTable *fds;
 int stop;
 //服务管理
 GHashTable *g_servs;
+//子进程idx;
+int work_idx = 0;
+

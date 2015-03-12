@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 			char buf[2] = {'\0'};
 			read(pipefd[0], buf, 1);
 
-			printf("%s\n", buf);
+			printf("child %s\n", buf);
 		}
 		return 0;
 	}

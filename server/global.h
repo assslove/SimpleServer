@@ -38,4 +38,5 @@ extern GHashTable *sim_data;
 extern GHashTable *fds;
 extern int stop;
 extern GHashTable *g_servs;
+extern int work_idx;
 #endif

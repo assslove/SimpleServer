@@ -92,6 +92,7 @@ int master_listen(int i)
 
 	int ret = 0;
 	if ((ret = add_fdinfo_to_epinfo(listenfd, i, fd_type_listen, inet_addr(work->ip), work->port)) == -1) {
+		ERROR(0, "[%s] add fd to epinfo failed", __func__);
 		return -1;
 	}
 	//close pipe
@@ -124,11 +125,8 @@ int master_mq_create(int i)
 		return -1;
 	}
 
-	if ((ret = add_fdinfo_to_epinfo(work->rq.pipefd[1], i, fd_type_pipe, 0, 0)) == -1) {
-		return -1;
-	}
-
 	if ((ret = add_fdinfo_to_epinfo(work->sq.pipefd[0], i, fd_type_pipe, 0, 0)) == -1) { 
+		ERROR(0, "[%s] add fd to epinfo failed", __func__);
 		return -1;
 	} 
 	return 0;
@@ -323,6 +321,8 @@ int do_fd_open(int fd)
 	if (newfd > 0) {
 		if ((ret = add_fdinfo_to_epinfo(newfd, epinfo.fds[fd].idx, fd_type_cli, \
 						cliaddr.sin_addr.s_addr, cliaddr.sin_port)) == -1) {
+
+			ERROR(0, "[%s] add fd to epinfo failed", __func__);
 			return 0;
 		}
 
@@ -413,6 +413,7 @@ int master_init_for_work(int id)
 	}
 
 	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) { //发送队列关闭写管道
+		ERROR(0, "[%s] add fd to epinfo failed", __func__);
 		return -1;
 	} 
 
