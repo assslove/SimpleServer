@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 	if (pid < 0) {
 		return 0;
 	} else if (pid == 0) {
-		sleep(1);
+		sleep(2);
 		close(pipefd[1]);
 		for (;;) {
 			char buf[2] = {'\0'};

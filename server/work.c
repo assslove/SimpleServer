@@ -47,8 +47,9 @@ int work_init(int i)
 	//chg title
 	chg_proc_title("%s-%d", setting.srv_name, work->id);
 	//release master resource
-	close(epinfo.epfd);
+	free(epinfo.fds);
 	free(epinfo.evs);
+	close(epinfo.epfd);
 	
 	epinfo.epfd = epoll_create(setting.nr_max_event);
 	if (epinfo.epfd == -1) {
@@ -70,7 +71,7 @@ int work_init(int i)
 	
 	//close mem_queue pipe
 	int k = 0;
-	for (; k < workmgr.nr_used; k++) {
+	for (; k < workmgr.nr_used; ++k) {
 		if (k == i) {
 			close(work->rq.pipefd[1]);
 			close(work->sq.pipefd[0]);
@@ -117,6 +118,7 @@ int work_init(int i)
 	//初始化地址更新时间
 	work->next_syn_addr = 0xffffffff;
 	work->next_del_expire_addr = 0xffffffff;
+	work_idx = i;
 	
 	INFO(0, "child serv[id=%d] have started", workmgr.works[i].id);
 

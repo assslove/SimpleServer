@@ -396,34 +396,6 @@ int init_setting()
 	return 0;
 }
 
-
-int master_init_for_work(int id) 
-{
-	int ret;
-	ret = mq_init(&workmgr.works[id].sq, setting.mem_queue_len, MEM_TYPE_RECV);
-	if (ret == -1) {
-		ERROR(0, "map sendq failed[id=%d,err=%s]", id, strerror(errno));
-		return -1;
-	}
-
-	ret = mq_init(&workmgr.works[id].rq, setting.mem_queue_len, MEM_TYPE_SEND);
-	if (ret == -1) {
-		ERROR(0, "map recvq failed[id=%d,err=%s]", id, strerror(errno));
-		return -1;
-	}
-
-	if ((ret = add_fdinfo_to_epinfo(workmgr.works[id].sq.pipefd[0], id, fd_type_pipe, 0, 0)) == -1) { //发送队列关闭写管道
-		ERROR(0, "[%s] add fd to epinfo failed", __func__);
-		return -1;
-	} 
-
-	//close unused pipefd
-	close(workmgr.works[id].sq.pipefd[1]);
-	close(workmgr.works[id].rq.pipefd[0]);
-
-	return 0;
-}
-
 void raw2blk(int fd, mem_block_t *blk)
 {
 	blk->id = epinfo.fds[fd].idx;
