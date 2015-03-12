@@ -75,16 +75,16 @@ int work_init(int i)
 	}
 
 	//组播
-	//int mcast_fd = mcast_cli_init(setting.mcast_ip, setting.mcast_port, setting.mcast_out_ip);
-	//if (mcast_fd == -1) {
-		//ERROR(0, "mcast init failed");
-		//return -1;
-	//}
+	int mcast_fd = mcast_cli_init(setting.mcast_ip, setting.mcast_port, setting.mcast_out_ip);
+	if (mcast_fd == -1) {
+		ERROR(0, "mcast init failed");
+		return -1;
+	}
 
-	//if (add_fdinfo_to_epinfo(mcast_fd, i, fd_type_mcast, 0, 0) == -1) {
-		//ERROR(0, "[%s] add mcast fd to epinfo failed", __func__);
-		//return -1;
-	//}
+	if (add_fdinfo_to_epinfo(mcast_fd, i, fd_type_mcast, 0, 0) == -1) {
+		ERROR(0, "[%s] add mcast fd to epinfo failed", __func__);
+		return -1;
+	}
 
 	//close mem_queue pipe
 	int k = 0;
