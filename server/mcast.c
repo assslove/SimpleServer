@@ -60,8 +60,6 @@ int mcast_cli_init(char *mcast_ip, uint16_t mcast_port, char *local_ip)
 		return -1;
 	}
 
-	return 0;	
-
 	struct ip_mreq req;
 	req.imr_multiaddr.s_addr = inet_addr(mcast_ip);
 	req.imr_interface.s_addr = inet_addr(local_ip);
