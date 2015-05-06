@@ -20,8 +20,20 @@
 
 int main(int argc, char* argv[])
 {
-	DEBUG(100021, "%s: test", "hello");
-	ERROR(100021, "hell: test");
-	ERROR(100021, "hell: test %s", "hello");
+	int ret = log_init("log", LOG_LV_DEBUG, 1024 * 10, 1000, "test"); 
+	if (ret == -1) {
+		printf("error log init\n");
+		return 0;
+	}
+
+	int i = 0;
+	int coef = atoi(argv[1]);
+	for (i = 0; i < 1000000; ++i) {
+		DEBUG(0, "%d %d", coef, i * coef);
+		if (i % 10 == 0) {
+			sleep(1);
+		}
+	}
+	log_fini();
 	return 0;
 }

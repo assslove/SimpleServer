@@ -183,7 +183,7 @@ recv_again:
 			goto recv_again;
 		}
 
-//		sleep(1);
+		sleep(1);
 		//getchar();
 		char input[200] = {'\0'};
 		int num = rand() % 200+ 1;

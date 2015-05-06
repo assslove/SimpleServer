@@ -12,8 +12,8 @@ test_mq: 	test_mem_queue.c mem_queue.c util.c
 test_mq2: 	test_mem_queue_fork.c mem_queue.c
 	gcc -g test_mem_queue_fork.c mem_queue.c -o test_mq2
 
-test_log: test_log.c log.c
-	gcc -g -o test_log test_log.c log.c
+test_log: test_log.c 
+	gcc -g -o test_log test_log.c -lnanc -lpthread `pkg-config --cflags --libs glib-2.0`
 test_load_conf: test_load_conf.c
 	gcc -g -o test_load_conf test_load_conf.c `pkg-config --cflags --libs glib-2.0` 
 test_linklist: test_linklist.c list.h
